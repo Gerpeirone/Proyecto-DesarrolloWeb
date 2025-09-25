@@ -24,17 +24,22 @@ header {
   z-index: 1000;
 }
 
+/* Animación de hover en el logo */
 .logo {
   font-size: 24px;
   font-weight: bold;
   color: #f5f5dc;
   text-decoration: none;
   font-family: 'Arial Black', sans-serif; 
+  transition: transform 0.3s ease-in-out; /* suaviza la animación */
 }
 
 .logo:hover {
-  text-decoration: underline;
+  transform: scale(1.1); /* se agranda un 10% */
 }
+
+
+
 
 .acciones {
   display: flex;
