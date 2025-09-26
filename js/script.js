@@ -65,8 +65,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Delegación: botones add-to-cart
+  // --- Delegación de eventos global ---
   document.addEventListener('click', (e) => {
+    // --- Botón "Ver más" ---
+    const verMasBtn = e.target.closest('.ver-mas a');
+    if (verMasBtn) {
+      // deja que el navegador siga el link
+      return;
+    }
+
+    // --- Botón "Agregar al carrito" ---
     const addBtn = e.target.closest('.add-to-cart');
     if (addBtn) {
       let nombre = addBtn.dataset.nombre;
@@ -93,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // botones dentro del modal
+    // --- Botones dentro del modal ---
     const eliminarBtn = e.target.closest('.eliminar');
     if (eliminarBtn) {
       const idx = Number(eliminarBtn.dataset.index);
@@ -116,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const menosBtn = e.target.closest('.cantidad-menos');
     if (menosBtn) {
-      const idx = Number(menosBtn.dataset.index);
+      const idx = Number(masBtn.dataset.index);
       if (!Number.isNaN(idx)) {
         carrito[idx].cantidad = Math.max(1, carrito[idx].cantidad - 1);
         saveCart();
@@ -179,7 +187,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function escapeHtml(str) {
     return String(str).replace(/[&<>"'`=\/]/g, (s) => {
-      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','/':'&#x2F;','`':'&#x60;','=':'&#x3D;'}[s];
+      return {
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',
+        "'":'&#39;','/':'&#x2F;','`':'&#x60;','=':'&#x3D;'
+      }[s];
     });
   }
 
@@ -190,7 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener('beforeunload', saveCart);
 });
 
-// Galería hover
+// --- Galería hover ---
 document.querySelectorAll('.hover-gallery').forEach(gallery => {
   let imgs = gallery.querySelectorAll('img');
   let index = 0;

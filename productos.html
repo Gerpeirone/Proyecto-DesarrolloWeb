@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle del producto</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Header (opcional igual al de main.html) -->
+  <header>
+    <a class="logo" href="main.html">CrewLab</a>
+    <div class="acciones">
+      <div class="carrito">🛒</div>
+      <div class="menu-hamburguesa" id="menu-btn">☰</div>
+      <nav class="menu-desplegable" id="menu">
+        <ul>
+          <li><a href="remeras.html">Remeras</a></li>
+          <li><a href="buzos.html">Buzos</a></li>
+          <li><a href="pantalones.html">Pantalones</a></li>
+          <li><a href="zapatillas.html">Zapatillas</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Contenido del producto -->
+  <main>
+    <div class="producto-detalle">
+      <div class="imagenes">
+        <img id="producto-img" src="" alt="Producto">
+      </div>
+      <div class="info">
+        <h1 id="producto-nombre"></h1>
+        <p id="producto-precio"></p>
+
+        <label for="talle">Talle:</label>
+        <select id="talle">
+          <option>XS</option>
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+        </select>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" min="1" value="1">
+
+        <button id="btn-agregar">Agregar al carrito</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // --- Productos simulados (ejemplo con 4, vos después agregás los 24)
+    const productos = [
+      { id: 1, nombre: "Remera Azul Design", precio: 30000, img: "REMERAS/Remera Azul Design.jpg" },
+      { id: 2, nombre: "Buzo Negro Desgastado", precio: 90000, img: "BUZOS/buzo negro desgastado.jpg" },
+      { id: 3, nombre: "Pantalón Cargo color Crema", precio: 100000, img: "PANTALONES/Cargo color crema.avif" },
+      { id: 4, nombre: "Vans Knu blanco-negro", precio: 200000, img: "ZAPATILLAS/Vans Knu blanco-negro.jpg" }
+    ];
+
+    // --- Leer parámetro ID de la URL
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get("id"));
+
+    // --- Buscar producto
+    const producto = productos.find(p => p.id === id);
+
+    if (producto) {
+      document.getElementById("producto-img").src = producto.img;
+      document.getElementById("producto-nombre").textContent = producto.nombre;
+      document.getElementById("producto-precio").textContent = "$" + producto.precio;
+    } else {
+      document.querySelector("main").innerHTML = "<h2>Producto no encontrado</h2>";
+    }
+
+    // --- Agregar al carrito con talle y cantidad
+    document.getElementById("btn-agregar").addEventListener("click", () => {
+      const talle = document.getElementById("talle").value;
+      const cantidad = parseInt(document.getElementById("cantidad").value);
+
+      const productoSeleccionado = {
+        nombre: producto.nombre + " (Talle: " + talle + ")",
+        precio: producto.precio,
+        cantidad: cantidad
+      };
+
+      // Guardar en localStorage (usa la misma lógica que en script.js)
+      let carrito = JSON.parse(localStorage.getItem("crewlab_carrito")) || [];
+      const existente = carrito.find(i => i.nombre === productoSeleccionado.nombre);
+      if (existente) {
+        existente.cantidad += cantidad;
+      } else {
+        carrito.push(productoSeleccionado);
+      }
+      localStorage.setItem("crewlab_carrito", JSON.stringify(carrito));
+
+      alert("Producto agregado al carrito ✅");
+    });
+  </script>
+</body>
+</html>

@@ -364,3 +364,92 @@ footer {
 .producto-img:hover .img-hover {
   opacity: 1;
 }
+
+/* --- BOTONES DE PRODUCTO --- */
+.producto button {
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 8px;
+  transition: background 0.3s ease;
+}
+
+/* Botón Ver más */
+.producto .ver-mas {
+  background: #e0e0e0; /* gris claro */
+  color: #000;
+}
+
+.producto .ver-mas:hover {
+  background: #ccc; /* gris más oscuro */
+}
+
+/* Asegurar que el link del botón Ver más herede estilo */
+.producto .ver-mas a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit; /* usa el color del botón */
+}
+
+/* Botón Agregar al carrito */
+.producto .add-to-cart {
+  background: #000;
+  color: #f5f5dc;
+}
+
+.producto .add-to-cart:hover {
+  background: #333;
+}
+
+/* Página de detalle */
+.producto-detalle {
+  display: flex;
+  gap: 40px;
+  max-width: 900px;
+  margin: 40px auto;
+  align-items: flex-start;
+}
+
+.producto-detalle .imagenes img {
+  width: 350px;
+  border-radius: 10px;
+}
+
+.producto-detalle .info {
+  flex: 1;
+}
+
+.producto-detalle .info h1 {
+  margin-bottom: 10px;
+}
+
+.producto-detalle .info p {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.producto-detalle select,
+.producto-detalle input {
+  display: block;
+  margin: 10px 0 20px;
+  padding: 8px;
+  width: 150px;
+}
+
+.producto-detalle button {
+  padding: 12px 20px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.producto-detalle button:hover {
+  background: #333;
+}
