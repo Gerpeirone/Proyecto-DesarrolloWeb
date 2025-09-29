@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- Menú desplegable (tu código existente) ---
+  // --- Menú desplegable ---
   const menuBtn = document.getElementById("menu-btn");
   const menu = document.getElementById("menu");
   if (menuBtn && menu) {
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- Carrito persistente y compatible con todas las páginas ---
+  // --- Carrito persistente ---
   const STORAGE_KEY = 'crewlab_carrito';
   let carrito = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCartBadge();
   }
 
-  // Si no existe el modal en la página, lo creamos dinámicamente
+  // Crear modal del carrito si no existe
   let carritoModal = document.getElementById('carrito-modal');
   if (!carritoModal) {
     carritoModal = document.createElement('div');
@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <h2>Tu carrito 🛒</h2>
       <ul id="carrito-lista"></ul>
       <p id="carrito-total">Total: $0</p>
+      <button id="finalizar-compra">Finalizar compra</button>
       <button id="cerrar-carrito">Cerrar</button>
     `;
     document.body.appendChild(carritoModal);
@@ -41,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const carritoLista = document.getElementById('carrito-lista');
   const carritoTotal = document.getElementById('carrito-total');
   const cerrarCarritoBtn = document.getElementById('cerrar-carrito');
+  const finalizarCarritoBtn = document.getElementById('finalizar-compra');
 
   const carritoIcon = document.querySelector('.carrito');
   if (carritoIcon) {
@@ -57,11 +59,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Delegación: detecta clicks en botones .add-to-cart aunque estén en otras páginas
+  if (finalizarCarritoBtn) {
+    finalizarCarritoBtn.addEventListener('click', () => {
+      window.location.href = "checkout.html"; // redirige al formulario
+    });
+  }
+
+  // --- Delegación de eventos global ---
   document.addEventListener('click', (e) => {
+    // --- Botón "Ver más" ---
+    const verMasBtn = e.target.closest('.ver-mas a');
+    if (verMasBtn) {
+      // deja que el navegador siga el link
+      return;
+    }
+
+    // --- Botón "Agregar al carrito" ---
     const addBtn = e.target.closest('.add-to-cart');
     if (addBtn) {
-      // obtener nombre y precio de data-attributes o buscar en el card
       let nombre = addBtn.dataset.nombre;
       let precio = addBtn.dataset.precio;
 
@@ -76,15 +91,17 @@ document.addEventListener("DOMContentLoaded", () => {
         precio = p ? parsePrice(p.textContent) : 0;
       }
 
-      // parsing seguro: sacar todo lo que no sean dígitos
-      precio = precio !== undefined && precio !== null ? parseInt(String(precio).replace(/[^\d]/g, '')) || 0 : 0;
+      precio = precio !== undefined && precio !== null
+        ? parseInt(String(precio).replace(/[^\d]/g, '')) || 0
+        : 0;
+
       addToCart({ nombre: nombre || 'Producto', precio: precio, cantidad: 1 });
       saveCart();
       renderCart();
-      return; // stop further processing of this click
+      return;
     }
 
-    // botones dentro del modal: eliminar / + / -
+    // --- Botones dentro del modal ---
     const eliminarBtn = e.target.closest('.eliminar');
     if (eliminarBtn) {
       const idx = Number(eliminarBtn.dataset.index);
@@ -107,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const menosBtn = e.target.closest('.cantidad-menos');
     if (menosBtn) {
-      const idx = Number(menosBtn.dataset.index);
+      const idx = Number(masBtn.dataset.index);
       if (!Number.isNaN(idx)) {
         carrito[idx].cantidad = Math.max(1, carrito[idx].cantidad - 1);
         saveCart();
@@ -164,26 +181,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function parsePrice(text) {
     if (!text) return 0;
-    // extrae números de la cadena (ej: "$30.000" -> "30000")
     const digits = text.replace(/[^\d]/g, '');
     return parseInt(digits) || 0;
   }
 
   function escapeHtml(str) {
     return String(str).replace(/[&<>"'`=\/]/g, (s) => {
-      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','/':'&#x2F;','`':'&#x60;','=':'&#x3D;'}[s];
+      return {
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',
+        "'":'&#39;','/':'&#x2F;','`':'&#x60;','=':'&#x3D;'
+      }[s];
     });
   }
 
   // inicial
   renderCart();
 
-  // guardar antes de salir (por si acaso)
+  // guardar antes de salir
   window.addEventListener('beforeunload', saveCart);
 });
 
-
-// Galería hover
+// --- Galería hover ---
 document.querySelectorAll('.hover-gallery').forEach(gallery => {
   let imgs = gallery.querySelectorAll('img');
   let index = 0;
@@ -194,13 +212,13 @@ document.querySelectorAll('.hover-gallery').forEach(gallery => {
       imgs[index].classList.remove('activa');
       index = (index + 1) % imgs.length;
       imgs[index].classList.add('activa');
-    }, 500); // cambia cada 1 segundo
+    }, 500);
   });
 
   gallery.addEventListener('mouseleave', () => {
     clearInterval(interval);
     imgs.forEach(img => img.classList.remove('activa'));
-    imgs[0].classList.add('activa'); // vuelve a la primera
+    imgs[0].classList.add('activa');
     index = 0;
   });
 });
