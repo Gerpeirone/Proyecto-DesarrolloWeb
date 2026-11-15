@@ -1,0 +1,86 @@
+@use "variables" as *;
+
+$alto-carrusel: 350px;
+$alto-carrusel-celular: 200px;
+
+.carrusel {
+  height: $alto-carrusel;
+  overflow: hidden;
+  margin: -40px -20px 50px;
+}
+
+.slides {
+  display: flex;
+  width: 400%;
+  animation: deslizar 16s infinite;
+
+  img {
+    width: 25%;
+    height: $alto-carrusel;
+    object-fit: cover;
+  }
+}
+
+@keyframes deslizar {
+  0%,
+  20% {
+    margin-left: 0;
+  }
+
+  25%,
+  45% {
+    margin-left: -100%;
+  }
+
+  50%,
+  70% {
+    margin-left: -200%;
+  }
+
+  75%,
+  95% {
+    margin-left: -300%;
+  }
+
+  100% {
+    margin-left: 0;
+  }
+}
+
+.sobre-nosotros {
+  background: $color-crema-fondo;
+  margin: 50px -20px -40px;
+  padding: 40px 20px;
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  p {
+    margin: 5px 0;
+  }
+}
+
+.redes {
+  margin-top: 20px;
+
+  img {
+    width: 32px;
+    height: 32px;
+    margin: 0 10px;
+    object-fit: contain;
+  }
+}
+
+@media (max-width: $corte-celular) {
+  .carrusel,
+  .slides img {
+    height: $alto-carrusel-celular;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slides {
+    animation: none;
+  }
+}

@@ -1,0 +1,116 @@
+@use "sass:color";
+@use "variables" as *;
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: $color-negro;
+  color: $color-crema;
+  padding: 15px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-family: $fuente-logo;
+  font-size: 24px;
+
+  a {
+    display: inline-block;
+    color: $color-crema;
+    text-decoration: none;
+    transition: transform 0.4s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.carrito,
+.menu-hamburguesa {
+  position: relative;
+  font-size: 22px;
+  padding: 6px 10px;
+  border-radius: $radio;
+}
+
+.carrito {
+  text-decoration: none;
+  transition: background $transicion;
+
+  &:hover {
+    background: color.adjust($color-negro, $lightness: 20%);
+  }
+}
+
+.carrito-contador {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: $color-alerta;
+  color: $color-blanco;
+  border-radius: 12px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.menu-desplegable {
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  background: $color-negro;
+  padding: 10px 20px;
+  border-radius: 0 0 8px 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity $transicion, transform $transicion;
+
+  &.activo {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  li {
+    margin: 10px 0;
+    text-align: left;
+  }
+
+  a {
+    color: $color-crema;
+    text-decoration: none;
+
+    &:hover,
+    &.active {
+      text-decoration: underline;
+    }
+  }
+}
+
+footer {
+  background: $color-negro;
+  color: $color-crema;
+  text-align: center;
+  padding: 15px 10px;
+}
+
+@media (max-width: $corte-celular) {
+  header {
+    padding: 12px 16px;
+  }
+}

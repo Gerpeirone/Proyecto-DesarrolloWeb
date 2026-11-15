@@ -1,1 +1,0 @@
-export default function Pantalones(){return <main><h1>Pantalones</h1></main>}

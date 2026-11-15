@@ -1,0 +1,43 @@
+@use "sass:color";
+
+$color-negro: #000;
+$color-texto: #111;
+$color-texto-suave: #555;
+$color-crema: #f5f5dc;
+$color-crema-fondo: #f5eedc;
+$color-blanco: #fff;
+$color-gris: #e0e0e0;
+$color-borde: #ccc;
+$color-borde-suave: #eee;
+$color-alerta: #ff3b30;
+$color-eliminar: #b00020;
+$color-confirmar: #1b7f3b;
+$color-foco: #ffb703;
+
+$fuente-principal: "Montserrat", sans-serif;
+$fuente-logo: "Arial Black", sans-serif;
+
+$radio: 6px;
+$radio-grande: 10px;
+$sombra: 0 2px 10px rgba(0, 0, 0, 0.2);
+$transicion: 0.3s ease;
+
+$corte-tablet: 900px;
+$corte-celular: 600px;
+
+@mixin boton($fondo, $texto) {
+  background: $fondo;
+  color: $texto;
+
+  &:hover {
+    background: color.adjust($fondo, $lightness: -10%);
+  }
+}
+
+@mixin campo {
+  border: 1px solid $color-borde;
+  border-radius: $radio;
+  font-family: inherit;
+  font-size: 15px;
+  background: $color-blanco;
+}

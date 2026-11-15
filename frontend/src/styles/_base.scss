@@ -1,0 +1,109 @@
+@use "variables" as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $fuente-principal;
+  color: $color-texto;
+  background: $color-blanco;
+}
+
+h2 {
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+h3 {
+  font-size: 17px;
+}
+
+img {
+  max-width: 100%;
+}
+
+button {
+  @include boton($color-negro, $color-crema);
+  border: none;
+  padding: 10px 15px;
+  border-radius: $radio;
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background $transicion;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid $color-foco;
+  outline-offset: 2px;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.pagina {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.ver-mas {
+  @include boton($color-gris, $color-negro);
+  display: block;
+  padding: 10px 15px;
+  border-radius: $radio;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background $transicion;
+}
+
+.boton-secundario {
+  @include boton($color-gris, $color-negro);
+}
+
+.boton-confirmar {
+  @include boton($color-confirmar, $color-blanco);
+  font-weight: 700;
+}
+
+.boton-eliminar {
+  @include boton($color-eliminar, $color-blanco);
+}
+
+.estado {
+  padding: 40px 0;
+  color: $color-texto-suave;
+
+  &.estado-error {
+    color: $color-eliminar;
+  }
+}
+
+.aviso {
+  max-width: 500px;
+  margin: 40px auto;
+
+  p {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: $corte-celular) {
+  h2 {
+    font-size: 22px;
+  }
+}

@@ -1,28 +1,32 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { formatearPrecio } from "@utils/formato";
+import { obtenerImagen } from "@utils/imagenes";
 
-export default function ProductoCard({ producto }) {
-  const [hover, setHover] = useState(false);
-  const navigate = useNavigate();
-
-  const imagenPrincipal = producto.img;
-  const imagenSecundaria = producto.imagenes_adicionales?.[0] || producto.img;
-
+/**
+ * Tarjeta de un producto para los listados.
+ * @method ProductoCard
+ * @param {object} props - Propiedades del componente.
+ * @param {object} props.producto - Producto a mostrar.
+ * @return {JSX.Element} Tarjeta con imágenes, nombre, precio y enlace al detalle.
+ */
+const ProductoCard = ({ producto }) => {
   return (
-    <div
-      className="producto-card"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onClick={() => navigate(`/producto/${producto.id}`)}
-      style={{ cursor: "pointer" }}
-    >
-      <img
-        src={hover ? imagenSecundaria : imagenPrincipal}
-        alt={producto.nombre}
-        className="producto-imagen"
-      />
-      <h3 className="producto-nombre">{producto.nombre}</h3>
-      <p className="producto-precio">${producto.precio}</p>
-    </div>
+    <article className="producto">
+      <div className="producto-img">
+        <img src={obtenerImagen(producto.imagen)} alt={producto.nombre} className="img-principal" />
+        <img
+          src={obtenerImagen(producto.imagenSecundaria)}
+          alt={`${producto.nombre}, segunda vista`}
+          className="img-hover"
+        />
+      </div>
+      <h3>{producto.nombre}</h3>
+      <p className="producto-precio">{formatearPrecio(producto.precio)}</p>
+      <Link to={`/producto/${producto.id}`} className="ver-mas">
+        Ver más
+      </Link>
+    </article>
   );
-}
+};
+
+export default ProductoCard;
