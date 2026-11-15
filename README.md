@@ -2,8 +2,8 @@
 
 **CrewLab** es una tienda online de moda urbana con catálogo de remeras, buzos, pantalones y zapatillas. Permite recorrer los productos por categoría, ver el detalle de cada uno, armar un carrito y completar los datos de la compra.
 
-- **Sitio publicado (versión React):** <https://ucc-tallerdesarrolloweb.github.io/proyecto2025-alterman-peirone/app/>
-- **Sitio publicado (versión HTML, CSS y JavaScript):** <https://ucc-tallerdesarrolloweb.github.io/proyecto2025-alterman-peirone/>
+- **Sitio publicado (versión React):** <https://gerpeirone.github.io/Proyecto-DesarrolloWeb/app/>
+- **Sitio publicado (versión HTML, CSS y JavaScript):** <https://gerpeirone.github.io/Proyecto-DesarrolloWeb/>
 
 ## Índice
 
@@ -64,7 +64,7 @@ Proyecto académico de la materia **Taller de Desarrollo Web** de la Universidad
 ## Estructura del proyecto
 
 ```
-proyecto2025-alterman-peirone/
+Proyecto-DesarrolloWeb/
 ├── index.html, remeras.html, buzos.html, pantalones.html, zapatillas.html
 ├── productos.html, checkout.html
 ├── css/                 Hoja de estilos única de la versión HTML
