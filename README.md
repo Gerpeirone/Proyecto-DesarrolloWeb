@@ -1,153 +1,147 @@
-# 🧢 CrewLab — Tienda de ropa urbana
+# CrewLab - Tienda de ropa urbana
 
-**Sitio Web** : https://ucc-tallerdesarrolloweb.github.io/proyecto2025-alterman-peirone/
-## 📋 Índice
+**CrewLab** es una tienda online de moda urbana con catálogo de remeras, buzos, pantalones y zapatillas. Permite recorrer los productos por categoría, ver el detalle de cada uno, armar un carrito y completar los datos de la compra.
 
-- [Descripción del Proyecto](#descripción-del-proyecto)
-- [Objetivo](#objetivo)
-- [Características](#características)
-- [Librerías y Recursos](#librerías-y-recursos)
-- [Tecnologías Utilizadas](#tecnologías-utilizadas)
-- [Estructura del Proyecto](#estructura-del-proyecto)
-- [Funcionalidades](#funcionalidades)
-- [Wireframes](#wireframes)
-- [Autores](#autores)
+- **Sitio publicado (versión React):** <https://ucc-tallerdesarrolloweb.github.io/proyecto2025-alterman-peirone/app/>
+- **Sitio publicado (versión HTML, CSS y JavaScript):** <https://ucc-tallerdesarrolloweb.github.io/proyecto2025-alterman-peirone/>
 
-## 📖 Descripción del Proyecto
+## Índice
 
-**CrewLab** es una tienda online de moda urbana con catálogo de **remeras, buzos, pantalones y zapatillas**. El sitio incluye páginas de categoría, vista de **detalle de producto**, carrito persistente con localStorage y una pantalla de **checkout** con validaciones.
+1. [Autores](#autores)
+2. [Contenido del sitio](#contenido-del-sitio)
+3. [Tecnologías utilizadas](#tecnologías-utilizadas)
+4. [Estructura del proyecto](#estructura-del-proyecto)
+5. [Pasos de ejecución](#pasos-de-ejecución)
+6. [Scripts disponibles](#scripts-disponibles)
+7. [Dependencias y vulnerabilidades](#dependencias-y-vulnerabilidades)
+8. [Sketch y wireframes](#sketch-y-wireframes)
+9. [Pruebas realizadas](#pruebas-realizadas)
 
-### 🎯 Objetivo
+## Autores
 
-Ofrecer una experiencia simple y rápida para explorar productos, ver detalles, armar un carrito y completar los datos de compra desde desktop o mobile.
+| Autor | Rol | GitHub |
+| --- | --- | --- |
+| **Ivo Alterman** | Desarrollador | [@ivoalterman](https://github.com/ivoalterman) |
+| **German Peirone** | Desarrollador | [@Gerpeirone](https://github.com/Gerpeirone) |
 
-## ✨ Características
+Proyecto académico de la materia **Taller de Desarrollo Web** de la Universidad Católica de Córdoba (UCC).
 
-- **Diseño moderno y responsive** que se adapta a cualquier dispositivo
-- **Menú hamburguesa** en mobile.
-- **Hover de imágenes** en listados (imagen secundaria).
-- **Detalle de producto** con galería de miniaturas.
-- **Carrito modal persistente** (sumar/restar/eliminar y total en tiempo real).
-- **Checkout con validación** (placeholders, mensajes de error y alertas).
-- **Metadatos** por página (autor, descripción, keywords).
-- **Accesibilidad UI** básica (roles, aria-*, foco y navegación por teclado en el modal).
+## Contenido del sitio
 
-## 🛠️ Tecnologías Utilizadas
+### Páginas
 
-| Tecnología       | Propósito                                  | Versión |
-| ---------------- | ------------------------------------------ | ------- |
-| **HTML5**        | Estructura semántica y metadatos           | -       |
-| **CSS3**         |  Estilos, layout responsive, animaciones simples  | -       |
-| **JavaScript**   | Interacciones, carrito, validaciones | ES6+    |
-| **LocalStorage** | Persistencia del carrito |-|
-| **Google Fonts**          | Tipografia                       | -       |
-| **Git/GitHub Pages** | Hosting y despliegue                       | -       |
+| Página | Versión HTML | Versión React | Contenido |
+| --- | --- | --- | --- |
+| Inicio | `index.html` | `/` | Carrusel de promociones, productos más vendidos y datos de la tienda |
+| Categorías | `remeras.html`, `buzos.html`, `pantalones.html`, `zapatillas.html` | `/categoria/:categoria` | Listado de productos de la categoría |
+| Detalle | `productos.html?id=1` | `/producto/:id` | Galería, talle, cantidad, subtotal y botón para agregar al carrito |
+| Carrito | Ventana desplegable en el encabezado | `/carrito` | Productos elegidos, cantidades, total y vaciado del carrito |
+| Compra | `checkout.html` | `/checkout` | Resumen, método de envío, total y formulario del comprador |
 
-### 📚 Librerías y Recursos
+### Funcionalidades
 
-- **Google Fonts** para tipografías personalizadas
-- **SVG Icons** para iconografía vectorial
-- **Responsive Design** con CSS Grid y Flexbox
+- **Cálculo del subtotal** en el detalle del producto: precio por cantidad.
+- **Cálculo del total de la compra**: subtotal de los productos más el costo del método de envío elegido.
+- **Validación de datos** con aviso al usuario y blanqueo del campo incorrecto: cantidad, nombre, apellido, DNI, número de calle, piso, código postal, ciudad y provincia.
+- **Carrito persistente**: se conserva al recargar la página porque se guarda en el almacenamiento del navegador.
+- **Diseño adaptable** a computadoras y celulares.
 
-## 📁 Estructura del Proyecto
+## Tecnologías utilizadas
 
-```
-Proyecto-DesarrolloWeb/
-├── index.html
-├── remeras.html
-├── buzos.html
-├── pantalones.html
-├── zapatillas.html
-├── productos.html
-├── checkout.html
-├── css/
-│   └── style.css
-├── js/
-│   ├── script.js
-│   └── checkout.js
-├── imagenes/
-│   ├── FAVICON/
-│   │   └── favicon-32x32.png
-│   ├── CARRUSEL OFERTAS/
-│   │   ├── promocion1.jpg
-│   │   ├── promocion5.2.png.jpg
-│   │   ├── promocion4.png
-│   │   └── polo.avif
-│   ├── LOGOS/               
-│   ├── REMERAS/
-│   ├── BUZOS/
-│   ├── PANTALONES/
-│   └── ZAPATILLAS/
-├── Wireframes/
-│   ├── Desktop/
-│   └── Mobile/
-├── Sketch/
-│   ├── Desktop/
-│   └── Mobile/
-└── README.md
+| Tecnología | Versión | Uso en el proyecto |
+| --- | --- | --- |
+| **HTML5** | - | Estructura y etiquetas semánticas |
+| **CSS3** | - | Estilos de la versión HTML |
+| **JavaScript** | ES2020 | Funcionalidad, validaciones y cálculos |
+| **React** | 19 | Componentes y manejo del estado con Hooks |
+| **Vite** | 8 | Creación del proyecto React, servidor de desarrollo y compilación |
+| **React Router DOM** | 7 | Enrutamiento entre páginas y rutas hijas con `Outlet` |
+| **Sass** | 1.108 | Estilos de la versión React en archivos `.scss` |
+| **Node.js** | 22 | Ejecución de los scripts y del servicio simulado |
+| **Google Fonts** | - | Tipografía Montserrat |
+| **Git y GitHub Pages** | - | Control de versiones y publicación |
+
+## Estructura del proyecto
 
 ```
+proyecto2025-alterman-peirone/
+├── index.html, remeras.html, buzos.html, pantalones.html, zapatillas.html
+├── productos.html, checkout.html
+├── css/                 Hoja de estilos única de la versión HTML
+├── js/                  JavaScript de la versión HTML
+├── imagenes/            Imágenes usadas por las dos versiones
+├── Sketch/              Bocetos a mano (Desktop y Mobile)
+├── Wireframes/          Wireframes (Desktop y Mobile)
+├── app/                 Versión React compilada, publicada en GitHub Pages
+└── frontend/            Código fuente de la versión React
+    ├── mock/            Servicio simulado de productos
+    └── src/
+        ├── api/         Consultas al servicio de productos
+        ├── components/  Componentes reutilizables y componente principal
+        ├── data/        Datos del catálogo y de la tienda
+        ├── pages/       Páginas asociadas a cada ruta
+        ├── styles/      Estilos en archivos .scss
+        └── utils/       Funciones de cálculo, validación y Hooks propios
+```
 
-## Paginas y Funcionalidades
+Los imports de la versión React usan los alias `@api`, `@components`, `@data`, `@pages`, `@styles`, `@utils` e `@imagenes`, definidos en `frontend/vite.config.js`.
 
-### 🏠 Página Principal (index.html)
+## Pasos de ejecución
 
-- Carrusel de ofertas.
-- Grid de **productos más vendidos** (con efecto hover).
-- Sección **Sobre nosotros** + redes.
+### Versión HTML
 
-### 👕Pagina de cada categoría  remeras.html, buzos.html, pantalones.html, zapatillas.html
+1. Clonar el repositorio.
+2. Abrir `index.html` en el navegador.
 
-- Catálogo por categoría con **hover de imagen** y botón **Ver más** → productos.html?id=….
+### Versión React
 
-### 🧾 Pagina de cada uno de los productos productos.html
+1. Tener instalado [Node.js](https://nodejs.org/) versión 20 o superior.
+2. Entrar a la carpeta del proyecto React: `cd frontend`
+3. Instalar las dependencias: `npm install`
+4. Iniciar el servidor de desarrollo: `npm run dev`
+5. Abrir en el navegador la dirección que muestra la consola, por defecto <http://localhost:5173/>.
 
-- **Galería** (imagen principal + miniaturas clicables).
-- Selección de **talle y cantidad**.
-- Botón **“Añadir a mi colección”** → agrega al carrito persistente.
-- Ícono de carrito con **badge** de cantidad.
+### Versión React con el servicio simulado
 
-### 🔍 Detalle de compra (checkout.html)
+1. En una consola, dentro de `frontend`, iniciar el servicio: `npm run mock`
+2. En otra consola, dentro de `frontend`, iniciar el sitio: `npm run dev:mock`
 
-- **Resumen del carrito** (subtotal y total).
-- **Formulario** con placeholders y **validaciones** (DNI, número, selects, campos requeridos).
-- Mensajes de error y **alerta** si el carrito está vacío.
+En este modo los productos se piden a `http://localhost:3001/productos` en lugar de leerse de los datos locales.
 
-## 🎨 Wireframes
+## Scripts disponibles
 
-El proyecto incluye wireframes completos para ambas versiones:
+Todos se ejecutan dentro de la carpeta `frontend`.
 
-### Desktop
+| Script | Descripción |
+| --- | --- |
+| `npm run dev` | Inicia el sitio en modo desarrollo con los datos locales |
+| `npm run mock` | Inicia el servicio simulado de productos en el puerto 3001 |
+| `npm run dev:mock` | Inicia el sitio en modo desarrollo consultando al servicio simulado |
+| `npm run build` | Compila el sitio en la carpeta `app` para publicarlo |
+| `npm run preview` | Muestra el sitio ya compilado |
 
-- Página Principal
-- Pagina para cada categoría de ropa
-- Pagina para cada uno de los productos
-- Página Individual
+## Dependencias y vulnerabilidades
 
-### Mobile
+El resultado de `npm audit` es **0 vulnerabilidades** (críticas, altas, moderadas y bajas), verificado el 15 de noviembre de 2026.
 
-- Adaptaciones responsive de todas las páginas
-- Navegación optimizada para touch
-- Layout vertical optimizado
+| Dependencia | Tipo |
+| --- | --- |
+| `react`, `react-dom`, `react-router-dom` | Ejecución |
+| `vite`, `@vitejs/plugin-react`, `sass` | Desarrollo |
 
-## 👥 Autores
+## Sketch y wireframes
 
-| Autor                 | Rol                    | GitHub                                                 |
-| --------------------- | ---------------------- | ------------------------------------------------------ |
-| **Ivo Alterman** | Desarrollador  | [@ivoalterman](https://github.com/ivoalterman) |
-| **German Peirone**  | Desarrollador  | [@Gerpeirone](https://github.com/Gerpeirone) |
+- **Sketch:** carpeta [`Sketch`](Sketch), con las versiones Desktop y Mobile.
+- **Wireframes:** carpeta [`Wireframes`](Wireframes), con las versiones Desktop y Mobile.
 
----
+## Pruebas realizadas
 
-### 📝 Notas del Proyecto
+Las dos versiones se probaron con los siguientes casos:
 
-- **Universidad:** Universidad Católica de Córdoba (UCC)
-- **Materia:** Taller de Desarrollo Web
-- **Año:** 2025
-- **Tipo:** Proyecto Académico - Primer Parcial
-
-### 📄 Licencia
-
-Este proyecto es de uso académico para la Universidad Católica de Córdoba.
-
----
+- Confirmar la compra sin ingresar ningún dato y con solo algunos campos completos.
+- Ingresar cero, números negativos, decimales y letras en la cantidad, el DNI, el número de calle y el código postal.
+- Ingresar números en el nombre, el apellido y la ciudad.
+- Elegir envío express para una provincia distinta de Córdoba.
+- Vaciar el carrito y querer finalizar la compra con el carrito vacío.
+- Recargar la página con productos en el carrito.
+- Abrir un producto, una categoría o una dirección que no existe.
