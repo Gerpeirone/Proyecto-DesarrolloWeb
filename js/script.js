@@ -1,240 +1,263 @@
 "use strict";
 
-/** Clave usada en localStorage para persistir el carrito. */
-const STORAGE_KEY = "crewlab_carrito";
-/** Formateador de números para Argentina. */
-const fmtAR = new Intl.NumberFormat("es-AR");
+const CLAVE_CARRITO = "crewlab_carrito";
+const CANTIDAD_MAXIMA = 10;
 
 /**
- * Lee el carrito desde localStorage.
- * @returns {Array<{nombre:string, precio:number, cantidad:number}>}
+ * Da formato de moneda argentina a un número.
+ * @method formatearPrecio
+ * @param {number} valor - Importe a mostrar.
+ * @return {string} Importe con el signo $ y separador de miles.
  */
-const loadCart = () => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+const formatearPrecio = (valor) => {
+  return "$" + valor.toLocaleString("es-AR");
 };
 
 /**
- * Guarda el carrito y actualiza el badge.
- * @param {Array<{nombre:string, precio:number, cantidad:number}>} currentCart
- * @returns {void}
+ * Indica si un elemento guardado en el carrito tiene datos correctos.
+ * @method esItemValido
+ * @param {object} item - Elemento leído desde el almacenamiento.
+ * @return {boolean} true si tiene nombre, precio y cantidad válidos.
  */
-const saveCart = (currentCart) => {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentCart));
-  } catch {/* ignorar errores de cuota */}
-  updateCartBadge(currentCart);
-};
-
-/**
- * Actualiza el contador del ícono de carrito.
- * @param {Array<{cantidad:number}>} [currentCart]
- * @returns {void}
- */
-const updateCartBadge = (currentCart) => {
-  const carritoIcon = document.querySelector(".carrito");
-  if (!carritoIcon) return;
-
-  const count = (currentCart || loadCart()).reduce(
-    (s, i) => s + Number(i.cantidad || 0),
-    0
-  );
-
-  let badge = carritoIcon.querySelector(".carrito-badge");
-  if (!badge) {
-    badge = document.createElement("span");
-    badge.className = "carrito-badge";
-    badge.setAttribute("role", "status");
-    badge.setAttribute("aria-live", "polite");
-    carritoIcon.appendChild(badge);
-  }
-
-  badge.textContent = count > 0 ? String(count) : "";
-  carritoIcon.setAttribute(
-    "aria-label",
-    count > 0 ? `Carrito: ${count} artículos` : "Carrito vacío"
+const esItemValido = (item) => {
+  return (
+    item !== null &&
+    typeof item === "object" &&
+    typeof item.nombre === "string" &&
+    item.nombre !== "" &&
+    Number.isFinite(item.precio) &&
+    item.precio > 0 &&
+    Number.isInteger(item.cantidad) &&
+    item.cantidad > 0
   );
 };
 
 /**
- * Dibuja la lista del carrito y muestra el total.
- * @returns {void}
+ * Lee el carrito guardado en el navegador y descarta los datos inválidos.
+ * @method leerCarrito
+ * @return {Array<{nombre: string, precio: number, cantidad: number}>} Productos del carrito.
  */
-const renderCart = () => {
-  const currentCart = loadCart();
+const leerCarrito = () => {
+  let guardado;
+  try {
+    guardado = JSON.parse(localStorage.getItem(CLAVE_CARRITO));
+  } catch (error) {
+    guardado = null;
+  }
+  return Array.isArray(guardado) ? guardado.filter(esItemValido) : [];
+};
+
+/**
+ * Calcula la suma de precio por cantidad de todos los productos.
+ * @method calcularSubtotal
+ * @param {Array<{precio: number, cantidad: number}>} carrito - Productos del carrito.
+ * @return {number} Importe total de los productos.
+ */
+const calcularSubtotal = (carrito) => {
+  return carrito.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
+};
+
+/**
+ * Muestra en el encabezado la cantidad de artículos del carrito.
+ * @method actualizarContador
+ * @return {void}
+ */
+const actualizarContador = () => {
+  const contador = document.getElementById("carrito-contador");
+  if (!contador) {
+    return;
+  }
+  const cantidad = leerCarrito().reduce((suma, item) => suma + item.cantidad, 0);
+  contador.textContent = cantidad > 0 ? String(cantidad) : "";
+};
+
+/**
+ * Guarda el carrito en el navegador y actualiza el contador del encabezado.
+ * @method guardarCarrito
+ * @param {Array<{nombre: string, precio: number, cantidad: number}>} carrito - Productos a guardar.
+ * @return {void}
+ */
+const guardarCarrito = (carrito) => {
+  localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+  actualizarContador();
+};
+
+/**
+ * Dibuja la lista de productos y el total dentro de la ventana del carrito.
+ * @method dibujarCarrito
+ * @return {void}
+ */
+const dibujarCarrito = () => {
   const lista = document.getElementById("carrito-lista");
-  const totalEl = document.getElementById("carrito-total");
-  if (!lista || !totalEl) return;
+  const total = document.getElementById("carrito-total");
+  if (!lista || !total) {
+    return;
+  }
 
+  const carrito = leerCarrito();
   lista.innerHTML = "";
-  let total = 0;
 
-  currentCart.forEach((item, index) => {
-    const precio = Number(item.precio || 0);
-    const cant = Math.max(1, Number(item.cantidad || 1));
-    const subtotal = precio * cant;
-    total += subtotal;
+  if (carrito.length === 0) {
+    lista.innerHTML = '<li class="carrito-vacio">Tu carrito está vacío.</li>';
+  }
 
-    const li = document.createElement("li");
-    li.className = "carrito-item";
-    li.innerHTML = `
-      <span class="item-info">${item.nombre}</span>
-      <span class="item-ctrls">
-        <button class="cantidad-menos" data-index="${index}" aria-label="Disminuir cantidad">-</button>
-        <span class="cantidad" aria-live="polite">${cant}</span>
-        <button class="cantidad-mas" data-index="${index}" aria-label="Aumentar cantidad">+</button>
-        <button class="eliminar-item" data-index="${index}" aria-label="Eliminar del carrito">❌</button>
-      </span>
-    `;
-    lista.appendChild(li);
+  carrito.forEach((item, indice) => {
+    const fila = document.createElement("li");
+    fila.className = "carrito-item";
+    fila.innerHTML = `
+      <span class="item-info"></span>
+      <span class="item-controles">
+        <button type="button" onclick="cambiarCantidad(${indice}, -1)" aria-label="Restar una unidad">-</button>
+        <span class="item-cantidad">${item.cantidad}</span>
+        <button type="button" onclick="cambiarCantidad(${indice}, 1)" aria-label="Sumar una unidad">+</button>
+        <button type="button" class="boton-eliminar" onclick="eliminarDelCarrito(${indice})" aria-label="Eliminar del carrito">✕</button>
+      </span>`;
+    fila.querySelector(".item-info").textContent =
+      `${item.nombre} - ${formatearPrecio(item.precio * item.cantidad)}`;
+    lista.appendChild(fila);
   });
 
-  totalEl.textContent = `Total: $${fmtAR.format(total)}`;
-  updateCartBadge(currentCart);
+  total.textContent = "Total: " + formatearPrecio(calcularSubtotal(carrito));
 };
 
 /**
- * Agrega un ítem al carrito (si existe, suma cantidades).
- * @param {{nombre:string, precio:number, cantidad:number}} item
- * @returns {void}
+ * Agrega un producto al carrito; si ya estaba, suma la cantidad sin superar el máximo.
+ * @method agregarAlCarrito
+ * @param {{nombre: string, precio: number, cantidad: number}} item - Producto a agregar.
+ * @return {void}
  */
-const addToCart = (item) => {
-  const limpio = {
-    nombre: String(item?.nombre ?? "").trim(),
-    precio: Number(item?.precio ?? 0),
-    cantidad: Math.max(1, Number(item?.cantidad ?? 1)),
-  };
-  if (!limpio.nombre || !Number.isFinite(limpio.precio)) return;
+const agregarAlCarrito = (item) => {
+  const carrito = leerCarrito();
+  const existente = carrito.find((guardado) => guardado.nombre === item.nombre);
 
-  const carrito = loadCart();
-  const existing = carrito.find((i) => i.nombre === limpio.nombre);
-  if (existing) existing.cantidad += limpio.cantidad;
-  else carrito.push(limpio);
+  if (existente) {
+    existente.cantidad = Math.min(CANTIDAD_MAXIMA, existente.cantidad + item.cantidad);
+  } else {
+    carrito.push(item);
+  }
 
-  saveCart(carrito);
+  guardarCarrito(carrito);
+  dibujarCarrito();
 };
 
-// Disponible globalmente si lo necesitás en otras páginas
-window.addToCart = addToCart;
-
-document.addEventListener("DOMContentLoaded", () => {
-  // Menú hamburguesa
-  const menuBtn = document.getElementById("menu-btn");
-  const menu = document.getElementById("menu");
-  if (menuBtn && menu) {
-    menuBtn.setAttribute("aria-label", "Abrir menú de navegación");
-    menuBtn.setAttribute("aria-expanded", "false");
-
-    menuBtn.addEventListener("click", () => {
-      const isOpen = menu.classList.toggle("activo");
-      menuBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
-        menu.classList.remove("activo");
-        menuBtn.setAttribute("aria-expanded", "false");
-      }
-    });
+/**
+ * Suma o resta unidades de un producto del carrito, entre 1 y el máximo permitido.
+ * @method cambiarCantidad
+ * @param {number} indice - Posición del producto dentro del carrito.
+ * @param {number} variacion - Unidades a sumar (positivo) o restar (negativo).
+ * @return {void}
+ */
+const cambiarCantidad = (indice, variacion) => {
+  const carrito = leerCarrito();
+  if (!carrito[indice]) {
+    return;
   }
+  const nuevaCantidad = carrito[indice].cantidad + variacion;
+  carrito[indice].cantidad = Math.min(CANTIDAD_MAXIMA, Math.max(1, nuevaCantidad));
+  guardarCarrito(carrito);
+  dibujarCarrito();
+};
 
-  // Carrito modal
-  const carritoIcon = document.querySelector(".carrito");
-  const carritoModal = document.getElementById("carrito-modal");
-  const btnCerrar = document.getElementById("cerrar-carrito");
-  const finalizarCompraBtn = document.getElementById("finalizar-compra");
-  const carritoLista = document.getElementById("carrito-lista");
+/**
+ * Quita un producto del carrito.
+ * @method eliminarDelCarrito
+ * @param {number} indice - Posición del producto dentro del carrito.
+ * @return {void}
+ */
+const eliminarDelCarrito = (indice) => {
+  const carrito = leerCarrito();
+  carrito.splice(indice, 1);
+  guardarCarrito(carrito);
+  dibujarCarrito();
+};
 
-  if (carritoModal) {
-    carritoModal.setAttribute("role", "dialog");
-    carritoModal.setAttribute("aria-modal", "true");
-    carritoModal.setAttribute("aria-hidden", "true");
+/**
+ * Elimina todos los productos del carrito.
+ * @method vaciarCarrito
+ * @return {void}
+ */
+const vaciarCarrito = () => {
+  guardarCarrito([]);
+  dibujarCarrito();
+};
+
+/**
+ * Oculta la ventana del carrito.
+ * @method cerrarCarrito
+ * @return {void}
+ */
+const cerrarCarrito = () => {
+  const ventana = document.getElementById("carrito-modal");
+  if (ventana) {
+    ventana.classList.add("oculto");
   }
+};
 
-  let lastFocus = null;
-
-  /**
-   * Abre el modal del carrito.
-   * @returns {void}
-   */
-  const openCart = () => {
-    if (!carritoModal) return;
-    renderCart();
-    lastFocus = document.activeElement;
-    carritoModal.classList.remove("oculto");
-    carritoModal.setAttribute("aria-hidden", "false");
-    if (btnCerrar) btnCerrar.focus();
-  };
-
-  /**
-   * Cierra el modal del carrito.
-   * @returns {void}
-   */
-  const closeCart = () => {
-    if (!carritoModal) return;
-    carritoModal.classList.add("oculto");
-    carritoModal.setAttribute("aria-hidden", "true");
-    if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
-  };
-
-  if (carritoIcon && carritoModal) {
-    carritoIcon.setAttribute("tabindex", "0");
-    carritoIcon.addEventListener("click", openCart);
-    carritoIcon.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        openCart();
-      }
-    });
-
-    if (btnCerrar) btnCerrar.addEventListener("click", closeCart);
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !carritoModal.classList.contains("oculto")) {
-        closeCart();
-      }
-    });
-
-    if (finalizarCompraBtn) {
-      finalizarCompraBtn.addEventListener("click", () => {
-        if (loadCart().length > 0) {
-          window.location.href = "checkout.html";
-        } else {
-          alert("Tu carrito está vacío. ¡Añadí tu primera prenda!");
-        }
-      });
-    }
-
-    if (carritoLista) {
-      carritoLista.addEventListener("click", (e) => {
-        const btn = e.target.closest("button[data-index]");
-        if (!btn) return;
-
-        const idx = Number(btn.dataset.index);
-        let carrito = loadCart();
-
-        if (btn.classList.contains("eliminar-item")) {
-          carrito.splice(idx, 1);
-        } else if (btn.classList.contains("cantidad-mas")) {
-          carrito[idx].cantidad += 1;
-        } else if (btn.classList.contains("cantidad-menos")) {
-          carrito[idx].cantidad = Math.max(1, Number(carrito[idx].cantidad) - 1);
-        } else {
-          return;
-        }
-
-        saveCart(carrito);
-        renderCart();
-      });
-    }
+/**
+ * Muestra u oculta la ventana del carrito con su contenido actualizado.
+ * @method alternarCarrito
+ * @return {void}
+ */
+const alternarCarrito = () => {
+  const ventana = document.getElementById("carrito-modal");
+  if (!ventana) {
+    return;
   }
+  dibujarCarrito();
+  ventana.classList.toggle("oculto");
+};
 
-  // Badge inicial
-  updateCartBadge(loadCart());
-});
+/**
+ * Cierra el menú de navegación.
+ * @method cerrarMenu
+ * @return {void}
+ */
+const cerrarMenu = () => {
+  document.getElementById("menu").classList.remove("activo");
+  document.getElementById("menu-boton").setAttribute("aria-expanded", "false");
+};
+
+/**
+ * Abre o cierra el menú de navegación.
+ * @method alternarMenu
+ * @return {void}
+ */
+const alternarMenu = () => {
+  const abierto = document.getElementById("menu").classList.toggle("activo");
+  document.getElementById("menu-boton").setAttribute("aria-expanded", String(abierto));
+};
+
+/**
+ * Cierra el menú y el carrito cuando se presiona la tecla Escape.
+ * @method cerrarConEscape
+ * @param {KeyboardEvent} evento - Evento de teclado recibido por la página.
+ * @return {void}
+ */
+const cerrarConEscape = (evento) => {
+  if (evento.key === "Escape") {
+    cerrarMenu();
+    cerrarCarrito();
+  }
+};
+
+/**
+ * Lleva a la página de compra si el carrito tiene productos; si no, avisa al usuario.
+ * @method irAlCheckout
+ * @return {void}
+ */
+const irAlCheckout = () => {
+  if (leerCarrito().length === 0) {
+    alert("Tu carrito está vacío. Agregá un producto antes de continuar.");
+    return;
+  }
+  window.location.href = "checkout.html";
+};
+
+/**
+ * Prepara la página al cargar: muestra la cantidad de artículos del carrito.
+ * @method iniciarPagina
+ * @return {void}
+ */
+const iniciarPagina = () => {
+  actualizarContador();
+};

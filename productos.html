@@ -1,299 +1,89 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Detalle del producto - CrewLab</title>
-
-  <!-- Metas simples (estáticas) -->
-  <meta name="author" content="Ivo Alterman y German Peirone" />
-  <meta name="description" content="Detalle del producto en CrewLab: información, talles y compra online." />
-  <meta name="keywords" content="CrewLab, producto, detalle, moda urbana" />
-
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" href="Imagenes/favicon/favicon-32x32.png" type="image/png" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Ivo Alterman y German Peirone">
+  <meta name="description" content="Detalle del producto en CrewLab: imágenes, talles, precio y compra online.">
+  <meta name="keywords" content="CrewLab, producto, detalle, talles, moda urbana">
+  <title>CrewLab - Detalle del producto</title>
+  <link rel="icon" href="imagenes/favicon/favicon-crewlab.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <!-- Header -->
-  <header>
-    <a class="logo" href="index.html">CrewLab</a>
-    <div class="acciones">
-      <div class="carrito">🛒</div>
-      <div class="menu-hamburguesa" id="menu-btn">☰</div>
-      <nav class="menu-desplegable" id="menu">
+<body onload="iniciarPagina(); mostrarProducto()" onkeydown="cerrarConEscape(event)">
+  <div class="pagina">
+    <header>
+      <h1 class="logo"><a href="index.html">CrewLab</a></h1>
+      <div class="acciones">
+        <button class="carrito" id="carrito-boton" type="button" onclick="alternarCarrito()" aria-label="Abrir carrito">
+          🛒<span class="carrito-contador" id="carrito-contador"></span>
+        </button>
+        <button class="menu-hamburguesa" id="menu-boton" type="button" onclick="alternarMenu()" aria-label="Abrir menú" aria-expanded="false">☰</button>
+      </div>
+      <nav class="menu-desplegable" id="menu" aria-label="Navegación principal">
         <ul>
+          <li><a href="index.html">Inicio</a></li>
           <li><a href="remeras.html">Remeras</a></li>
           <li><a href="buzos.html">Buzos</a></li>
           <li><a href="pantalones.html">Pantalones</a></li>
           <li><a href="zapatillas.html">Zapatillas</a></li>
+          <li><a href="checkout.html">Finalizar compra</a></li>
         </ul>
       </nav>
-    </div>
-  </header>
+    </header>
 
-  <!-- Detalle del producto -->
-  <main>
-    <div class="producto-detalle">
-      <!-- Galería -->
-      <div class="galeria">
-        <div class="miniaturas" id="miniaturas"></div>
-        <img id="imagen-principal" src="" alt="Producto principal">
-      </div>
-
-      <!-- Información -->
-      <div class="info-producto">
-        <h1 id="producto-nombre"></h1>
-        <p id="producto-precio"></p>
-        <hr class="divider">
-        <p id="producto-descripcion" class="descripcion"></p>
-
-        <div class="opciones">
-          <div>
-            <label for="talle">TALLE:</label>
-            <select id="talle"></select>
-            <a href="#" class="guia-talles">Guía de talles</a>
-          </div>
-          <div>
-            <label for="cantidad">CANTIDAD:</label>
-            <input type="number" id="cantidad" min="1" value="1">
-          </div>
+    <main>
+      <div class="producto-detalle" id="producto-detalle">
+        <div class="galeria">
+          <div class="miniaturas" id="miniaturas"></div>
+          <img id="imagen-principal" src="imagenes/favicon/favicon-crewlab.png" alt="Imagen del producto">
         </div>
 
-        <button id="btn-agregar">AÑADIR A MI COLECCIÓN</button>
-      </div>
-    </div>
-  </main>
+        <div class="info-producto">
+          <h2 id="producto-nombre">Producto</h2>
+          <p id="producto-precio">$0</p>
+          <p id="producto-descripcion" class="descripcion"></p>
 
-  <!-- Modal carrito -->
-  <div id="carrito-modal" class="carrito-modal oculto">
-    <div class="carrito-contenido">
-      <h2>Tu Carrito</h2>
-      <ul id="carrito-lista"></ul>
-      <p id="carrito-total">Total: $0</p>
-      <div class="carrito-botones">
-        <button id="cerrar-carrito">Cerrar</button>
-        <button id="finalizar-compra">Finalizar Compra</button>
+          <div class="opciones">
+            <div class="opcion">
+              <label for="talle">Talle</label>
+              <select id="talle"></select>
+            </div>
+            <div class="opcion">
+              <label for="cantidad">Cantidad (1 a 10)</label>
+              <input type="text" id="cantidad" inputmode="numeric" value="1" oninput="actualizarSubtotal()">
+            </div>
+          </div>
+
+          <p id="producto-subtotal" class="subtotal">Subtotal: $0</p>
+          <button type="button" id="boton-agregar" onclick="agregarProductoActual()">Agregar al carrito</button>
+        </div>
       </div>
+
+      <div class="aviso oculto" id="producto-no-encontrado">
+        <h2>Producto no encontrado</h2>
+        <p>El producto que buscás no existe o ya no está disponible.</p>
+        <a href="index.html" class="ver-mas">Volver al inicio</a>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 CrewLab - Todos los derechos reservados.</p>
+    </footer>
+  </div>
+
+  <div id="carrito-modal" class="carrito-modal oculto" role="dialog" aria-modal="true" aria-labelledby="carrito-titulo">
+    <h2 id="carrito-titulo">Tu carrito</h2>
+    <ul id="carrito-lista"></ul>
+    <p id="carrito-total">Total: $0</p>
+    <div class="carrito-botones">
+      <button type="button" class="boton-secundario" onclick="vaciarCarrito()">Vaciar carrito</button>
+      <button type="button" class="boton-secundario" onclick="cerrarCarrito()">Cerrar</button>
+      <button type="button" class="boton-confirmar" onclick="irAlCheckout()">Finalizar compra</button>
     </div>
   </div>
 
-  <script>
-    // === Datos base ===
-    const productos = [
-      // Remeras
-      { id: 1, nombre: "Remera Azul Design", precio: 30000, img: "Imagenes/remeras/Remera Azul Design.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Diseño exclusivo y vibrante.", imagenes_adicionales: ["Imagenes/remeras/Remera Azul Design-Detras.jpg"] },
-      { id: 2, nombre: "Remera Blanca Basic", precio: 33000, img: "Imagenes/remeras/Remera Blanca Basic.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Algodón suave y fit perfecto.", imagenes_adicionales: ["Imagenes/remeras/Remera Blanca Basic-Perfil.jpg"] },
-      { id: 3, nombre: "Remera Crema Simply", precio: 37000, img: "Imagenes/remeras/Remera Crema Simply.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Tono neutro, ideal para combinar.", imagenes_adicionales: ["Imagenes/remeras/Remera Crema Simply-Detras.jpg"] },
-      { id: 4, nombre: "Remera Gris over-estampada", precio: 41000, img: "Imagenes/remeras/Remera Gris over-estampada.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Estampado grande y look urbano.", imagenes_adicionales: ["Imagenes/remeras/Remera Gris over-estampada-detras.png"] },
-      { id: 5, nombre: "Remera Negra Basic", precio: 45000, img: "Imagenes/remeras/Remera Negra Basic.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "El clásico que nunca falla.", imagenes_adicionales: ["Imagenes/remeras/Remera Negra Basic-Detras.jpg"] },
-      { id: 6, nombre: "Remera Negra Simply", precio: 50000, img: "Imagenes/remeras/Remera Negra Simply.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Corte clásico en negro, ideal para todos los días.", imagenes_adicionales: ["Imagenes/remeras/Remera Negra Simply-Detras.jpg"] },
-
-      // Buzos
-      { id: 7, nombre: "Buzo blanco bordado", precio: 60000, img: "Imagenes/buzos/buzo blanco bordado.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Detalle bordado de alta precisión.", imagenes_adicionales: ["Imagenes/buzos/buzo blanco bordado-2.jpg"] },
-      { id: 8, nombre: "Buzo design", precio: 70000, img: "Imagenes/buzos/buzo design.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Diseño gráfico único y moderno.", imagenes_adicionales: ["Imagenes/buzos/buzo design-2.jpg"] },
-      { id: 9, nombre: "Buzo gris desgastado", precio: 75000, img: "Imagenes/buzos/buzo gris desgastado.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Efecto vintage desgastado.", imagenes_adicionales: ["Imagenes/buzos/buzo gris desgastado-2.jpg"] },
-      { id: 10, nombre: "Buzo gris estampado", precio: 80000, img: "Imagenes/buzos/buzo gris estampado.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Estampado minimalista en la espalda.", imagenes_adicionales: ["Imagenes/buzos/buzo gris estampado-2.jpg"] },
-      { id: 11, nombre: "Buzo negro basic", precio: 90000, img: "Imagenes/buzos/buzo negro basic.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"],  descripcion: "Buzo clásico de friza de algodón.",  imagenes_adicionales: ["Imagenes/buzos/buzo negro basic.-2jpg.webp"]},
-
-      { id: 12, nombre: "Buzo negro desgastado", precio: 100000, img: "Imagenes/buzos/buzo negro desgastado.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Proceso de teñido artesanal para un look único.", imagenes_adicionales: ["Imagenes/buzos/buzo negro desgastado-2.jpg"] },
-
-      // Pantalones
-      { id: 13, nombre: "Cargo color crema", precio: 100000, img: "Imagenes/pantalones/Cargo color crema.avif", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Tela ripstop resistente con múltiples bolsillos.", imagenes_adicionales: ["Imagenes/pantalones/Cargo color crema-2.avif"] },
-      { id: 14, nombre: "Cargo color marrón", precio: 105000, img: "Imagenes/pantalones/Cargo color marron.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Cargo de corte recto y acabado mate.", imagenes_adicionales: ["Imagenes/pantalones/Cargo color marron-2.jpg"] },
-      { id: 15, nombre: "Cargo color negro (con puño)", precio: 110000, img: "Imagenes/pantalones/Cargo color Negro (con puño).jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Ajuste cómodo en el tobillo y costras reforzadas.", imagenes_adicionales: ["Imagenes/pantalones/Cargo color Negro (con puño)-2.jpg"] },
-      { id: 16, nombre: "Cargo color verde clarito", precio: 115000, img: "Imagenes/pantalones/Cargo color verde clarito.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Estilo militar moderno en tono claro.", imagenes_adicionales: ["Imagenes/pantalones/Cargo color verde clarito-2.jpg"] },
-      { id: 17, nombre: "Jean azulado", precio: 120000, img: "Imagenes/pantalones/Jean azulado.webp", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Denim de lavado oscuro, fit relaxed.", imagenes_adicionales: ["Imagenes/pantalones/Jean azulado-2.webp"] },
-      { id: 18, nombre: "Jean clarito", precio: 122000, img: "Imagenes/pantalones/Jean clarito.jpeg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Jean con lavado claro, ideal para verano.", imagenes_adicionales: ["Imagenes/pantalones/Jean clarito-2.jpeg"] },
-      { id: 19, nombre: "Jean clásico", precio: 125000, img: "Imagenes/pantalones/Jean clasico.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Corte recto, el denim de siempre.", imagenes_adicionales: ["Imagenes/pantalones/Jean clasico-2.jpg"] },
-      { id: 20, nombre: "Jean desgastado", precio: 127000, img: "Imagenes/pantalones/Jean desgastado.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Efecto de uso natural y cómodo.", imagenes_adicionales: ["Imagenes/pantalones/Jean desgastado-2.jpg"] },
-      { id: 21, nombre: "Jean oscuro", precio: 130000, img: "Imagenes/pantalones/Jean oscuro.jpg", talles: ["XS","S","M","L","XL","2XL","3XL"], descripcion: "Color oscuro, denim rígido de alta duración.", imagenes_adicionales: ["Imagenes/pantalones/jean oscuro-2.jpg"] },
-
-      // Zapatillas
-      { id: 22, nombre: "Adidas Campus Gris", precio: 165000, img: "Imagenes/zapatillas/Adidas Campus Gris.webp", talles: ["38","39","40","41","42","43","44"], descripcion: "Clásico renovado en gamuza gris.", imagenes_adicionales: ["Imagenes/zapatillas/Adidas Campus Gris-2.webp"] },
-      { id: 23, nombre: "Adidas Samba clásicas blancas", precio: 170000, img: "Imagenes/zapatillas/Adidas samba clasicas blancas.avif", talles: ["38","39","40","41","42","43","44"], descripcion: "Silueta icónica con detalles en cuero.", imagenes_adicionales: ["Imagenes/zapatillas/Adidas samba clasicas blancas-2.avif"] },
-      { id: 24, nombre: "Adidas Samba clásicas negras", precio: 180000, img: "Imagenes/zapatillas/Adidas samba clasicas negras.avif", talles: ["38","39","40","41","42","43","44"], descripcion: "El modelo retro más buscado, máxima calidad.", imagenes_adicionales: ["Imagenes/zapatillas/Adidas samba clasicas negras-2.avif"] },
-      { id: 25, nombre: "Campus verdes", precio: 195000, img: "Imagenes/zapatillas/campus verdes.avif", talles: ["38","39","40","41","42","43","44"], descripcion: "Color vibrante, estilo urbano.", imagenes_adicionales: ["Imagenes/zapatillas/campus verdes-2.avif"] },
-      { id: 26, nombre: "Vans Knu blanco-negro", precio: 200000, img: "Imagenes/zapatillas/Vans Knu blanco-negro.jpg", talles: ["38","39","40","41","42","43","44"], descripcion: "El skate-shoe de los 90s, máxima comodidad.", imagenes_adicionales: ["Imagenes/zapatillas/Vans Knu blanco-negro-2.jpg"] },
-      { id: 27, nombre: "Vans Knu Negras", precio: 210000, img: "Imagenes/zapatillas/Vans Knu Negras.jpg", talles: ["38","39","40","41","42","43","44"], descripcion: "Versión chunky, tendencia actual.", imagenes_adicionales: ["Imagenes/zapatillas/Vans Knu Negras-2.jpg"] }
-    ];
-
-    // === Obtener producto por ID de la URL ===
-    const params = new URLSearchParams(window.location.search);
-    const id = parseInt(params.get("id"), 10);
-    const producto = productos.find(p => p.id === id);
-
-    // === Render del producto ===
-    const miniaturasDiv = document.getElementById("miniaturas");
-
-    if (producto) {
-      const principal = document.getElementById("imagen-principal");
-      const gallery = [producto.img, ...(producto.imagenes_adicionales || [])];
-      principal.src = gallery[0];
-
-      miniaturasDiv.innerHTML = "";
-      gallery.forEach((src, i) => {
-        const th = document.createElement("img");
-        th.src = src;
-        th.alt = producto.nombre;
-        if (i === 0) th.classList.add("active");
-        th.addEventListener("click", () => {
-          principal.src = src;
-          miniaturasDiv.querySelectorAll("img").forEach(el => el.classList.remove("active"));
-          th.classList.add("active");
-        });
-        miniaturasDiv.appendChild(th);
-      });
-
-      document.getElementById("producto-nombre").textContent = producto.nombre;
-      document.getElementById("producto-precio").textContent = "$" + producto.precio.toLocaleString("es-AR");
-      document.getElementById("producto-descripcion").textContent = producto.descripcion;
-
-      const talleSelect = document.getElementById("talle");
-      talleSelect.innerHTML = "";
-      (producto.talles || []).forEach(t => {
-        const op = document.createElement("option");
-        op.value = t;
-        op.textContent = t;
-        talleSelect.appendChild(op);
-      });
-    } else {
-      document.querySelector("main").innerHTML = "<h2>Producto no encontrado</h2>";
-    }
-
-    // === Menú hamburguesa ===
-    const menuBtn = document.getElementById("menu-btn");
-    const menu = document.getElementById("menu");
-    if (menuBtn && menu) {
-      menuBtn.addEventListener("click", () => {
-        menu.classList.toggle("activo");
-      });
-      document.addEventListener("click", (e) => {
-        if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
-          menu.classList.remove("activo");
-        }
-      });
-    }
-
-    // === Carrito (localStorage) ===
-    const STORAGE_KEY = "crewlab_carrito";
-    let carrito = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-    function saveCart() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(carrito));
-      updateCartBadge();
-    }
-
-    function updateCartBadge() {
-      const carritoIcon = document.querySelector(".carrito");
-      const count = carrito.reduce((s, i) => s + i.cantidad, 0);
-      if (!carritoIcon) return;
-      let badge = carritoIcon.querySelector(".carrito-badge");
-      if (!badge) {
-        badge = document.createElement("span");
-        badge.className = "carrito-badge";
-        carritoIcon.appendChild(badge);
-      }
-      badge.textContent = count > 0 ? count : "";
-    }
-
-    function renderCart() {
-      const carritoLista = document.getElementById("carrito-lista");
-      const carritoTotal = document.getElementById("carrito-total");
-      carritoLista.innerHTML = "";
-      let total = 0;
-
-      carrito.forEach((item, index) => {
-        total += item.precio * item.cantidad;
-        const li = document.createElement("li");
-        li.className = "carrito-item";
-        li.innerHTML = `
-          <div class="item-info">
-            <strong>${item.nombre}</strong>
-            <div>$${item.precio.toLocaleString("es-AR")}</div>
-          </div>
-          <div class="item-ctrls">
-            <button class="cantidad-menos" data-index="${index}">-</button>
-            <span>${item.cantidad}</span>
-            <button class="cantidad-mas" data-index="${index}">+</button>
-            <button class="eliminar" data-index="${index}">Eliminar</button>
-          </div>
-        `;
-        carritoLista.appendChild(li);
-      });
-
-      carritoTotal.textContent = "Total: $" + total.toLocaleString("es-AR");
-      updateCartBadge();
-    }
-
-    const carritoIcon = document.querySelector(".carrito");
-    const cerrarCarritoBtn = document.getElementById("cerrar-carrito");
-    const finalizarCompraBtn = document.getElementById("finalizar-compra");
-
-    carritoIcon.addEventListener("click", () => {
-      document.getElementById("carrito-modal").classList.toggle("oculto");
-      renderCart();
-    });
-
-    cerrarCarritoBtn.addEventListener("click", () => {
-      document.getElementById("carrito-modal").classList.add("oculto");
-    });
-
-    finalizarCompraBtn.addEventListener("click", () => {
-      if (carrito.length === 0) {
-        alert("Tu carrito está vacío. Agrega un producto antes de continuar.");
-        return;
-      }
-      window.location.href = "checkout.html";
-    });
-
-    // Delegación de eventos del carrito
-    document.addEventListener("click", (e) => {
-      if (e.target.dataset.index !== undefined) {
-        const idx = Number(e.target.dataset.index);
-
-        if (e.target.classList.contains("eliminar")) {
-          carrito.splice(idx, 1);
-        } else if (e.target.classList.contains("cantidad-mas")) {
-          carrito[idx].cantidad += 1;
-        } else if (e.target.classList.contains("cantidad-menos")) {
-          carrito[idx].cantidad = Math.max(1, carrito[idx].cantidad - 1);
-        }
-
-        saveCart();
-        renderCart();
-      }
-    });
-
-    // Botón agregar producto
-    const btnAgregar = document.getElementById("btn-agregar");
-    if (btnAgregar && producto) {
-      btnAgregar.addEventListener("click", () => {
-        const talle = document.getElementById("talle").value;
-        const cantidad = parseInt(document.getElementById("cantidad").value, 10);
-
-        if (isNaN(cantidad) || cantidad <= 0) {
-          alert("Por favor, ingresa una cantidad válida.");
-          return;
-        }
-
-        const productoSeleccionado = {
-          nombre: `${producto.nombre} (Talle: ${talle})`,
-          precio: producto.precio,
-          cantidad
-        };
-
-        const existente = carrito.find(i => i.nombre === productoSeleccionado.nombre);
-        if (existente) existente.cantidad += productoSeleccionado.cantidad;
-        else carrito.push(productoSeleccionado);
-
-        saveCart();
-        renderCart();
-        alert("Producto agregado a tu colección ✅");
-      });
-    }
-
-    // Init
-    updateCartBadge();
-  </script>
+  <script src="js/script.js"></script>
+  <script src="js/productos.js"></script>
 </body>
 </html>

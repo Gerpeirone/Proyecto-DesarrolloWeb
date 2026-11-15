@@ -1,125 +1,115 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Buzos - CrewLab</title>
-
-  <!-- Metadatos -->
-  <meta name="author" content="Ivo Alterman y German Peirone" />
-  <meta name="description" content="Buzos CrewLab: friza de algodón, diseños estampados y clásicos en talles para todos." />
-  <meta name="keywords" content="buzos, buzos de friza, buzos estampados, moda urbana, CrewLab" />
-
-  <link rel="icon" href="Imagenes/favicon/favicon-32x32.png" type="image/png" />
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Ivo Alterman y German Peirone">
+  <meta name="description" content="Buzos CrewLab: bordados, estampados y básicos de algodón.">
+  <meta name="keywords" content="buzos, buzos urbanos, buzos de algodón, moda urbana, CrewLab">
+  <title>CrewLab - Buzos</title>
+  <link rel="icon" href="imagenes/favicon/favicon-crewlab.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <header>
-    <a href="index.html" class="logo" aria-label="CrewLab, ir al inicio">CrewLab</a>
-
-    <div class="acciones">
-      <!-- Botón carrito accesible -->
-      <button class="carrito" type="button" aria-haspopup="dialog" aria-controls="carrito-modal" aria-label="Abrir carrito">🛒</button>
-      <!-- Botón menú accesible -->
-      <button class="menu-hamburguesa" id="menu-btn" type="button" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú">☰</button>
-    </div>
-
-    <nav class="menu-desplegable" id="menu" aria-label="Categorías">
-      <ul>
-        <li><a href="remeras.html">Remeras</a></li>
-        <li><a href="buzos.html" aria-current="page">Buzos</a></li>
-        <li><a href="pantalones.html">Pantalones</a></li>
-        <li><a href="zapatillas.html">Zapatillas</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <main>
-    <h1>Buzos</h1>
-
-    <section class="productos" aria-label="Listado de buzos">
-      <!-- Producto 7 -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/Buzos/buzo blanco bordado.jpg" alt="Buzo blanco bordado" class="img-principal" loading="lazy" />
-          <img src="Imagenes/Buzos/buzo_blanco_bordado_2.jpg" alt="Buzo blanco bordado detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Buzo blanco bordado</h2>
-        <p>$60.000</p>
-        <a href="productos.html?id=7" class="ver-mas" aria-label="Ver más sobre Buzo blanco bordado">Ver más</a>
-      </article>
-
-      <!-- Producto 8 -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/BUZOS/buzo design.jpg" alt="Buzo design" class="img-principal" loading="lazy" />
-          <img src="Imagenes/BUZOS/buzo design-2.jpg" alt="Buzo design detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Buzo design</h2>
-        <p>$70.000</p>
-        <a href="productos.html?id=8" class="ver-mas" aria-label="Ver más sobre Buzo design">Ver más</a>
-      </article>
-
-      <!-- Producto 9 -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/BUZOS/buzo gris desgastado.jpg" alt="Buzo gris desgastado" class="img-principal" loading="lazy" />
-          <img src="Imagenes/BUZOS/buzo gris desgastado-2.jpg" alt="Buzo gris desgastado detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Buzo gris desgastado</h2>
-        <p>$75.000</p>
-        <a href="productos.html?id=9" class="ver-mas" aria-label="Ver más sobre Buzo gris desgastado">Ver más</a>
-      </article>
-
-      <!-- Producto 10 -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/BUZOS/buzo gris estampado.jpg" alt="Buzo gris estampado" class="img-principal" loading="lazy" />
-          <img src="Imagenes/BUZOS/buzo gris estampado-2.jpg" alt="Buzo gris estampado detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Buzo gris estampado</h2>
-        <p>$80.000</p>
-        <a href="productos.html?id=10" class="ver-mas" aria-label="Ver más sobre Buzo gris estampado">Ver más</a>
-      </article>
-
-      <!-- Producto 11 (ruta corregida de la 2da imagen) -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/BUZOS/buzo negro basic.jpg" alt="Buzo negro basic" class="img-principal" loading="lazy" />
-          <img src="Imagenes/BUZOS/buzo negro basic.-2jpg.webp" alt="Buzo negro basic detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Buzo negro basic</h2>
-        <p>$90.000</p>
-        <a href="productos.html?id=11" class="ver-mas" aria-label="Ver más sobre Buzo negro basic">Ver más</a>
-      </article>
-
-      <!-- Producto 12 -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/BUZOS/buzo negro desgastado.jpg" alt="Buzo negro desgastado" class="img-principal" loading="lazy" />
-          <img src="Imagenes/BUZOS/buzo negro desgastado-2.jpg" alt="Buzo negro desgastado detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Buzo negro desgastado</h2>
-        <p>$100.000</p>
-        <a href="productos.html?id=12" class="ver-mas" aria-label="Ver más sobre Buzo negro desgastado">Ver más</a>
-      </article>
-    </section>
-  </main>
-
-  <footer>
-    <p>© 2025 CrewLab - Todos los derechos reservados</p>
-  </footer>
-
-  <!-- Modal del carrito (uniforme en todas las páginas) -->
-  <div id="carrito-modal" class="carrito-modal oculto" role="dialog" aria-modal="true" aria-labelledby="titulo-carrito">
-    <div class="carrito-contenido">
-      <h2 id="titulo-carrito">Tu Carrito</h2>
-      <ul id="carrito-lista"></ul>
-      <p id="carrito-total">Total: $0</p>
-      <div class="carrito-botones">
-        <button id="cerrar-carrito" type="button">Cerrar</button>
-        <button id="finalizar-compra" type="button">Finalizar Compra</button>
+<body onload="iniciarPagina()" onkeydown="cerrarConEscape(event)">
+  <div class="pagina">
+    <header>
+      <h1 class="logo"><a href="index.html">CrewLab</a></h1>
+      <div class="acciones">
+        <button class="carrito" id="carrito-boton" type="button" onclick="alternarCarrito()" aria-label="Abrir carrito">
+          🛒<span class="carrito-contador" id="carrito-contador"></span>
+        </button>
+        <button class="menu-hamburguesa" id="menu-boton" type="button" onclick="alternarMenu()" aria-label="Abrir menú" aria-expanded="false">☰</button>
       </div>
+      <nav class="menu-desplegable" id="menu" aria-label="Navegación principal">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="remeras.html">Remeras</a></li>
+          <li><a href="buzos.html" aria-current="page">Buzos</a></li>
+          <li><a href="pantalones.html">Pantalones</a></li>
+          <li><a href="zapatillas.html">Zapatillas</a></li>
+          <li><a href="checkout.html">Finalizar compra</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h2>Buzos</h2>
+      <section class="productos" aria-label="Listado de buzos">
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/buzos/buzo-blanco-bordado.jpg" alt="Buzo Blanco Bordado" class="img-principal">
+            <img src="imagenes/buzos/buzo-blanco-bordado-2.jpg" alt="Buzo Blanco Bordado, segunda vista" class="img-hover">
+          </div>
+          <h3>Buzo Blanco Bordado</h3>
+          <p class="producto-precio">$60.000</p>
+          <a href="productos.html?id=7" class="ver-mas">Ver más</a>
+        </article>
+
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/buzos/buzo-design.jpg" alt="Buzo Design" class="img-principal">
+            <img src="imagenes/buzos/buzo-design-2.jpg" alt="Buzo Design, segunda vista" class="img-hover">
+          </div>
+          <h3>Buzo Design</h3>
+          <p class="producto-precio">$70.000</p>
+          <a href="productos.html?id=8" class="ver-mas">Ver más</a>
+        </article>
+
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/buzos/buzo-gris-desgastado.jpg" alt="Buzo Gris Desgastado" class="img-principal">
+            <img src="imagenes/buzos/buzo-gris-desgastado-2.jpg" alt="Buzo Gris Desgastado, segunda vista" class="img-hover">
+          </div>
+          <h3>Buzo Gris Desgastado</h3>
+          <p class="producto-precio">$75.000</p>
+          <a href="productos.html?id=9" class="ver-mas">Ver más</a>
+        </article>
+
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/buzos/buzo-gris-estampado.jpg" alt="Buzo Gris Estampado" class="img-principal">
+            <img src="imagenes/buzos/buzo-gris-estampado-2.jpg" alt="Buzo Gris Estampado, segunda vista" class="img-hover">
+          </div>
+          <h3>Buzo Gris Estampado</h3>
+          <p class="producto-precio">$80.000</p>
+          <a href="productos.html?id=10" class="ver-mas">Ver más</a>
+        </article>
+
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/buzos/buzo-negro-basic.jpg" alt="Buzo Negro Basic" class="img-principal">
+            <img src="imagenes/buzos/buzo-negro-basic-2.webp" alt="Buzo Negro Basic, segunda vista" class="img-hover">
+          </div>
+          <h3>Buzo Negro Basic</h3>
+          <p class="producto-precio">$90.000</p>
+          <a href="productos.html?id=11" class="ver-mas">Ver más</a>
+        </article>
+
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/buzos/buzo-negro-desgastado.jpg" alt="Buzo Negro Desgastado" class="img-principal">
+            <img src="imagenes/buzos/buzo-negro-desgastado-2.jpg" alt="Buzo Negro Desgastado, segunda vista" class="img-hover">
+          </div>
+          <h3>Buzo Negro Desgastado</h3>
+          <p class="producto-precio">$100.000</p>
+          <a href="productos.html?id=12" class="ver-mas">Ver más</a>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 CrewLab - Todos los derechos reservados.</p>
+    </footer>
+  </div>
+
+  <div id="carrito-modal" class="carrito-modal oculto" role="dialog" aria-modal="true" aria-labelledby="carrito-titulo">
+    <h2 id="carrito-titulo">Tu carrito</h2>
+    <ul id="carrito-lista"></ul>
+    <p id="carrito-total">Total: $0</p>
+    <div class="carrito-botones">
+      <button type="button" class="boton-secundario" onclick="vaciarCarrito()">Vaciar carrito</button>
+      <button type="button" class="boton-secundario" onclick="cerrarCarrito()">Cerrar</button>
+      <button type="button" class="boton-confirmar" onclick="irAlCheckout()">Finalizar compra</button>
     </div>
   </div>
 

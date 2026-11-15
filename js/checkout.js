@@ -1,219 +1,219 @@
-/* =========================================================
- * CrewLab - Checkout JS
- * =======================================================*/
-
 "use strict";
 
-/* ----- Constantes y utilidades ----- */
-const STORAGE_KEY = "crewlab_carrito";
-const $ = (id) => document.getElementById(id);
+const COSTOS_ENVIO = { domicilio: 2500, express: 6000, local: 0 };
+const PROVINCIA_EXPRESS = "Córdoba";
 
-/* ----- Lectura del carrito ----- */
-const getCart = () => JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-
-/* ----- Método de envío seleccionado ----- */
-const getShippingMethod = () => {
-  const checked = document.querySelector('input[name="envio"]:checked');
-  return checked ? checked.value : "domicilio";
+/**
+ * Devuelve el método de envío elegido en el formulario.
+ * @method obtenerMetodoEnvio
+ * @return {string} Valor del método seleccionado: domicilio, express o local.
+ */
+const obtenerMetodoEnvio = () => {
+  return document.querySelector('input[name="envio"]:checked').value;
 };
 
-/* ----- Cálculo del costo de envío ----- */
-const calcShipping = (method) => {
-  if (method === "local") return 0;
-  if (method === "express") return 6000;
-  return 2500;
+/**
+ * Calcula el costo de envío; si no hay productos el envío no tiene costo.
+ * @method calcularEnvio
+ * @param {string} metodo - Método de envío: domicilio, express o local.
+ * @param {number} subtotal - Importe de los productos del carrito.
+ * @return {number} Costo del envío.
+ */
+const calcularEnvio = (metodo, subtotal) => {
+  return subtotal > 0 ? COSTOS_ENVIO[metodo] : 0;
 };
 
-/* ----- Elementos de UI para totales ----- */
-const ensureTotalsUI = () => {
-  const totalEl = $("checkout-total");
-  let envioEl = document.getElementById("checkout-envio");
-  let totalFinalEl = document.getElementById("checkout-total-final");
-
-  if (!envioEl) {
-    envioEl = document.createElement("p");
-    envioEl.id = "checkout-envio";
-    totalEl.insertAdjacentElement("afterend", envioEl);
-  }
-  if (!totalFinalEl) {
-    totalFinalEl = document.createElement("p");
-    totalFinalEl.id = "checkout-total-final";
-    totalEl.parentElement.appendChild(totalFinalEl);
-  }
-  return { envioEl, totalFinalEl };
-};
-
-/* ----- Render del resumen del carrito ----- */
-const renderCartSummary = () => {
-  const lista = $("checkout-lista");
-  const totalTexto = $("checkout-total");
-  const carrito = getCart();
-
+/**
+ * Dibuja el resumen de la compra y calcula subtotal, envío y total a pagar.
+ * @method actualizarTotales
+ * @return {number} Total a pagar (productos más envío).
+ */
+const actualizarTotales = () => {
+  const carrito = leerCarrito();
+  const lista = document.getElementById("checkout-lista");
   lista.innerHTML = "";
-  let subtotal = 0;
+
+  if (carrito.length === 0) {
+    lista.innerHTML = '<li class="carrito-vacio">Tu carrito está vacío.</li>';
+  }
 
   carrito.forEach((item) => {
-    const linea = document.createElement("li");
-    const lineaSubtotal = item.precio * item.cantidad;
-    subtotal += lineaSubtotal;
-
-    linea.innerHTML = `
-      <span>${item.nombre} (x${item.cantidad})</span>
-      <strong>$${lineaSubtotal.toLocaleString("es-AR")}</strong>
-    `;
-
-    lista.appendChild(linea);
+    const fila = document.createElement("li");
+    const nombre = document.createElement("span");
+    const importe = document.createElement("strong");
+    nombre.textContent = `${item.nombre} x ${item.cantidad}`;
+    importe.textContent = formatearPrecio(item.precio * item.cantidad);
+    fila.append(nombre, importe);
+    lista.appendChild(fila);
   });
 
-  totalTexto.textContent = "Total: $" + subtotal.toLocaleString("es-AR");
-  return subtotal;
+  const subtotal = calcularSubtotal(carrito);
+  const envio = calcularEnvio(obtenerMetodoEnvio(), subtotal);
+  const total = subtotal + envio;
+
+  document.getElementById("checkout-subtotal").textContent = "Subtotal: " + formatearPrecio(subtotal);
+  document.getElementById("checkout-envio").textContent = "Envío: " + formatearPrecio(envio);
+  document.getElementById("checkout-total").textContent = "Total: " + formatearPrecio(total);
+  return total;
 };
 
-/* ----- Actualización de totales ----- */
-const updateTotalsUI = (subtotal, shipping) => {
-  const { envioEl, totalFinalEl } = ensureTotalsUI();
-  const totalFinal = subtotal + shipping;
-
-  envioEl.textContent = "Envío: $" + shipping.toLocaleString("es-AR");
-  totalFinalEl.textContent =
-    "Total final: $" + totalFinal.toLocaleString("es-AR");
+/**
+ * Vacía el carrito desde la página de compra y actualiza el resumen.
+ * @method vaciarCompra
+ * @return {void}
+ */
+const vaciarCompra = () => {
+  vaciarCarrito();
+  actualizarTotales();
 };
 
-/* =========================================================
- * VALIDACIONES
- * =======================================================*/
+/**
+ * Avisa al usuario de un valor incorrecto y blanquea el campo.
+ * @method informarError
+ * @param {HTMLInputElement|HTMLSelectElement} campo - Campo con el valor incorrecto.
+ * @param {string} mensaje - Texto que se muestra al usuario.
+ * @return {boolean} Siempre false, para indicar que la validación falló.
+ */
+const informarError = (campo, mensaje) => {
+  alert(mensaje);
+  campo.value = "";
+  return false;
+};
 
-const validateRequired = (el, mensaje) => {
-  const val = (el.value || "").toString().trim();
-  if (!val) {
-    alert(mensaje);
-    el.focus();
+/**
+ * Comprueba que un campo obligatorio no esté vacío.
+ * @method validarObligatorio
+ * @param {string} id - Identificador del campo.
+ * @param {string} mensaje - Texto a mostrar si el campo está vacío.
+ * @return {boolean} true si el campo tiene contenido.
+ */
+const validarObligatorio = (id, mensaje) => {
+  const campo = document.getElementById(id);
+  return campo.value.trim() === "" ? informarError(campo, mensaje) : true;
+};
+
+/**
+ * Comprueba que un campo, si tiene contenido, solo tenga letras y espacios.
+ * @method validarSoloLetras
+ * @param {string} id - Identificador del campo.
+ * @param {string} etiqueta - Nombre del campo para armar el mensaje, por ejemplo "El nombre".
+ * @return {boolean} true si el campo está vacío o es válido.
+ */
+const validarSoloLetras = (id, etiqueta) => {
+  const campo = document.getElementById(id);
+  const valor = campo.value.trim();
+  if (valor === "" || /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$/.test(valor)) {
+    return true;
+  }
+  return informarError(campo, `${etiqueta} solo puede contener letras.`);
+};
+
+/**
+ * Comprueba que un campo, si tiene contenido, cumpla con un formato numérico.
+ * @method validarFormato
+ * @param {string} id - Identificador del campo.
+ * @param {RegExp} formato - Expresión regular que debe cumplir el valor.
+ * @param {string} mensaje - Texto a mostrar si el valor no cumple el formato.
+ * @return {boolean} true si el campo está vacío o es válido.
+ */
+const validarFormato = (id, formato, mensaje) => {
+  const campo = document.getElementById(id);
+  const valor = campo.value.trim();
+  return valor === "" || formato.test(valor) ? true : informarError(campo, mensaje);
+};
+
+/**
+ * Comprueba que el DNI tenga solo números, de 7 u 8 dígitos y sin ceros a la izquierda.
+ * @method validarDni
+ * @return {boolean} true si el campo está vacío o es válido.
+ */
+const validarDni = () => {
+  return validarFormato("dni", /^[1-9]\d{6,7}$/, "Ingresá un DNI válido: solo números, 7 u 8 dígitos.");
+};
+
+/**
+ * Comprueba que el número de la dirección sea un entero mayor a cero.
+ * @method validarNumeroCalle
+ * @return {boolean} true si el campo está vacío o es válido.
+ */
+const validarNumeroCalle = () => {
+  return validarFormato("numero", /^[1-9]\d{0,4}$/, "Ingresá un número de calle válido: entero mayor a cero.");
+};
+
+/**
+ * Comprueba que el código postal tenga exactamente 4 dígitos.
+ * @method validarCodigoPostal
+ * @return {boolean} true si el campo está vacío o es válido.
+ */
+const validarCodigoPostal = () => {
+  return validarFormato("codigo-postal", /^[1-9]\d{3}$/, "Ingresá un código postal válido de 4 dígitos.");
+};
+
+/**
+ * Comprueba que el envío express solo se use para la provincia habilitada.
+ * @method validarEnvioExpress
+ * @return {boolean} true si el método de envío es compatible con la provincia.
+ */
+const validarEnvioExpress = () => {
+  const provincia = document.getElementById("provincia").value;
+  if (obtenerMetodoEnvio() !== "express" || provincia === PROVINCIA_EXPRESS) {
+    return true;
+  }
+  alert(`El envío express está disponible solo para la provincia de ${PROVINCIA_EXPRESS}.`);
+  document.getElementById("envio-domicilio").checked = true;
+  actualizarTotales();
+  return false;
+};
+
+/**
+ * Valida todos los datos del formulario de compra, en orden.
+ * @method validarFormulario
+ * @return {boolean} true si todos los valores ingresados son correctos.
+ */
+const validarFormulario = () => {
+  return (
+    validarObligatorio("nombre", "El nombre es obligatorio.") &&
+    validarSoloLetras("nombre", "El nombre") &&
+    validarObligatorio("apellido", "El apellido es obligatorio.") &&
+    validarSoloLetras("apellido", "El apellido") &&
+    validarObligatorio("dni", "El DNI es obligatorio.") &&
+    validarDni() &&
+    validarObligatorio("genero", "Seleccioná tu género.") &&
+    validarObligatorio("calle", "La calle es obligatoria.") &&
+    validarObligatorio("numero", "El número de la dirección es obligatorio.") &&
+    validarNumeroCalle() &&
+    validarFormato("piso", /^\d{1,2}$/, "El piso debe ser un número de hasta 2 dígitos.") &&
+    validarObligatorio("codigo-postal", "El código postal es obligatorio.") &&
+    validarCodigoPostal() &&
+    validarObligatorio("ciudad", "La ciudad es obligatoria.") &&
+    validarSoloLetras("ciudad", "La ciudad") &&
+    validarObligatorio("provincia", "Seleccioná una provincia.") &&
+    validarEnvioExpress()
+  );
+};
+
+/**
+ * Procesa el envío del formulario: valida, informa el total y vacía el carrito.
+ * @method confirmarCompra
+ * @param {SubmitEvent} evento - Evento de envío del formulario.
+ * @return {boolean} Siempre false, para que la página no se recargue.
+ */
+const confirmarCompra = (evento) => {
+  evento.preventDefault();
+
+  if (leerCarrito().length === 0) {
+    alert("Tu carrito está vacío. Agregá productos antes de confirmar la compra.");
     return false;
   }
-  return true;
-};
 
-const validateSoloLetras = (el, mensaje) => {
-  const val = (el.value || "").trim();
-  const ok = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(val);
-
-  if (!ok) {
-    alert(mensaje);
-    el.value = "";
-    el.focus();
-  }
-
-  return ok;
-};
-
-const validateDNI = (el) => {
-  const val = (el.value || "").trim();
-  const ok = /^\d{7,10}$/.test(val);
-
-  if (!ok) {
-    alert("Ingresá un DNI válido (solo números, 7 a 10 dígitos).");
-    el.value = "";
-    el.focus();
-  }
-
-  return ok;
-};
-
-const validateNumero = (el) => {
-  const val = Number((el.value || "").trim());
-  const ok = !Number.isNaN(val) && val > 0;
-
-  if (!ok) {
-    alert("Ingresá un número válido para la dirección.");
-    el.value = "";
-    el.focus();
-  }
-
-  return ok;
-};
-
-/* ----- Validación general del formulario ----- */
-const validateForm = () => {
-  if (getCart().length === 0) {
-    alert("Tu carrito está vacío. Agregá productos antes de confirmar.");
+  if (!validarFormulario()) {
     return false;
   }
 
-  if (!validateRequired($("nombre"), "El nombre es obligatorio.")) return false;
-  if (!validateSoloLetras($("nombre"), "El nombre solo puede contener letras.")) return false;
-
-  if (!validateRequired($("apellido"), "El apellido es obligatorio.")) return false;
-  if (!validateSoloLetras($("apellido"), "El apellido solo puede contener letras.")) return false;
-
-  if (!validateRequired($("dni"), "El DNI es obligatorio.")) return false;
-  if (!validateDNI($("dni"))) return false;
-
-  if (!validateRequired($("genero"), "Seleccioná tu género.")) return false;
-
-  if (!validateRequired($("calle"), "La calle es obligatoria.")) return false;
-  if (!validateSoloLetras($("calle"), "La calle solo puede contener letras.")) return false;
-
-  if (!validateRequired($("numero"), "El número de la dirección es obligatorio.")) return false;
-  if (!validateNumero($("numero"))) return false;
-
-  if (!validateRequired($("cp"), "El código postal es obligatorio.")) return false;
-
-  if (!validateRequired($("ciudad"), "La ciudad es obligatoria.")) return false;
-  if (!validateSoloLetras($("ciudad"), "La ciudad solo puede contener letras.")) return false;
-
-  if (!validateRequired($("provincia"), "Seleccioná una provincia.")) return false;
-
-  if (getShippingMethod() === "express" && $("provincia").value !== "Córdoba") {
-    alert('El "Envío Express" está disponible solo para la provincia de Córdoba.');
-    return false;
-  }
-
-  return true;
+  const total = actualizarTotales();
+  alert(`¡Gracias por tu compra! El total a pagar es ${formatearPrecio(total)}.`);
+  vaciarCarrito();
+  document.getElementById("checkout-formulario").reset();
+  window.location.href = "index.html";
+  return false;
 };
-
-/* ----- Recalcular totales ----- */
-const recalcAndRenderTotals = () => {
-  const subtotal = renderCartSummary();
-  const shipping = calcShipping(getShippingMethod());
-  updateTotalsUI(subtotal, shipping);
-};
-
-/* =========================================================
- * INICIO
- * =======================================================*/
-
-document.addEventListener("DOMContentLoaded", () => {
-  recalcAndRenderTotals();
-
-  document.querySelectorAll('input[name="envio"]').forEach((r) => {
-    r.addEventListener("change", recalcAndRenderTotals);
-  });
-
-  const provinciaSel = $("provincia");
-  if (provinciaSel) provinciaSel.addEventListener("change", recalcAndRenderTotals);
-
-  const form = $("checkout-form");
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      if (validateForm()) {
-        alert("¡Gracias por tu compra! Te enviaremos la confirmación por email.");
-      }
-    });
-  }
-
-  const dni = $("dni");
-  if (dni) {
-    dni.addEventListener("blur", () => {
-      if (dni.value) validateDNI(dni);
-    });
-  }
-
-  const numero = $("numero");
-  if (numero) {
-    numero.addEventListener("blur", () => {
-      if (numero.value) validateNumero(numero);
-    });
-  }
-});

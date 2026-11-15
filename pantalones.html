@@ -1,158 +1,145 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pantalones - CrewLab</title>
-
-  <!-- Metadatos -->
-  <meta name="author" content="Ivo Alterman y German Peirone" />
-  <meta name="description" content="Pantalones CrewLab: cargos, jeans y joggers de corte urbano en múltiples talles y colores." />
-  <meta name="keywords" content="pantalones, cargo, jeans, jogger, moda urbana, CrewLab" />
-
-  <link rel="icon" href="Imagenes/favicon/favicon-32x32.png" type="image/png" />
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Ivo Alterman y German Peirone">
+  <meta name="description" content="Pantalones CrewLab: cargos y jeans para todos los días.">
+  <meta name="keywords" content="pantalones, cargos, jeans, moda urbana, CrewLab">
+  <title>CrewLab - Pantalones</title>
+  <link rel="icon" href="imagenes/favicon/favicon-crewlab.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <header>
-    <a href="index.html" class="logo" aria-label="CrewLab, ir al inicio">CrewLab</a>
-
-    <div class="acciones">
-      <!-- Botón carrito accesible -->
-      <button class="carrito" type="button" aria-haspopup="dialog" aria-controls="carrito-modal" aria-label="Abrir carrito">🛒</button>
-      <!-- Botón menú accesible -->
-      <button class="menu-hamburguesa" id="menu-btn" type="button" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú">☰</button>
-    </div>
-
-    <nav class="menu-desplegable" id="menu" aria-label="Categorías">
-      <ul>
-        <li><a href="remeras.html">Remeras</a></li>
-        <li><a href="buzos.html">Buzos</a></li>
-        <li><a href="pantalones.html" aria-current="page">Pantalones</a></li>
-        <li><a href="zapatillas.html">Zapatillas</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <main>
-    <h1>Pantalones</h1>
-
-    <section class="productos" aria-label="Listado de pantalones">
-      <!-- 13 -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/pantalones/Cargo color crema.avif" alt="Pantalón cargo color crema" class="img-principal" loading="lazy" />
-          <img src="Imagenes/pantalones/Cargo color crema-2.avif" alt="Pantalón cargo color crema detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Cargo color crema</h2>
-        <p>$100.000</p>
-        <a href="productos.html?id=13" class="ver-mas" aria-label="Ver más sobre Cargo color crema">Ver más</a>
-      </article>
-
-      <!-- 14 -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/pantalones/Cargo color marron.jpg" alt="Pantalón cargo color marrón" class="img-principal" loading="lazy" />
-          <img src="Imagenes/pantalones/Cargo color marron-2.jpg" alt="Pantalón cargo color marrón detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Cargo color marrón</h2>
-        <p>$105.000</p>
-        <a href="productos.html?id=14" class="ver-mas" aria-label="Ver más sobre Cargo color marrón">Ver más</a>
-      </article>
-
-      <!-- 15 -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/pantalones/Cargo color Negro (con puño).jpg" alt="Pantalón cargo color negro con puño" class="img-principal" loading="lazy" />
-          <img src="Imagenes/pantalones/Cargo color Negro (con puño)-2.jpg" alt="Pantalón cargo negro con puño detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Cargo color negro (con puño)</h2>
-        <p>$110.000</p>
-        <a href="productos.html?id=15" class="ver-mas" aria-label="Ver más sobre Cargo color negro con puño">Ver más</a>
-      </article>
-
-      <!-- 16 -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/pantalones/Cargo color verde clarito.jpg" alt="Pantalón cargo verde clarito" class="img-principal" loading="lazy" />
-          <img src="Imagenes/pantalones/Cargo color verde clarito-2.jpg" alt="Pantalón cargo verde clarito detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Cargo color verde clarito</h2>
-        <p>$115.000</p>
-        <a href="productos.html?id=16" class="ver-mas" aria-label="Ver más sobre Cargo color verde clarito">Ver más</a>
-      </article>
-
-      <!-- 17 -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/pantalones/Jean azulado.webp" alt="Jean azulado" class="img-principal" loading="lazy" />
-          <img src="Imagenes/pantalones/Jean azulado-2.webp" alt="Jean azulado detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Jean azulado</h2>
-        <p>$120.000</p>
-        <a href="productos.html?id=17" class="ver-mas" aria-label="Ver más sobre Jean azulado">Ver más</a>
-      </article>
-
-      <!-- 18 -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/pantalones/Jean clarito.jpeg" alt="Jean clarito" class="img-principal" loading="lazy" />
-          <img src="Imagenes/pantalones/Jean clarito-2.jpeg" alt="Jean clarito detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Jean clarito</h2>
-        <p>$122.000</p>
-        <a href="productos.html?id=18" class="ver-mas" aria-label="Ver más sobre Jean clarito">Ver más</a>
-      </article>
-
-      <!-- 19 -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/pantalones/Jean clasico.jpg" alt="Jean clásico" class="img-principal" loading="lazy" />
-          <img src="Imagenes/pantalones/Jean clasico-2.jpg" alt="Jean clásico detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Jean clásico</h2>
-        <p>$125.000</p>
-        <a href="productos.html?id=19" class="ver-mas" aria-label="Ver más sobre Jean clásico">Ver más</a>
-      </article>
-
-      <!-- 20 -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/pantalones/Jean desgastado.jpg" alt="Jean desgastado" class="img-principal" loading="lazy" />
-          <img src="Imagenes/pantalones/Jean desgastado-2.jpg" alt="Jean desgastado detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Jean desgastado</h2>
-        <p>$127.000</p>
-        <a href="productos.html?id=20" class="ver-mas" aria-label="Ver más sobre Jean desgastado">Ver más</a>
-      </article>
-
-      <!-- 21 (ruta 2da imagen corregida: 'Jean oscuro-2.jpg') -->
-      <article class="producto">
-        <div class="producto-img">
-          <img src="Imagenes/pantalones/Jean oscuro.jpg" alt="Jean oscuro" class="img-principal" loading="lazy" />
-          <img src="Imagenes/pantalones/Jean oscuro-2.jpg" alt="Jean oscuro detalle" class="img-hover" loading="lazy" />
-        </div>
-        <h2>Jean oscuro</h2>
-        <p>$130.000</p>
-        <a href="productos.html?id=21" class="ver-mas" aria-label="Ver más sobre Jean oscuro">Ver más</a>
-      </article>
-    </section>
-  </main>
-
-  <footer>
-    <p>© 2025 CrewLab - Todos los derechos reservados</p>
-  </footer>
-
-  <!-- Modal del carrito -->
-  <div id="carrito-modal" class="carrito-modal oculto" role="dialog" aria-modal="true" aria-labelledby="titulo-carrito">
-    <div class="carrito-contenido">
-      <h2 id="titulo-carrito">Tu Carrito</h2>
-      <ul id="carrito-lista"></ul>
-      <p id="carrito-total">Total: $0</p>
-      <div class="carrito-botones">
-        <button id="cerrar-carrito" type="button">Cerrar</button>
-        <button id="finalizar-compra" type="button">Finalizar Compra</button>
+<body onload="iniciarPagina()" onkeydown="cerrarConEscape(event)">
+  <div class="pagina">
+    <header>
+      <h1 class="logo"><a href="index.html">CrewLab</a></h1>
+      <div class="acciones">
+        <button class="carrito" id="carrito-boton" type="button" onclick="alternarCarrito()" aria-label="Abrir carrito">
+          🛒<span class="carrito-contador" id="carrito-contador"></span>
+        </button>
+        <button class="menu-hamburguesa" id="menu-boton" type="button" onclick="alternarMenu()" aria-label="Abrir menú" aria-expanded="false">☰</button>
       </div>
+      <nav class="menu-desplegable" id="menu" aria-label="Navegación principal">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="remeras.html">Remeras</a></li>
+          <li><a href="buzos.html">Buzos</a></li>
+          <li><a href="pantalones.html" aria-current="page">Pantalones</a></li>
+          <li><a href="zapatillas.html">Zapatillas</a></li>
+          <li><a href="checkout.html">Finalizar compra</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h2>Pantalones</h2>
+      <section class="productos" aria-label="Listado de pantalones">
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/pantalones/cargo-color-crema.avif" alt="Cargo Color Crema" class="img-principal">
+            <img src="imagenes/pantalones/cargo-color-crema-2.avif" alt="Cargo Color Crema, segunda vista" class="img-hover">
+          </div>
+          <h3>Cargo Color Crema</h3>
+          <p class="producto-precio">$100.000</p>
+          <a href="productos.html?id=13" class="ver-mas">Ver más</a>
+        </article>
+
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/pantalones/cargo-color-marron.jpg" alt="Cargo Color Marrón" class="img-principal">
+            <img src="imagenes/pantalones/cargo-color-marron-2.jpg" alt="Cargo Color Marrón, segunda vista" class="img-hover">
+          </div>
+          <h3>Cargo Color Marrón</h3>
+          <p class="producto-precio">$105.000</p>
+          <a href="productos.html?id=14" class="ver-mas">Ver más</a>
+        </article>
+
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/pantalones/cargo-color-negro-con-puno.jpg" alt="Cargo Color Negro con Puño" class="img-principal">
+            <img src="imagenes/pantalones/cargo-color-negro-con-puno-2.jpg" alt="Cargo Color Negro con Puño, segunda vista" class="img-hover">
+          </div>
+          <h3>Cargo Color Negro con Puño</h3>
+          <p class="producto-precio">$110.000</p>
+          <a href="productos.html?id=15" class="ver-mas">Ver más</a>
+        </article>
+
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/pantalones/cargo-color-verde-clarito.jpg" alt="Cargo Color Verde Claro" class="img-principal">
+            <img src="imagenes/pantalones/cargo-color-verde-clarito-2.jpg" alt="Cargo Color Verde Claro, segunda vista" class="img-hover">
+          </div>
+          <h3>Cargo Color Verde Claro</h3>
+          <p class="producto-precio">$115.000</p>
+          <a href="productos.html?id=16" class="ver-mas">Ver más</a>
+        </article>
+
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/pantalones/jean-azulado.webp" alt="Jean Azulado" class="img-principal">
+            <img src="imagenes/pantalones/jean-azulado-2.webp" alt="Jean Azulado, segunda vista" class="img-hover">
+          </div>
+          <h3>Jean Azulado</h3>
+          <p class="producto-precio">$120.000</p>
+          <a href="productos.html?id=17" class="ver-mas">Ver más</a>
+        </article>
+
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/pantalones/jean-clarito.jpeg" alt="Jean Claro" class="img-principal">
+            <img src="imagenes/pantalones/jean-clarito-2.jpeg" alt="Jean Claro, segunda vista" class="img-hover">
+          </div>
+          <h3>Jean Claro</h3>
+          <p class="producto-precio">$122.000</p>
+          <a href="productos.html?id=18" class="ver-mas">Ver más</a>
+        </article>
+
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/pantalones/jean-clasico.jpg" alt="Jean Clásico" class="img-principal">
+            <img src="imagenes/pantalones/jean-clasico-2.jpg" alt="Jean Clásico, segunda vista" class="img-hover">
+          </div>
+          <h3>Jean Clásico</h3>
+          <p class="producto-precio">$125.000</p>
+          <a href="productos.html?id=19" class="ver-mas">Ver más</a>
+        </article>
+
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/pantalones/jean-desgastado.jpg" alt="Jean Desgastado" class="img-principal">
+            <img src="imagenes/pantalones/jean-desgastado-2.jpg" alt="Jean Desgastado, segunda vista" class="img-hover">
+          </div>
+          <h3>Jean Desgastado</h3>
+          <p class="producto-precio">$127.000</p>
+          <a href="productos.html?id=20" class="ver-mas">Ver más</a>
+        </article>
+
+        <article class="producto">
+          <div class="producto-img">
+            <img src="imagenes/pantalones/jean-oscuro.jpg" alt="Jean Oscuro" class="img-principal">
+            <img src="imagenes/pantalones/jean-oscuro-2.jpg" alt="Jean Oscuro, segunda vista" class="img-hover">
+          </div>
+          <h3>Jean Oscuro</h3>
+          <p class="producto-precio">$130.000</p>
+          <a href="productos.html?id=21" class="ver-mas">Ver más</a>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 CrewLab - Todos los derechos reservados.</p>
+    </footer>
+  </div>
+
+  <div id="carrito-modal" class="carrito-modal oculto" role="dialog" aria-modal="true" aria-labelledby="carrito-titulo">
+    <h2 id="carrito-titulo">Tu carrito</h2>
+    <ul id="carrito-lista"></ul>
+    <p id="carrito-total">Total: $0</p>
+    <div class="carrito-botones">
+      <button type="button" class="boton-secundario" onclick="vaciarCarrito()">Vaciar carrito</button>
+      <button type="button" class="boton-secundario" onclick="cerrarCarrito()">Cerrar</button>
+      <button type="button" class="boton-confirmar" onclick="irAlCheckout()">Finalizar compra</button>
     </div>
   </div>
 
