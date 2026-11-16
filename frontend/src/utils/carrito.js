@@ -27,13 +27,12 @@ const esItemValido = (item) => {
  * @return {Array<object>} Productos del carrito.
  */
 export const leerCarrito = () => {
-  let guardado;
   try {
-    guardado = JSON.parse(localStorage.getItem(CLAVE_CARRITO));
+    const guardado = JSON.parse(localStorage.getItem(CLAVE_CARRITO) || "[]");
+    return Array.isArray(guardado) ? guardado.filter(esItemValido) : [];
   } catch {
-    guardado = null;
+    return [];
   }
-  return Array.isArray(guardado) ? guardado.filter(esItemValido) : [];
 };
 
 /**
@@ -103,7 +102,7 @@ export const quitarItem = (carrito, id) => {
 /**
  * Calcula la suma de precio por cantidad de todos los productos.
  * @method calcularSubtotal
- * @param {Array<object>} carrito - Productos del carrito.
+ * @param {Array<{precio: number, cantidad: number}>} carrito - Productos del carrito.
  * @return {number} Importe total de los productos.
  */
 export const calcularSubtotal = (carrito) => {
@@ -113,7 +112,7 @@ export const calcularSubtotal = (carrito) => {
 /**
  * Cuenta las unidades que hay en el carrito.
  * @method contarArticulos
- * @param {Array<object>} carrito - Productos del carrito.
+ * @param {Array<{cantidad: number}>} carrito - Productos del carrito.
  * @return {number} Cantidad total de unidades.
  */
 export const contarArticulos = (carrito) => {
