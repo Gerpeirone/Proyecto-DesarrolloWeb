@@ -10,7 +10,7 @@
   <link rel="icon" href="imagenes/favicon/favicon-crewlab.png" type="image/png">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body onload="actualizarTotales()" onkeydown="cerrarConEscape(event)">
+<body>
   <div class="pagina">
     <header>
       <h1 class="logo"><a href="index.html">CrewLab</a></h1>
@@ -42,7 +42,7 @@
           <button type="button" class="boton-secundario" onclick="vaciarCompra()">Vaciar carrito</button>
         </section>
 
-        <form id="checkout-formulario" action="#" method="post" onsubmit="return confirmarCompra(event)" novalidate>
+        <form id="checkout-formulario" action="#" method="post" onsubmit="return confirmarCompra()" novalidate>
           <h3>Método de envío</h3>
           <div class="metodo-envio">
             <div class="opcion-envio">

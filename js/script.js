@@ -38,13 +38,12 @@ const esItemValido = (item) => {
  * @return {Array<{nombre: string, precio: number, cantidad: number}>} Productos del carrito.
  */
 const leerCarrito = () => {
-  let guardado;
   try {
-    guardado = JSON.parse(localStorage.getItem(CLAVE_CARRITO));
-  } catch (error) {
-    guardado = null;
+    const guardado = JSON.parse(localStorage.getItem(CLAVE_CARRITO) || "[]");
+    return Array.isArray(guardado) ? guardado.filter(esItemValido) : [];
+  } catch {
+    return [];
   }
-  return Array.isArray(guardado) ? guardado.filter(esItemValido) : [];
 };
 
 /**
@@ -107,10 +106,10 @@ const dibujarCarrito = () => {
     fila.innerHTML = `
       <span class="item-info"></span>
       <span class="item-controles">
-        <button type="button" onclick="cambiarCantidad(${indice}, -1)" aria-label="Restar una unidad">-</button>
+        <button type="button" data-indice="${indice}" onclick="cambiarCantidad(this, -1)" aria-label="Restar una unidad">-</button>
         <span class="item-cantidad">${item.cantidad}</span>
-        <button type="button" onclick="cambiarCantidad(${indice}, 1)" aria-label="Sumar una unidad">+</button>
-        <button type="button" class="boton-eliminar" onclick="eliminarDelCarrito(${indice})" aria-label="Eliminar del carrito">✕</button>
+        <button type="button" data-indice="${indice}" onclick="cambiarCantidad(this, 1)" aria-label="Sumar una unidad">+</button>
+        <button type="button" class="boton-eliminar" data-indice="${indice}" onclick="eliminarDelCarrito(this)" aria-label="Eliminar del carrito">✕</button>
       </span>`;
     fila.querySelector(".item-info").textContent =
       `${item.nombre} - ${formatearPrecio(item.precio * item.cantidad)}`;
@@ -143,11 +142,12 @@ const agregarAlCarrito = (item) => {
 /**
  * Suma o resta unidades de un producto del carrito, entre 1 y el máximo permitido.
  * @method cambiarCantidad
- * @param {number} indice - Posición del producto dentro del carrito.
+ * @param {HTMLElement} boton - Botón presionado; su atributo data-indice indica la posición del producto.
  * @param {number} variacion - Unidades a sumar (positivo) o restar (negativo).
  * @return {void}
  */
-const cambiarCantidad = (indice, variacion) => {
+const cambiarCantidad = (boton, variacion) => {
+  const indice = Number(boton.dataset.indice);
   const carrito = leerCarrito();
   if (!carrito[indice]) {
     return;
@@ -161,12 +161,12 @@ const cambiarCantidad = (indice, variacion) => {
 /**
  * Quita un producto del carrito.
  * @method eliminarDelCarrito
- * @param {number} indice - Posición del producto dentro del carrito.
+ * @param {HTMLElement} boton - Botón presionado; su atributo data-indice indica la posición del producto.
  * @return {void}
  */
-const eliminarDelCarrito = (indice) => {
+const eliminarDelCarrito = (boton) => {
   const carrito = leerCarrito();
-  carrito.splice(indice, 1);
+  carrito.splice(Number(boton.dataset.indice), 1);
   guardarCarrito(carrito);
   dibujarCarrito();
 };
@@ -208,16 +208,6 @@ const alternarCarrito = () => {
 };
 
 /**
- * Cierra el menú de navegación.
- * @method cerrarMenu
- * @return {void}
- */
-const cerrarMenu = () => {
-  document.getElementById("menu").classList.remove("activo");
-  document.getElementById("menu-boton").setAttribute("aria-expanded", "false");
-};
-
-/**
  * Abre o cierra el menú de navegación.
  * @method alternarMenu
  * @return {void}
@@ -225,19 +215,6 @@ const cerrarMenu = () => {
 const alternarMenu = () => {
   const abierto = document.getElementById("menu").classList.toggle("activo");
   document.getElementById("menu-boton").setAttribute("aria-expanded", String(abierto));
-};
-
-/**
- * Cierra el menú y el carrito cuando se presiona la tecla Escape.
- * @method cerrarConEscape
- * @param {KeyboardEvent} evento - Evento de teclado recibido por la página.
- * @return {void}
- */
-const cerrarConEscape = (evento) => {
-  if (evento.key === "Escape") {
-    cerrarMenu();
-    cerrarCarrito();
-  }
 };
 
 /**
@@ -253,11 +230,4 @@ const irAlCheckout = () => {
   window.location.href = "checkout.html";
 };
 
-/**
- * Prepara la página al cargar: muestra la cantidad de artículos del carrito.
- * @method iniciarPagina
- * @return {void}
- */
-const iniciarPagina = () => {
-  actualizarContador();
-};
+actualizarContador();

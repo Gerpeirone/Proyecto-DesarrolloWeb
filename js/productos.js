@@ -58,15 +58,14 @@ const buscarProducto = (id) => {
 /**
  * Cambia la imagen principal por la miniatura elegida.
  * @method cambiarImagen
- * @param {number} indice - Posición de la miniatura dentro de la galería.
+ * @param {HTMLImageElement} elegida - Miniatura en la que hizo clic el usuario.
  * @return {void}
  */
-const cambiarImagen = (indice) => {
-  const miniaturas = document.querySelectorAll("#miniaturas img");
-  miniaturas.forEach((miniatura, posicion) => {
-    miniatura.classList.toggle("activa", posicion === indice);
+const cambiarImagen = (elegida) => {
+  document.querySelectorAll("#miniaturas img").forEach((miniatura) => {
+    miniatura.classList.toggle("activa", miniatura === elegida);
   });
-  document.getElementById("imagen-principal").src = miniaturas[indice].src;
+  document.getElementById("imagen-principal").src = elegida.src;
 };
 
 /**
@@ -124,11 +123,9 @@ const mostrarProducto = () => {
 
   const galeria = [productoActual.imagen, productoActual.imagenSecundaria];
   document.getElementById("miniaturas").innerHTML = galeria
-    .map((ruta, indice) => {
-      const clase = indice === 0 ? ' class="activa"' : "";
-      return `<img src="${ruta}" alt="${productoActual.nombre}, vista ${indice + 1}"${clase} onclick="cambiarImagen(${indice})">`;
-    })
+    .map((ruta, indice) => `<img src="${ruta}" alt="${productoActual.nombre}, vista ${indice + 1}" onclick="cambiarImagen(this)">`)
     .join("");
+  document.querySelector("#miniaturas img").classList.add("activa");
 
   document.getElementById("talle").innerHTML = productoActual.talles
     .map((talle) => `<option value="${talle}">${talle}</option>`)
@@ -163,3 +160,5 @@ const agregarProductoActual = () => {
   });
   alert("Producto agregado al carrito.");
 };
+
+mostrarProducto();

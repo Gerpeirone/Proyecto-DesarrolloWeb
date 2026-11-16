@@ -195,12 +195,9 @@ const validarFormulario = () => {
 /**
  * Procesa el envío del formulario: valida, informa el total y vacía el carrito.
  * @method confirmarCompra
- * @param {SubmitEvent} evento - Evento de envío del formulario.
  * @return {boolean} Siempre false, para que la página no se recargue.
  */
-const confirmarCompra = (evento) => {
-  evento.preventDefault();
-
+const confirmarCompra = () => {
   if (leerCarrito().length === 0) {
     alert("Tu carrito está vacío. Agregá productos antes de confirmar la compra.");
     return false;
@@ -217,3 +214,5 @@ const confirmarCompra = (evento) => {
   window.location.href = "index.html";
   return false;
 };
+
+actualizarTotales();
