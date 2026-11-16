@@ -1,0 +1,45 @@
+.crewlab-notificaciones {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 10000;
+  width: min(400px, calc(100vw - 32px));
+  pointer-events: none;
+  font-family: Montserrat, sans-serif;
+}
+.crewlab-notificacion {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid #d8d2c7;
+  border-left: 5px solid #ae4938;
+  border-radius: 12px;
+  background: #fffaf1;
+  color: #191919;
+  box-shadow: 0 8px 32px #0003;
+  pointer-events: auto;
+}
+.crewlab-notificacion--exito { border-left-color: #38734e; }
+.crewlab-notificacion > div { flex: 1; min-width: 0; }
+.crewlab-notificacion strong { font-size: 17px; letter-spacing: .04em; }
+.crewlab-notificacion p { margin: 8px 0 0; font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+.crewlab-notificacion .crewlab-notificacion-cerrar {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #191919;
+  font: 26px/1 sans-serif;
+  cursor: pointer;
+}
+.crewlab-notificacion .crewlab-notificacion-cerrar:hover { background: #e9e2d7; }
+.crewlab-notificacion .crewlab-notificacion-cerrar:focus-visible { outline: 2px solid #191919; outline-offset: 2px; }
+@media (max-width: 480px) {
+  .crewlab-notificaciones { top: 16px; right: 16px; }
+}

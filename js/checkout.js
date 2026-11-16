@@ -75,7 +75,7 @@ const vaciarCompra = () => {
  * @return {boolean} Siempre false, para indicar que la validación falló.
  */
 const informarError = (campo, mensaje) => {
-  alert(mensaje);
+  window.crewlabNotificar(mensaje);
   campo.value = "";
   return false;
 };
@@ -159,7 +159,7 @@ const validarEnvioExpress = () => {
   if (obtenerMetodoEnvio() !== "express" || provincia === PROVINCIA_EXPRESS) {
     return true;
   }
-  alert(`El envío express está disponible solo para la provincia de ${PROVINCIA_EXPRESS}.`);
+  window.crewlabNotificar(`El envío express está disponible solo para la provincia de ${PROVINCIA_EXPRESS}.`);
   document.getElementById("envio-domicilio").checked = true;
   actualizarTotales();
   return false;
@@ -202,7 +202,7 @@ const confirmarCompra = (evento) => {
   evento.preventDefault();
 
   if (leerCarrito().length === 0) {
-    alert("Tu carrito está vacío. Agregá productos antes de confirmar la compra.");
+    window.crewlabNotificar("Tu carrito está vacío. Agregá productos antes de confirmar la compra.");
     return false;
   }
 
@@ -211,9 +211,10 @@ const confirmarCompra = (evento) => {
   }
 
   const total = actualizarTotales();
-  alert(`¡Gracias por tu compra! El total a pagar es ${formatearPrecio(total)}.`);
+  window.crewlabNotificar(`¡Gracias por tu compra! El total a pagar es ${formatearPrecio(total)}.`, "exito");
   vaciarCarrito();
   document.getElementById("checkout-formulario").reset();
+  try { sessionStorage.setItem("crewlab_confirmacion", `¡Gracias por tu compra! El total a pagar es ${formatearPrecio(total)}.`); } catch { return false; }
   window.location.href = "index.html";
   return false;
 };

@@ -74,7 +74,7 @@ const Checkout = () => {
    * @return {void}
    */
   const informarError = (campo, mensaje) => {
-    alert(mensaje);
+    window.crewlabNotificar(mensaje);
     setDatos((actuales) => ({ ...actuales, [campo]: "" }));
   };
 
@@ -113,7 +113,7 @@ const Checkout = () => {
     const error = validarCompra(datos, metodoEnvio);
 
     if (error && error.campo === "envio") {
-      alert(error.mensaje);
+      window.crewlabNotificar(error.mensaje);
       setMetodoEnvio(METODOS_ENVIO[0].id);
       return;
     }
@@ -123,7 +123,7 @@ const Checkout = () => {
       return;
     }
 
-    alert(`¡Gracias por tu compra! El total a pagar es ${formatearPrecio(total)}.`);
+    window.crewlabNotificar(`¡Gracias por tu compra! El total a pagar es ${formatearPrecio(total)}.`, "exito");
     vaciarCarrito();
     navigate("/");
   };

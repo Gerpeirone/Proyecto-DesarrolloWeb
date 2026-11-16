@@ -148,7 +148,7 @@ const agregarProductoActual = () => {
   const cantidad = leerCantidad();
 
   if (cantidad === null) {
-    alert(`Ingresá una cantidad válida: un número entero entre 1 y ${CANTIDAD_MAXIMA}.`);
+    window.crewlabNotificar(`Ingresá una cantidad válida: un número entero entre 1 y ${CANTIDAD_MAXIMA}.`);
     campoCantidad.value = "";
     actualizarSubtotal();
     campoCantidad.focus();
@@ -161,5 +161,5 @@ const agregarProductoActual = () => {
     precio: productoActual.precio,
     cantidad: cantidad,
   });
-  alert("Producto agregado al carrito.");
+  window.crewlabNotificar("Producto agregado al carrito.", "exito");
 };

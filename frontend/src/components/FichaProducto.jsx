@@ -59,7 +59,7 @@ const FichaProducto = ({ producto, alAgregar }) => {
    */
   const agregar = () => {
     if (cantidadValida === null) {
-      alert(`Ingresá una cantidad válida: un número entero entre 1 y ${CANTIDAD_MAXIMA}.`);
+      window.crewlabNotificar(`Ingresá una cantidad válida: un número entero entre 1 y ${CANTIDAD_MAXIMA}.`);
       setCantidad("");
       return;
     }
@@ -71,7 +71,7 @@ const FichaProducto = ({ producto, alAgregar }) => {
       imagen: producto.imagen,
       cantidad: cantidadValida,
     });
-    alert("Producto agregado al carrito.");
+    window.crewlabNotificar("Producto agregado al carrito.", "exito");
   };
 
   return (

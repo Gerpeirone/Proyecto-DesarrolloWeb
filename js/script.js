@@ -247,7 +247,7 @@ const cerrarConEscape = (evento) => {
  */
 const irAlCheckout = () => {
   if (leerCarrito().length === 0) {
-    alert("Tu carrito está vacío. Agregá un producto antes de continuar.");
+    window.crewlabNotificar("Tu carrito está vacío. Agregá un producto antes de continuar.");
     return;
   }
   window.location.href = "checkout.html";
