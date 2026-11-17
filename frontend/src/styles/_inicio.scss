@@ -1,10 +1,7 @@
-@use "variables" as *;
-
-$alto-carrusel: 350px;
-$alto-carrusel-celular: 200px;
+@use "variables";
 
 .carrusel {
-  height: $alto-carrusel;
+  height: variables.$alto-carrusel;
   overflow: hidden;
   margin: -40px -20px 50px;
 }
@@ -16,7 +13,7 @@ $alto-carrusel-celular: 200px;
 
   img {
     width: 25%;
-    height: $alto-carrusel;
+    height: variables.$alto-carrusel;
     object-fit: cover;
   }
 }
@@ -48,7 +45,7 @@ $alto-carrusel-celular: 200px;
 }
 
 .sobre-nosotros {
-  background: $color-crema-fondo;
+  background: variables.$color-crema-fondo;
   margin: 50px -20px -40px;
   padding: 40px 20px;
 
@@ -72,10 +69,10 @@ $alto-carrusel-celular: 200px;
   }
 }
 
-@media (max-width: $corte-celular) {
+@media (max-width: variables.$corte-celular) {
   .carrusel,
   .slides img {
-    height: $alto-carrusel-celular;
+    height: variables.$alto-carrusel-celular;
   }
 }
 

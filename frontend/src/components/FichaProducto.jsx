@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { CANTIDAD_MAXIMA } from "@data/tienda";
 import { formatearPrecio } from "@utils/formato";
-import { obtenerImagen } from "@utils/imagenes";
 import { leerCantidad, limitarCantidad } from "@utils/validaciones";
 
 /**
@@ -11,25 +10,16 @@ import { leerCantidad, limitarCantidad } from "@utils/validaciones";
  * @param {object} props - Propiedades del componente.
  * @param {object} props.producto - Producto a mostrar.
  * @param {Function} props.alAgregar - Función que recibe el producto elegido para el carrito.
+ * @param {Function} props.alAvisar - Función que muestra un mensaje al usuario en la ventana de aviso.
  * @return {JSX.Element} Detalle completo del producto.
  */
-const FichaProducto = ({ producto, alAgregar }) => {
+const FichaProducto = ({ producto, alAgregar, alAvisar }) => {
   const galeria = [producto.imagen, producto.imagenSecundaria];
   const [imagenActiva, setImagenActiva] = useState(0);
   const [talle, setTalle] = useState(producto.talles[0]);
   const [cantidad, setCantidad] = useState("1");
 
   const cantidadValida = leerCantidad(cantidad);
-
-  /**
-   * Muestra en grande la miniatura elegida.
-   * @method elegirImagen
-   * @param {React.MouseEvent<HTMLButtonElement>} evento - Clic sobre una miniatura.
-   * @return {void}
-   */
-  const elegirImagen = (evento) => {
-    setImagenActiva(Number(evento.currentTarget.dataset.indice));
-  };
 
   /**
    * Guarda el talle elegido.
@@ -59,7 +49,7 @@ const FichaProducto = ({ producto, alAgregar }) => {
    */
   const agregar = () => {
     if (cantidadValida === null) {
-      alert(`Ingresá una cantidad válida: un número entero entre 1 y ${CANTIDAD_MAXIMA}.`);
+      alAvisar(`Ingresá una cantidad válida: un número entero entre 1 y ${CANTIDAD_MAXIMA}.`);
       setCantidad("");
       return;
     }
@@ -71,7 +61,7 @@ const FichaProducto = ({ producto, alAgregar }) => {
       imagen: producto.imagen,
       cantidad: cantidadValida,
     });
-    alert("Producto agregado al carrito.");
+    alAvisar("Producto agregado al carrito.", "exito");
   };
 
   return (
@@ -84,16 +74,15 @@ const FichaProducto = ({ producto, alAgregar }) => {
               type="button"
               className={indice === imagenActiva ? "miniatura activa" : "miniatura"}
               aria-label={`Ver imagen ${indice + 1}`}
-              data-indice={indice}
-              onClick={elegirImagen}
+              onClick={() => setImagenActiva(indice)}
             >
-              <img src={obtenerImagen(ruta)} alt={`${producto.nombre}, vista ${indice + 1}`} />
+              <img src={ruta} alt={`${producto.nombre}, vista ${indice + 1}`} />
             </button>
           ))}
         </div>
         <img
           className="imagen-principal"
-          src={obtenerImagen(galeria[imagenActiva])}
+          src={galeria[imagenActiva]}
           alt={producto.nombre}
         />
       </div>

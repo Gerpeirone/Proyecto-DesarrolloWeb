@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
  * @param {object} props - Propiedades del componente.
  * @param {string} props.titulo - Título del mensaje.
  * @param {string} props.texto - Explicación para el usuario.
- * @param {string} props.destino - Ruta a la que lleva el enlace.
+ * @param {string} props.destino - Ruta a la que lleva el enlace, por ejemplo "/".
  * @param {string} props.etiqueta - Texto del enlace.
  * @return {JSX.Element} Bloque con el mensaje y el enlace.
  */

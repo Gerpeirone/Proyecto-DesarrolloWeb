@@ -1,9 +1,8 @@
+import { useEffect, useState } from "react";
 import { obtenerProductos } from "@api/productosApi";
 import Carrusel from "@components/Carrusel";
 import ListaProductos from "@components/ListaProductos";
 import { REDES } from "@data/tienda";
-import { useConsulta, useTitulo } from "@utils/hooks";
-import { obtenerImagen } from "@utils/imagenes";
 
 /**
  * Página de inicio: promociones, productos más vendidos y datos de la tienda.
@@ -11,17 +10,21 @@ import { obtenerImagen } from "@utils/imagenes";
  * @return {JSX.Element} Contenido de la página principal.
  */
 const Inicio = () => {
-  const { datos, cargando, error } = useConsulta(obtenerProductos);
-  const destacados = datos ? datos.filter((producto) => producto.destacado) : [];
+  const [productos, setProductos] = useState(null);
+  const [error, setError] = useState(false);
 
-  useTitulo("Inicio");
+  useEffect(() => {
+    obtenerProductos()
+      .then((datos) => setProductos(datos.filter((producto) => producto.destacado)))
+      .catch(() => setError(true));
+  }, []);
 
   return (
     <>
       <Carrusel />
 
       <h2>Productos más vendidos</h2>
-      <ListaProductos productos={destacados} cargando={cargando} error={error} />
+      <ListaProductos productos={productos} error={error} />
 
       <section className="sobre-nosotros">
         <h2>Sobre nosotros</h2>
@@ -32,7 +35,7 @@ const Inicio = () => {
         <div className="redes">
           {REDES.map((red) => (
             <a key={red.nombre} href={red.url} target="_blank" rel="noopener noreferrer">
-              <img src={obtenerImagen(red.imagen)} alt={`${red.nombre} de CrewLab`} />
+              <img src={red.imagen} alt={`${red.nombre} de CrewLab`} />
             </a>
           ))}
         </div>

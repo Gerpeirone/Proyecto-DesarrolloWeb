@@ -1,8 +1,8 @@
+import { useEffect, useState } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
 import { obtenerProductoPorId } from "@api/productosApi";
 import Aviso from "@components/Aviso";
 import FichaProducto from "@components/FichaProducto";
-import { useConsulta, useTitulo } from "@utils/hooks";
 
 /**
  * Página de detalle: busca el producto indicado en la ruta y muestra su ficha.
@@ -11,14 +11,17 @@ import { useConsulta, useTitulo } from "@utils/hooks";
  */
 const ProductoDetalle = () => {
   const { id } = useParams();
-  const { agregarAlCarrito } = useOutletContext();
-  const { datos: producto, cargando, error } = useConsulta(obtenerProductoPorId, Number(id));
+  const { agregarAlCarrito, mostrarAviso } = useOutletContext();
+  const [producto, setProducto] = useState(undefined);
+  const [error, setError] = useState(false);
 
-  useTitulo(producto ? producto.nombre : "Detalle del producto");
-
-  if (cargando) {
-    return <p className="estado">Cargando producto...</p>;
-  }
+  useEffect(() => {
+    setProducto(undefined);
+    setError(false);
+    obtenerProductoPorId(id)
+      .then((datos) => setProducto(datos))
+      .catch(() => setError(true));
+  }, [id]);
 
   if (error) {
     return (
@@ -28,7 +31,11 @@ const ProductoDetalle = () => {
     );
   }
 
-  if (!producto) {
+  if (producto === undefined) {
+    return <p className="estado">Cargando producto...</p>;
+  }
+
+  if (producto === null) {
     return (
       <Aviso
         titulo="Producto no encontrado"
@@ -39,7 +46,14 @@ const ProductoDetalle = () => {
     );
   }
 
-  return <FichaProducto key={producto.id} producto={producto} alAgregar={agregarAlCarrito} />;
+  return (
+    <FichaProducto
+      key={producto.id}
+      producto={producto}
+      alAgregar={agregarAlCarrito}
+      alAvisar={mostrarAviso}
+    />
+  );
 };
 
 export default ProductoDetalle;

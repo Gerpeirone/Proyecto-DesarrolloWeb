@@ -11,12 +11,9 @@ const CLAVE_CARRITO = "crewlab_carrito_react";
 const esItemValido = (item) => {
   return (
     item !== null &&
-    typeof item === "object" &&
-    typeof item.id === "string" &&
-    typeof item.nombre === "string" &&
-    Number.isFinite(item.precio) &&
+    item.id !== undefined &&
+    item.nombre !== undefined &&
     item.precio > 0 &&
-    Number.isInteger(item.cantidad) &&
     item.cantidad > 0
   );
 };
@@ -27,12 +24,11 @@ const esItemValido = (item) => {
  * @return {Array<object>} Productos del carrito.
  */
 export const leerCarrito = () => {
-  try {
-    const guardado = JSON.parse(localStorage.getItem(CLAVE_CARRITO) || "[]");
-    return Array.isArray(guardado) ? guardado.filter(esItemValido) : [];
-  } catch {
+  const guardado = JSON.parse(localStorage.getItem(CLAVE_CARRITO));
+  if (guardado === null) {
     return [];
   }
+  return guardado.filter(esItemValido);
 };
 
 /**
@@ -46,13 +42,19 @@ export const guardarCarrito = (carrito) => {
 };
 
 /**
- * Limita una cantidad al rango permitido, entre 1 y el máximo por producto.
- * @method limitarCantidad
- * @param {number} cantidad - Cantidad solicitada.
+ * Deja una cantidad dentro del rango permitido, entre 1 y el máximo por producto.
+ * @method ajustarCantidad
+ * @param {number} cantidad - Cantidad pedida.
  * @return {number} Cantidad dentro del rango permitido.
  */
-const limitarCantidad = (cantidad) => {
-  return Math.min(CANTIDAD_MAXIMA, Math.max(1, cantidad));
+const ajustarCantidad = (cantidad) => {
+  if (cantidad < 1) {
+    return 1;
+  }
+  if (cantidad > CANTIDAD_MAXIMA) {
+    return CANTIDAD_MAXIMA;
+  }
+  return cantidad;
 };
 
 /**
@@ -63,13 +65,13 @@ const limitarCantidad = (cantidad) => {
  * @return {Array<object>} Nuevo carrito con el producto agregado.
  */
 export const agregarItem = (carrito, item) => {
-  const existe = carrito.some((guardado) => guardado.id === item.id);
-  if (!existe) {
+  const existentes = carrito.filter((guardado) => guardado.id === item.id);
+  if (existentes.length === 0) {
     return [...carrito, item];
   }
   return carrito.map((guardado) =>
     guardado.id === item.id
-      ? { ...guardado, cantidad: limitarCantidad(guardado.cantidad + item.cantidad) }
+      ? { ...guardado, cantidad: ajustarCantidad(guardado.cantidad + item.cantidad) }
       : guardado
   );
 };
@@ -84,7 +86,7 @@ export const agregarItem = (carrito, item) => {
  */
 export const cambiarCantidadItem = (carrito, id, variacion) => {
   return carrito.map((item) =>
-    item.id === id ? { ...item, cantidad: limitarCantidad(item.cantidad + variacion) } : item
+    item.id === id ? { ...item, cantidad: ajustarCantidad(item.cantidad + variacion) } : item
   );
 };
 
@@ -106,7 +108,11 @@ export const quitarItem = (carrito, id) => {
  * @return {number} Importe total de los productos.
  */
 export const calcularSubtotal = (carrito) => {
-  return carrito.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
+  let suma = 0;
+  carrito.forEach((item) => {
+    suma += item.precio * item.cantidad;
+  });
+  return suma;
 };
 
 /**
@@ -116,7 +122,11 @@ export const calcularSubtotal = (carrito) => {
  * @return {number} Cantidad total de unidades.
  */
 export const contarArticulos = (carrito) => {
-  return carrito.reduce((suma, item) => suma + item.cantidad, 0);
+  let cantidad = 0;
+  carrito.forEach((item) => {
+    cantidad += item.cantidad;
+  });
+  return cantidad;
 };
 
 /**
@@ -127,6 +137,6 @@ export const contarArticulos = (carrito) => {
  * @return {number} Costo del envío.
  */
 export const calcularEnvio = (metodo, subtotal) => {
-  const elegido = METODOS_ENVIO.find((envio) => envio.id === metodo);
-  return subtotal > 0 && elegido ? elegido.costo : 0;
+  const elegidos = METODOS_ENVIO.filter((envio) => envio.id === metodo);
+  return subtotal > 0 && elegidos.length > 0 ? elegidos[0].costo : 0;
 };

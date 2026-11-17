@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use "variables";
 
 .carrito-contenedor,
 .checkout-contenedor {
@@ -6,7 +6,7 @@
   margin: 0 auto;
   padding: 24px;
   border-radius: 12px;
-  box-shadow: $sombra;
+  box-shadow: variables.$sombra;
   text-align: left;
 }
 
@@ -19,13 +19,13 @@
   align-items: center;
   gap: 16px;
   padding: 12px 0;
-  border-bottom: 1px solid $color-borde-suave;
+  border-bottom: 1px solid variables.$color-borde-suave;
 
   img {
     width: 80px;
     height: 80px;
     object-fit: cover;
-    border-radius: $radio;
+    border-radius: variables.$radio;
   }
 
   .item-info {
@@ -66,8 +66,8 @@
 
 .resumen-carrito {
   padding: 16px;
-  border: 1px solid $color-borde-suave;
-  border-radius: $radio-grande;
+  border: 1px solid variables.$color-borde-suave;
+  border-radius: variables.$radio-grande;
   background: #fafafa;
 
   h3 {
@@ -113,7 +113,7 @@
   input,
   select,
   textarea {
-    @include campo;
+    @include variables.campo;
     width: 100%;
     margin-top: 5px;
     padding: 10px;
@@ -148,7 +148,7 @@ form .boton-confirmar {
   font-size: 16px;
 }
 
-@media (max-width: $corte-celular) {
+@media (max-width: variables.$corte-celular) {
   .carrito-item {
     flex-wrap: wrap;
   }

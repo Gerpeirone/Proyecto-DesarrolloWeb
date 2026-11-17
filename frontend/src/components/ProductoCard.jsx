@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { formatearPrecio } from "@utils/formato";
-import { obtenerImagen } from "@utils/imagenes";
 
 /**
  * Tarjeta de un producto para los listados.
@@ -13,9 +12,9 @@ const ProductoCard = ({ producto }) => {
   return (
     <article className="producto">
       <div className="producto-img">
-        <img src={obtenerImagen(producto.imagen)} alt={producto.nombre} className="img-principal" />
+        <img src={producto.imagen} alt={producto.nombre} className="img-principal" />
         <img
-          src={obtenerImagen(producto.imagenSecundaria)}
+          src={producto.imagenSecundaria}
           alt={`${producto.nombre}, segunda vista`}
           className="img-hover"
         />

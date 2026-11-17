@@ -1,9 +1,9 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { obtenerProductos } from "@api/productosApi";
 import Aviso from "@components/Aviso";
 import ListaProductos from "@components/ListaProductos";
 import { CATEGORIAS } from "@data/tienda";
-import { useConsulta, useTitulo } from "@utils/hooks";
 
 /**
  * Página de una categoría: lista los productos de la categoría indicada en la ruta.
@@ -12,12 +12,19 @@ import { useConsulta, useTitulo } from "@utils/hooks";
  */
 const Categoria = () => {
   const { categoria } = useParams();
-  const actual = CATEGORIAS.find((item) => item.id === categoria);
-  const { datos, cargando, error } = useConsulta(obtenerProductos, categoria);
+  const encontradas = CATEGORIAS.filter((item) => item.id === categoria);
+  const [productos, setProductos] = useState(null);
+  const [error, setError] = useState(false);
 
-  useTitulo(actual ? actual.nombre : "Categoría no encontrada");
+  useEffect(() => {
+    setProductos(null);
+    setError(false);
+    obtenerProductos(categoria)
+      .then((datos) => setProductos(datos))
+      .catch(() => setError(true));
+  }, [categoria]);
 
-  if (!actual) {
+  if (encontradas.length === 0) {
     return (
       <Aviso
         titulo="Categoría no encontrada"
@@ -30,8 +37,8 @@ const Categoria = () => {
 
   return (
     <>
-      <h2>{actual.nombre}</h2>
-      <ListaProductos productos={datos} cargando={cargando} error={error} />
+      <h2>{encontradas[0].nombre}</h2>
+      <ListaProductos productos={productos} error={error} />
     </>
   );
 };

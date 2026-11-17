@@ -4,8 +4,12 @@ import Aviso from "@components/Aviso";
 import { GENEROS, METODOS_ENVIO, PROVINCIAS } from "@data/tienda";
 import { calcularEnvio, calcularSubtotal } from "@utils/carrito";
 import { formatearPrecio } from "@utils/formato";
-import { useTitulo } from "@utils/hooks";
-import { dejarSoloNumeros, validarCampo, validarCompra } from "@utils/validaciones";
+import {
+  dejarSoloLetras,
+  dejarSoloNumeros,
+  validarCampo,
+  validarCompra,
+} from "@utils/validaciones";
 
 const DATOS_INICIALES = {
   nombre: "",
@@ -41,6 +45,8 @@ const CAMPOS_NUMERICOS = [...CAMPOS_COMPRADOR, ...CAMPOS_DIRECCION]
   .filter((campo) => campo.largo)
   .map((campo) => campo.id);
 
+const CAMPOS_LETRAS = ["nombre", "apellido", "ciudad"];
+
 /**
  * Página para finalizar la compra: resumen, cálculo de envío y total,
  * y formulario con validación de los datos del comprador.
@@ -48,7 +54,7 @@ const CAMPOS_NUMERICOS = [...CAMPOS_COMPRADOR, ...CAMPOS_DIRECCION]
  * @return {JSX.Element} Formulario de compra o aviso si el carrito está vacío.
  */
 const Checkout = () => {
-  const { carrito, vaciarCarrito } = useOutletContext();
+  const { carrito, vaciarCarrito, mostrarAviso } = useOutletContext();
   const navigate = useNavigate();
   const [datos, setDatos] = useState(DATOS_INICIALES);
   const [metodoEnvio, setMetodoEnvio] = useState(METODOS_ENVIO[0].id);
@@ -56,8 +62,6 @@ const Checkout = () => {
   const subtotal = calcularSubtotal(carrito);
   const envio = calcularEnvio(metodoEnvio, subtotal);
   const total = subtotal + envio;
-
-  useTitulo("Finalizar compra");
 
   /**
    * Guarda en el estado el valor escrito o elegido en un campo.
@@ -67,7 +71,12 @@ const Checkout = () => {
    */
   const cambiarDato = (evento) => {
     const { name, value } = evento.target;
-    const valor = CAMPOS_NUMERICOS.includes(name) ? dejarSoloNumeros(value) : value;
+    let valor = value;
+    if (CAMPOS_NUMERICOS.includes(name)) {
+      valor = dejarSoloNumeros(value);
+    } else if (CAMPOS_LETRAS.includes(name)) {
+      valor = dejarSoloLetras(value);
+    }
     setDatos((actuales) => ({ ...actuales, [name]: valor }));
   };
 
@@ -79,7 +88,7 @@ const Checkout = () => {
    * @return {void}
    */
   const informarError = (campo, mensaje) => {
-    alert(mensaje);
+    mostrarAviso(mensaje);
     setDatos((actuales) => ({ ...actuales, [campo]: "" }));
   };
 
@@ -118,7 +127,7 @@ const Checkout = () => {
     const error = validarCompra(datos, metodoEnvio);
 
     if (error && error.campo === "envio") {
-      alert(error.mensaje);
+      mostrarAviso(error.mensaje);
       setMetodoEnvio(METODOS_ENVIO[0].id);
       return;
     }
@@ -128,9 +137,9 @@ const Checkout = () => {
       return;
     }
 
-    alert(`¡Gracias por tu compra! El total a pagar es ${formatearPrecio(total)}.`);
     vaciarCarrito();
     navigate("/");
+    mostrarAviso(`¡Gracias por tu compra! El total a pagar es ${formatearPrecio(total)}.`, "exito");
   };
 
   /**

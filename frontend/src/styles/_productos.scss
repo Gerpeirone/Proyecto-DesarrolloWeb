@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use "variables";
 
 .productos {
   display: flex;
@@ -14,9 +14,9 @@
   gap: 12px;
   width: 250px;
   padding: 20px;
-  border: 1px solid $color-borde;
+  border: 1px solid variables.$color-borde;
   border-radius: 8px;
-  transition: box-shadow $transicion;
+  transition: box-shadow variables.$transicion;
 
   &:hover {
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
@@ -27,7 +27,7 @@
   position: relative;
   height: 220px;
   overflow: hidden;
-  border-radius: $radio;
+  border-radius: variables.$radio;
 
   img {
     position: absolute;
@@ -77,7 +77,7 @@
   min-width: 0;
   height: 480px;
   object-fit: cover;
-  border-radius: $radio-grande;
+  border-radius: variables.$radio-grande;
   background: #f6f6f6;
 }
 
@@ -98,7 +98,7 @@
 
   &:hover,
   &.activa {
-    border-color: $color-negro;
+    border-color: variables.$color-negro;
     background: transparent;
   }
 
@@ -126,7 +126,7 @@
   }
 
   .descripcion {
-    color: $color-texto-suave;
+    color: variables.$color-texto-suave;
   }
 
   .subtotal {
@@ -155,7 +155,7 @@
 
   select,
   input {
-    @include campo;
+    @include variables.campo;
     height: 46px;
     padding: 0 12px;
   }
@@ -169,7 +169,7 @@
   text-transform: uppercase;
 }
 
-@media (max-width: $corte-tablet) {
+@media (max-width: variables.$corte-tablet) {
   .producto-detalle {
     grid-template-columns: 1fr;
     gap: 28px;
@@ -191,7 +191,7 @@
   }
 }
 
-@media (max-width: $corte-celular) {
+@media (max-width: variables.$corte-celular) {
   .productos {
     gap: 16px;
   }

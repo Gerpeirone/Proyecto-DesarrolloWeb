@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { CATEGORIAS } from "@data/tienda";
 
 /**
@@ -18,7 +18,7 @@ const Header = ({ cantidad }) => {
    * @return {void}
    */
   const alternarMenu = () => {
-    setMenuAbierto((abierto) => !abierto);
+    setMenuAbierto(!menuAbierto);
   };
 
   /**
@@ -60,26 +60,26 @@ const Header = ({ cantidad }) => {
       >
         <ul>
           <li>
-            <NavLink to="/" end onClick={cerrarMenu}>
+            <Link to="/" onClick={cerrarMenu}>
               Inicio
-            </NavLink>
+            </Link>
           </li>
           {CATEGORIAS.map((categoria) => (
             <li key={categoria.id}>
-              <NavLink to={`/categoria/${categoria.id}`} onClick={cerrarMenu}>
+              <Link to={`/categoria/${categoria.id}`} onClick={cerrarMenu}>
                 {categoria.nombre}
-              </NavLink>
+              </Link>
             </li>
           ))}
           <li>
-            <NavLink to="/carrito" onClick={cerrarMenu}>
+            <Link to="/carrito" onClick={cerrarMenu}>
               Carrito
-            </NavLink>
+            </Link>
           </li>
           <li>
-            <NavLink to="/checkout" onClick={cerrarMenu}>
+            <Link to="/checkout" onClick={cerrarMenu}>
               Finalizar compra
-            </NavLink>
+            </Link>
           </li>
         </ul>
       </nav>

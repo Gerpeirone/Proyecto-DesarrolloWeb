@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "@components/Header";
 import Footer from "@components/Footer";
+import VentanaAviso from "@components/VentanaAviso";
 import {
   agregarItem,
   cambiarCantidadItem,
@@ -20,6 +21,7 @@ import {
  */
 const Layout = () => {
   const [carrito, setCarrito] = useState(leerCarrito);
+  const [aviso, setAviso] = useState(null);
 
   useEffect(() => {
     guardarCarrito(carrito);
@@ -65,15 +67,71 @@ const Layout = () => {
     setCarrito([]);
   };
 
+  /**
+   * Muestra un mensaje al usuario en la ventana de aviso.
+   * @method mostrarAviso
+   * @param {string} texto - Mensaje para el usuario.
+   * @param {string} tipo - "error" para un problema o "exito" para una acción realizada.
+   * @return {void}
+   */
+  const mostrarAviso = (texto, tipo = "error") => {
+    setAviso({ texto, tipo, textoBoton: "Aceptar", alConfirmar: null });
+  };
+
+  /**
+   * Pregunta al usuario si quiere realizar una acción que no se puede deshacer.
+   * La acción solo se ejecuta si elige el botón de confirmar.
+   * @method pedirConfirmacion
+   * @param {string} texto - Pregunta para el usuario.
+   * @param {string} textoBoton - Texto del botón que confirma la acción.
+   * @param {Function} accion - Función que se ejecuta si el usuario confirma.
+   * @return {void}
+   */
+  const pedirConfirmacion = (texto, textoBoton, accion) => {
+    setAviso({ texto, tipo: "confirmar", textoBoton, alConfirmar: accion });
+  };
+
+  /**
+   * Responde al aviso actual: si el usuario confirmó una pregunta, realiza la acción,
+   * y después cierra la ventana.
+   * @method responderAviso
+   * @param {boolean} confirmado - true si eligió el botón principal, false si eligió Cancelar.
+   * @return {void}
+   */
+  const responderAviso = (confirmado) => {
+    if (confirmado && aviso.alConfirmar !== null) {
+      aviso.alConfirmar();
+    }
+    document.getElementById("aviso").close();
+  };
+
+  /**
+   * Quita el aviso actual cuando la ventana se cierra.
+   * @method cerrarAviso
+   * @return {void}
+   */
+  const cerrarAviso = () => {
+    setAviso(null);
+  };
+
   return (
     <div className="pagina">
       <Header cantidad={contarArticulos(carrito)} />
       <main>
         <Outlet
-          context={{ carrito, agregarAlCarrito, cambiarCantidad, eliminarDelCarrito, vaciarCarrito }}
+          context={{
+            carrito,
+            agregarAlCarrito,
+            cambiarCantidad,
+            eliminarDelCarrito,
+            vaciarCarrito,
+            mostrarAviso,
+            pedirConfirmacion,
+          }}
         />
       </main>
       <Footer />
+      <VentanaAviso aviso={aviso} alResponder={responderAviso} alCerrar={cerrarAviso} />
     </div>
   );
 };

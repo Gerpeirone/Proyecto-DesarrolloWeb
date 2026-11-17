@@ -1,5 +1,4 @@
 import { formatearPrecio } from "@utils/formato";
-import { obtenerImagen } from "@utils/imagenes";
 
 /**
  * Fila del carrito con los datos de un producto y sus controles.
@@ -40,7 +39,7 @@ const ItemCarrito = ({ item, alCambiarCantidad, alEliminar }) => {
 
   return (
     <li className="carrito-item">
-      <img src={obtenerImagen(item.imagen)} alt={item.nombre} />
+      <img src={item.imagen} alt={item.nombre} />
       <div className="item-info">
         <h3>{item.nombre}</h3>
         <p>

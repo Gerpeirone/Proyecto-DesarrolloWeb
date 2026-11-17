@@ -3,7 +3,6 @@ import Aviso from "@components/Aviso";
 import ItemCarrito from "@components/ItemCarrito";
 import { calcularSubtotal } from "@utils/carrito";
 import { formatearPrecio } from "@utils/formato";
-import { useTitulo } from "@utils/hooks";
 
 /**
  * Página del carrito: lista los productos elegidos, permite cambiar cantidades,
@@ -12,10 +11,31 @@ import { useTitulo } from "@utils/hooks";
  * @return {JSX.Element} Contenido del carrito o aviso si está vacío.
  */
 const Carrito = () => {
-  const { carrito, cambiarCantidad, eliminarDelCarrito, vaciarCarrito } = useOutletContext();
+  const { carrito, cambiarCantidad, eliminarDelCarrito, vaciarCarrito, pedirConfirmacion } =
+    useOutletContext();
   const navigate = useNavigate();
 
-  useTitulo("Carrito");
+  /**
+   * Pregunta si se quiere quitar un producto y, si el usuario confirma, lo quita del carrito.
+   * @method confirmarEliminar
+   * @param {string} id - Identificador del producto dentro del carrito.
+   * @return {void}
+   */
+  const confirmarEliminar = (id) => {
+    const item = carrito.filter((producto) => producto.id === id)[0];
+    pedirConfirmacion(`¿Querés quitar "${item.nombre}" del carrito?`, "Eliminar", () =>
+      eliminarDelCarrito(id)
+    );
+  };
+
+  /**
+   * Pregunta si se quiere vaciar el carrito y, si el usuario confirma, lo vacía.
+   * @method confirmarVaciar
+   * @return {void}
+   */
+  const confirmarVaciar = () => {
+    pedirConfirmacion("Se van a quitar todos los productos del carrito.", "Vaciar carrito", vaciarCarrito);
+  };
 
   /**
    * Lleva a la página para finalizar la compra.
@@ -47,7 +67,7 @@ const Carrito = () => {
             key={item.id}
             item={item}
             alCambiarCantidad={cambiarCantidad}
-            alEliminar={eliminarDelCarrito}
+            alEliminar={confirmarEliminar}
           />
         ))}
       </ul>
@@ -55,7 +75,7 @@ const Carrito = () => {
       <p className="carrito-total">Total: {formatearPrecio(calcularSubtotal(carrito))}</p>
 
       <div className="carrito-botones">
-        <button type="button" className="boton-secundario" onClick={vaciarCarrito}>
+        <button type="button" className="boton-secundario" onClick={confirmarVaciar}>
           Vaciar carrito
         </button>
         <button type="button" className="boton-confirmar" onClick={irAlCheckout}>

@@ -1,4 +1,4 @@
-@use "variables" as *;
+@use "variables";
 
 * {
   margin: 0;
@@ -7,9 +7,9 @@
 }
 
 body {
-  font-family: $fuente-principal;
-  color: $color-texto;
-  background: $color-blanco;
+  font-family: variables.$fuente-principal;
+  color: variables.$color-texto;
+  background: variables.$color-blanco;
 }
 
 h2 {
@@ -26,14 +26,14 @@ img {
 }
 
 button {
-  @include boton($color-negro, $color-crema);
+  @include variables.boton(variables.$color-negro, variables.$color-crema, variables.$color-negro-hover);
   border: none;
   padding: 10px 15px;
-  border-radius: $radio;
+  border-radius: variables.$radio;
   font-family: inherit;
   font-size: 15px;
   cursor: pointer;
-  transition: background $transicion;
+  transition: background variables.$transicion;
 }
 
 a:focus-visible,
@@ -41,7 +41,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 3px solid $color-foco;
+  outline: 3px solid variables.$color-foco;
   outline-offset: 2px;
 }
 
@@ -62,34 +62,34 @@ main {
 }
 
 .ver-mas {
-  @include boton($color-gris, $color-negro);
+  @include variables.boton(variables.$color-gris, variables.$color-negro, variables.$color-gris-hover);
   display: block;
   padding: 10px 15px;
-  border-radius: $radio;
+  border-radius: variables.$radio;
   font-weight: 600;
   text-decoration: none;
-  transition: background $transicion;
+  transition: background variables.$transicion;
 }
 
 .boton-secundario {
-  @include boton($color-gris, $color-negro);
+  @include variables.boton(variables.$color-gris, variables.$color-negro, variables.$color-gris-hover);
 }
 
 .boton-confirmar {
-  @include boton($color-confirmar, $color-blanco);
+  @include variables.boton(variables.$color-confirmar, variables.$color-blanco, variables.$color-confirmar-hover);
   font-weight: 700;
 }
 
 .boton-eliminar {
-  @include boton($color-eliminar, $color-blanco);
+  @include variables.boton(variables.$color-eliminar, variables.$color-blanco, variables.$color-eliminar-hover);
 }
 
 .estado {
   padding: 40px 0;
-  color: $color-texto-suave;
+  color: variables.$color-texto-suave;
 
   &.estado-error {
-    color: $color-eliminar;
+    color: variables.$color-eliminar;
   }
 }
 
@@ -102,7 +102,7 @@ main {
   }
 }
 
-@media (max-width: $corte-celular) {
+@media (max-width: variables.$corte-celular) {
   h2 {
     font-size: 22px;
   }

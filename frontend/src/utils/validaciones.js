@@ -1,24 +1,28 @@
 import { CANTIDAD_MAXIMA, PROVINCIA_EXPRESS } from "@data/tienda";
 
-const SOLO_LETRAS = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$/;
+const NUMEROS = "0123456789";
+const LETRAS = "abcdefghijklmnñopqrstuvwxyzáéíóúü ";
 
 const REGLAS = [
   {
     campo: "nombre",
     obligatorio: "El nombre es obligatorio.",
-    formato: SOLO_LETRAS,
+    permitidos: LETRAS,
     mensaje: "El nombre solo puede contener letras.",
   },
   {
     campo: "apellido",
     obligatorio: "El apellido es obligatorio.",
-    formato: SOLO_LETRAS,
+    permitidos: LETRAS,
     mensaje: "El apellido solo puede contener letras.",
   },
   {
     campo: "dni",
     obligatorio: "El DNI es obligatorio.",
-    formato: /^[1-9]\d{6,7}$/,
+    permitidos: NUMEROS,
+    minimo: 7,
+    maximo: 8,
+    sinCeroInicial: true,
     mensaje: "Ingresá un DNI válido: solo números, 7 u 8 dígitos.",
   },
   { campo: "genero", obligatorio: "Seleccioná tu género." },
@@ -26,37 +30,89 @@ const REGLAS = [
   {
     campo: "numero",
     obligatorio: "El número de la dirección es obligatorio.",
-    formato: /^[1-9]\d{0,4}$/,
+    permitidos: NUMEROS,
+    minimo: 1,
+    maximo: 5,
+    sinCeroInicial: true,
     mensaje: "Ingresá un número de calle válido: entero mayor a cero.",
   },
   {
     campo: "piso",
-    formato: /^\d{1,2}$/,
+    permitidos: NUMEROS,
+    minimo: 1,
+    maximo: 2,
+    sinCeroInicial: false,
     mensaje: "El piso debe ser un número de hasta 2 dígitos.",
   },
   {
     campo: "codigoPostal",
     obligatorio: "El código postal es obligatorio.",
-    formato: /^[1-9]\d{3}$/,
+    permitidos: NUMEROS,
+    minimo: 4,
+    maximo: 4,
+    sinCeroInicial: true,
     mensaje: "Ingresá un código postal válido de 4 dígitos.",
   },
   {
     campo: "ciudad",
     obligatorio: "La ciudad es obligatoria.",
-    formato: SOLO_LETRAS,
+    permitidos: LETRAS,
     mensaje: "La ciudad solo puede contener letras.",
   },
   { campo: "provincia", obligatorio: "Seleccioná una provincia." },
 ];
 
 /**
- * Quita del texto todo lo que no sea un dígito, para que en un campo numérico solo se puedan escribir números.
+ * Indica si todos los caracteres de un texto están dentro de los permitidos.
+ * @method soloContiene
+ * @param {string} texto - Texto a revisar.
+ * @param {string} permitidos - Caracteres aceptados.
+ * @return {boolean} true si el texto no tiene ningún carácter fuera de los permitidos.
+ */
+const soloContiene = (texto, permitidos) => {
+  for (let i = 0; i < texto.length; i++) {
+    if (!permitidos.includes(texto[i].toLowerCase())) {
+      return false;
+    }
+  }
+  return true;
+};
+
+/**
+ * Quita del texto los caracteres que no están permitidos.
+ * @method filtrarTexto
+ * @param {string} texto - Valor escrito por el usuario.
+ * @param {string} permitidos - Caracteres aceptados.
+ * @return {string} El mismo texto, solo con los caracteres permitidos.
+ */
+const filtrarTexto = (texto, permitidos) => {
+  let limpio = "";
+  for (let i = 0; i < texto.length; i++) {
+    if (permitidos.includes(texto[i].toLowerCase())) {
+      limpio += texto[i];
+    }
+  }
+  return limpio;
+};
+
+/**
+ * Deja en el texto solo los números, para los campos numéricos.
  * @method dejarSoloNumeros
  * @param {string} texto - Valor escrito por el usuario.
  * @return {string} El mismo texto, solo con sus dígitos.
  */
 export const dejarSoloNumeros = (texto) => {
-  return texto.replace(/\D/g, "");
+  return filtrarTexto(texto, NUMEROS);
+};
+
+/**
+ * Deja en el texto solo las letras y espacios, para los campos de nombre, apellido y ciudad.
+ * @method dejarSoloLetras
+ * @param {string} texto - Valor escrito por el usuario.
+ * @return {string} El mismo texto, solo con sus letras y espacios.
+ */
+export const dejarSoloLetras = (texto) => {
+  return filtrarTexto(texto, LETRAS);
 };
 
 /**
@@ -74,14 +130,36 @@ export const limitarCantidad = (texto) => {
  * Convierte el texto ingresado como cantidad en un número válido.
  * @method leerCantidad
  * @param {string} texto - Valor escrito por el usuario.
- * @return {number|null} Entero entre 1 y el máximo, o null si el valor no es válido.
+ * @return {number|null} Número entre 1 y el máximo, o null si el valor no es válido.
  */
 export const leerCantidad = (texto) => {
-  if (!/^\d+$/.test(texto.trim())) {
+  const cantidad = Number(texto);
+  if (texto.trim() === "" || isNaN(cantidad) || cantidad < 1 || cantidad > CANTIDAD_MAXIMA) {
     return null;
   }
-  const cantidad = Number(texto);
-  return cantidad >= 1 && cantidad <= CANTIDAD_MAXIMA ? cantidad : null;
+  return cantidad;
+};
+
+/**
+ * Indica si un valor con contenido cumple el formato de su regla.
+ * @method cumpleFormato
+ * @param {object} regla - Regla del campo, con los caracteres permitidos y, si es numérico, su largo.
+ * @param {string} texto - Valor ingresado, sin espacios al principio ni al final.
+ * @return {boolean} true si el valor es correcto.
+ */
+const cumpleFormato = (regla, texto) => {
+  if (regla.permitidos === undefined) {
+    return true;
+  }
+  if (!soloContiene(texto, regla.permitidos)) {
+    return false;
+  }
+  if (regla.minimo === undefined) {
+    return true;
+  }
+  const largoCorrecto = texto.length >= regla.minimo && texto.length <= regla.maximo;
+  const empiezaConCero = regla.sinCeroInicial && texto[0] === "0";
+  return largoCorrecto && !empiezaConCero;
 };
 
 /**
@@ -93,16 +171,17 @@ export const leerCantidad = (texto) => {
  * @return {string|null} Mensaje de error, o null si el valor es correcto.
  */
 export const validarCampo = (campo, valor, exigirObligatorio) => {
-  const regla = REGLAS.find((item) => item.campo === campo);
+  const encontradas = REGLAS.filter((item) => item.campo === campo);
   const texto = valor.trim();
 
-  if (!regla) {
+  if (encontradas.length === 0) {
     return null;
   }
+  const regla = encontradas[0];
   if (texto === "") {
     return exigirObligatorio && regla.obligatorio ? regla.obligatorio : null;
   }
-  return regla.formato && !regla.formato.test(texto) ? regla.mensaje : null;
+  return cumpleFormato(regla, texto) ? null : regla.mensaje;
 };
 
 /**
@@ -113,10 +192,11 @@ export const validarCampo = (campo, valor, exigirObligatorio) => {
  * @return {{campo: string, mensaje: string}|null} Primer error encontrado, o null si todo es correcto.
  */
 export const validarCompra = (datos, metodoEnvio) => {
-  for (const regla of REGLAS) {
-    const mensaje = validarCampo(regla.campo, datos[regla.campo], true);
+  for (let i = 0; i < REGLAS.length; i++) {
+    const campo = REGLAS[i].campo;
+    const mensaje = validarCampo(campo, datos[campo], true);
     if (mensaje) {
-      return { campo: regla.campo, mensaje };
+      return { campo: campo, mensaje: mensaje };
     }
   }
 

@@ -1,5 +1,4 @@
 import Aviso from "@components/Aviso";
-import { useTitulo } from "@utils/hooks";
 
 /**
  * Página que se muestra cuando la ruta no existe.
@@ -7,8 +6,6 @@ import { useTitulo } from "@utils/hooks";
  * @return {JSX.Element} Aviso con un enlace al inicio.
  */
 const NoEncontrado = () => {
-  useTitulo("Página no encontrada");
-
   return (
     <Aviso
       titulo="Página no encontrada"

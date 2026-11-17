@@ -1,0 +1,98 @@
+@use "variables";
+
+.ventana-aviso {
+  margin: auto;
+  width: 420px;
+  max-width: calc(100% - 32px);
+  padding: 0;
+  border: none;
+  border-radius: variables.$radio-grande;
+  background: variables.$color-blanco;
+  color: variables.$color-texto;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+
+  &[open] {
+    animation: aparecer-aviso 0.2s ease-out;
+  }
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  h2 {
+    margin-bottom: 0;
+    font-size: 22px;
+  }
+
+  p {
+    color: variables.$color-texto-suave;
+    line-height: 1.5;
+  }
+}
+
+.ventana-aviso-botones {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.ventana-aviso-contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 28px 24px;
+  border-top: 6px solid variables.$color-eliminar;
+  text-align: center;
+}
+
+.ventana-aviso-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: variables.$color-eliminar;
+  color: variables.$color-blanco;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.ventana-aviso-exito {
+  .ventana-aviso-contenido {
+    border-top-color: variables.$color-confirmar;
+  }
+
+  .ventana-aviso-icono {
+    background: variables.$color-confirmar;
+  }
+}
+
+.ventana-aviso-boton {
+  flex: 1;
+  padding: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@keyframes aparecer-aviso {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ventana-aviso[open] {
+    animation: none;
+  }
+}
