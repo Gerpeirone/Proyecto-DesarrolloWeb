@@ -1,515 +1,517 @@
-[
-  {
-    "id": 1,
-    "nombre": "Remera Azul Design",
-    "precio": 30000,
-    "categoria": "remeras",
-    "imagen": "remeras/remera-azul-design.jpg",
-    "imagenSecundaria": "remeras/remera-azul-design-detras.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Diseño exclusivo y vibrante.",
-    "destacado": true
-  },
-  {
-    "id": 2,
-    "nombre": "Remera Blanca Basic",
-    "precio": 33000,
-    "categoria": "remeras",
-    "imagen": "remeras/remera-blanca-basic.jpg",
-    "imagenSecundaria": "remeras/remera-blanca-basic-perfil.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Algodón suave y calce perfecto.",
-    "destacado": false
-  },
-  {
-    "id": 3,
-    "nombre": "Remera Crema Simply",
-    "precio": 37000,
-    "categoria": "remeras",
-    "imagen": "remeras/remera-crema-simply.jpg",
-    "imagenSecundaria": "remeras/remera-crema-simply-detras.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Tono neutro, ideal para combinar.",
-    "destacado": false
-  },
-  {
-    "id": 4,
-    "nombre": "Remera Gris Over Estampada",
-    "precio": 41000,
-    "categoria": "remeras",
-    "imagen": "remeras/remera-gris-over-estampada.jpg",
-    "imagenSecundaria": "remeras/remera-gris-over-estampada-detras.png",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Estampado grande y estilo urbano.",
-    "destacado": false
-  },
-  {
-    "id": 5,
-    "nombre": "Remera Negra Basic",
-    "precio": 45000,
-    "categoria": "remeras",
-    "imagen": "remeras/remera-negra-basic.jpg",
-    "imagenSecundaria": "remeras/remera-negra-basic-detras.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "El clásico que nunca falla.",
-    "destacado": false
-  },
-  {
-    "id": 6,
-    "nombre": "Remera Negra Simply",
-    "precio": 50000,
-    "categoria": "remeras",
-    "imagen": "remeras/remera-negra-simply.jpg",
-    "imagenSecundaria": "remeras/remera-negra-simply-detras.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Corte clásico en negro, ideal para todos los días.",
-    "destacado": false
-  },
-  {
-    "id": 7,
-    "nombre": "Buzo Blanco Bordado",
-    "precio": 60000,
-    "categoria": "buzos",
-    "imagen": "buzos/buzo-blanco-bordado.jpg",
-    "imagenSecundaria": "buzos/buzo-blanco-bordado-2.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Detalle bordado de alta precisión.",
-    "destacado": false
-  },
-  {
-    "id": 8,
-    "nombre": "Buzo Design",
-    "precio": 70000,
-    "categoria": "buzos",
-    "imagen": "buzos/buzo-design.jpg",
-    "imagenSecundaria": "buzos/buzo-design-2.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Diseño gráfico único y moderno.",
-    "destacado": false
-  },
-  {
-    "id": 9,
-    "nombre": "Buzo Gris Desgastado",
-    "precio": 75000,
-    "categoria": "buzos",
-    "imagen": "buzos/buzo-gris-desgastado.jpg",
-    "imagenSecundaria": "buzos/buzo-gris-desgastado-2.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Efecto vintage desgastado.",
-    "destacado": false
-  },
-  {
-    "id": 10,
-    "nombre": "Buzo Gris Estampado",
-    "precio": 80000,
-    "categoria": "buzos",
-    "imagen": "buzos/buzo-gris-estampado.jpg",
-    "imagenSecundaria": "buzos/buzo-gris-estampado-2.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Estampado minimalista en la espalda.",
-    "destacado": false
-  },
-  {
-    "id": 11,
-    "nombre": "Buzo Negro Basic",
-    "precio": 90000,
-    "categoria": "buzos",
-    "imagen": "buzos/buzo-negro-basic.jpg",
-    "imagenSecundaria": "buzos/buzo-negro-basic-2.webp",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Buzo clásico de frisa de algodón.",
-    "destacado": false
-  },
-  {
-    "id": 12,
-    "nombre": "Buzo Negro Desgastado",
-    "precio": 100000,
-    "categoria": "buzos",
-    "imagen": "buzos/buzo-negro-desgastado.jpg",
-    "imagenSecundaria": "buzos/buzo-negro-desgastado-2.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Proceso de teñido artesanal para un estilo único.",
-    "destacado": true
-  },
-  {
-    "id": 13,
-    "nombre": "Cargo Color Crema",
-    "precio": 100000,
-    "categoria": "pantalones",
-    "imagen": "pantalones/cargo-color-crema.avif",
-    "imagenSecundaria": "pantalones/cargo-color-crema-2.avif",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Tela resistente con múltiples bolsillos.",
-    "destacado": false
-  },
-  {
-    "id": 14,
-    "nombre": "Cargo Color Marrón",
-    "precio": 105000,
-    "categoria": "pantalones",
-    "imagen": "pantalones/cargo-color-marron.jpg",
-    "imagenSecundaria": "pantalones/cargo-color-marron-2.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Cargo de corte recto y acabado mate.",
-    "destacado": false
-  },
-  {
-    "id": 15,
-    "nombre": "Cargo Color Negro con Puño",
-    "precio": 110000,
-    "categoria": "pantalones",
-    "imagen": "pantalones/cargo-color-negro-con-puno.jpg",
-    "imagenSecundaria": "pantalones/cargo-color-negro-con-puno-2.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Ajuste cómodo en el tobillo y costuras reforzadas.",
-    "destacado": true
-  },
-  {
-    "id": 16,
-    "nombre": "Cargo Color Verde Claro",
-    "precio": 115000,
-    "categoria": "pantalones",
-    "imagen": "pantalones/cargo-color-verde-clarito.jpg",
-    "imagenSecundaria": "pantalones/cargo-color-verde-clarito-2.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Estilo militar moderno en tono claro.",
-    "destacado": false
-  },
-  {
-    "id": 17,
-    "nombre": "Jean Azulado",
-    "precio": 120000,
-    "categoria": "pantalones",
-    "imagen": "pantalones/jean-azulado.webp",
-    "imagenSecundaria": "pantalones/jean-azulado-2.webp",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Denim de lavado oscuro y calce relajado.",
-    "destacado": false
-  },
-  {
-    "id": 18,
-    "nombre": "Jean Claro",
-    "precio": 122000,
-    "categoria": "pantalones",
-    "imagen": "pantalones/jean-clarito.jpeg",
-    "imagenSecundaria": "pantalones/jean-clarito-2.jpeg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Jean con lavado claro, ideal para el verano.",
-    "destacado": false
-  },
-  {
-    "id": 19,
-    "nombre": "Jean Clásico",
-    "precio": 125000,
-    "categoria": "pantalones",
-    "imagen": "pantalones/jean-clasico.jpg",
-    "imagenSecundaria": "pantalones/jean-clasico-2.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Corte recto, el denim de siempre.",
-    "destacado": false
-  },
-  {
-    "id": 20,
-    "nombre": "Jean Desgastado",
-    "precio": 127000,
-    "categoria": "pantalones",
-    "imagen": "pantalones/jean-desgastado.jpg",
-    "imagenSecundaria": "pantalones/jean-desgastado-2.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Efecto de uso natural y cómodo.",
-    "destacado": false
-  },
-  {
-    "id": 21,
-    "nombre": "Jean Oscuro",
-    "precio": 130000,
-    "categoria": "pantalones",
-    "imagen": "pantalones/jean-oscuro.jpg",
-    "imagenSecundaria": "pantalones/jean-oscuro-2.jpg",
-    "talles": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL",
-      "2XL",
-      "3XL"
-    ],
-    "descripcion": "Color oscuro, denim rígido de larga duración.",
-    "destacado": false
-  },
-  {
-    "id": 22,
-    "nombre": "Adidas Campus Gris",
-    "precio": 165000,
-    "categoria": "zapatillas",
-    "imagen": "zapatillas/adidas-campus-gris.webp",
-    "imagenSecundaria": "zapatillas/adidas-campus-gris-2.webp",
-    "talles": [
-      "38",
-      "39",
-      "40",
-      "41",
-      "42",
-      "43",
-      "44"
-    ],
-    "descripcion": "Clásico renovado en gamuza gris.",
-    "destacado": false
-  },
-  {
-    "id": 23,
-    "nombre": "Adidas Samba Clásicas Blancas",
-    "precio": 170000,
-    "categoria": "zapatillas",
-    "imagen": "zapatillas/adidas-samba-clasicas-blancas.avif",
-    "imagenSecundaria": "zapatillas/adidas-samba-clasicas-blancas-2.avif",
-    "talles": [
-      "38",
-      "39",
-      "40",
-      "41",
-      "42",
-      "43",
-      "44"
-    ],
-    "descripcion": "Silueta icónica con detalles en cuero.",
-    "destacado": false
-  },
-  {
-    "id": 24,
-    "nombre": "Adidas Samba Clásicas Negras",
-    "precio": 180000,
-    "categoria": "zapatillas",
-    "imagen": "zapatillas/adidas-samba-clasicas-negras.avif",
-    "imagenSecundaria": "zapatillas/adidas-samba-clasicas-negras-2.avif",
-    "talles": [
-      "38",
-      "39",
-      "40",
-      "41",
-      "42",
-      "43",
-      "44"
-    ],
-    "descripcion": "El modelo retro más buscado, máxima calidad.",
-    "destacado": false
-  },
-  {
-    "id": 25,
-    "nombre": "Adidas Campus Verdes",
-    "precio": 195000,
-    "categoria": "zapatillas",
-    "imagen": "zapatillas/campus-verdes.avif",
-    "imagenSecundaria": "zapatillas/campus-verdes-2.avif",
-    "talles": [
-      "38",
-      "39",
-      "40",
-      "41",
-      "42",
-      "43",
-      "44"
-    ],
-    "descripcion": "Color vibrante y estilo urbano.",
-    "destacado": false
-  },
-  {
-    "id": 26,
-    "nombre": "Vans Knu Blanco y Negro",
-    "precio": 200000,
-    "categoria": "zapatillas",
-    "imagen": "zapatillas/vans-knu-blanco-negro.jpg",
-    "imagenSecundaria": "zapatillas/vans-knu-blanco-negro-2.jpg",
-    "talles": [
-      "38",
-      "39",
-      "40",
-      "41",
-      "42",
-      "43",
-      "44"
-    ],
-    "descripcion": "La zapatilla de skate de los 90, máxima comodidad.",
-    "destacado": true
-  },
-  {
-    "id": 27,
-    "nombre": "Vans Knu Negras",
-    "precio": 210000,
-    "categoria": "zapatillas",
-    "imagen": "zapatillas/vans-knu-negras.jpg",
-    "imagenSecundaria": "zapatillas/vans-knu-negras-2.jpg",
-    "talles": [
-      "38",
-      "39",
-      "40",
-      "41",
-      "42",
-      "43",
-      "44"
-    ],
-    "descripcion": "Suela ancha, la tendencia actual.",
-    "destacado": false
-  }
-]
+{
+  "productos": [
+    {
+      "id": 1,
+      "nombre": "Remera Azul Design",
+      "precio": 30000,
+      "categoria": "remeras",
+      "imagen": "remeras/remera-azul-design.jpg",
+      "imagenSecundaria": "remeras/remera-azul-design-detras.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Diseño exclusivo y vibrante.",
+      "destacado": true
+    },
+    {
+      "id": 2,
+      "nombre": "Remera Blanca Basic",
+      "precio": 33000,
+      "categoria": "remeras",
+      "imagen": "remeras/remera-blanca-basic.jpg",
+      "imagenSecundaria": "remeras/remera-blanca-basic-perfil.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Algodón suave y calce perfecto.",
+      "destacado": false
+    },
+    {
+      "id": 3,
+      "nombre": "Remera Crema Simply",
+      "precio": 37000,
+      "categoria": "remeras",
+      "imagen": "remeras/remera-crema-simply.jpg",
+      "imagenSecundaria": "remeras/remera-crema-simply-detras.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Tono neutro, ideal para combinar.",
+      "destacado": false
+    },
+    {
+      "id": 4,
+      "nombre": "Remera Gris Over Estampada",
+      "precio": 41000,
+      "categoria": "remeras",
+      "imagen": "remeras/remera-gris-over-estampada.jpg",
+      "imagenSecundaria": "remeras/remera-gris-over-estampada-detras.png",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Estampado grande y estilo urbano.",
+      "destacado": false
+    },
+    {
+      "id": 5,
+      "nombre": "Remera Negra Basic",
+      "precio": 45000,
+      "categoria": "remeras",
+      "imagen": "remeras/remera-negra-basic.jpg",
+      "imagenSecundaria": "remeras/remera-negra-basic-detras.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "El clásico que nunca falla.",
+      "destacado": false
+    },
+    {
+      "id": 6,
+      "nombre": "Remera Negra Simply",
+      "precio": 50000,
+      "categoria": "remeras",
+      "imagen": "remeras/remera-negra-simply.jpg",
+      "imagenSecundaria": "remeras/remera-negra-simply-detras.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Corte clásico en negro, ideal para todos los días.",
+      "destacado": false
+    },
+    {
+      "id": 7,
+      "nombre": "Buzo Blanco Bordado",
+      "precio": 60000,
+      "categoria": "buzos",
+      "imagen": "buzos/buzo-blanco-bordado.jpg",
+      "imagenSecundaria": "buzos/buzo-blanco-bordado-2.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Detalle bordado de alta precisión.",
+      "destacado": false
+    },
+    {
+      "id": 8,
+      "nombre": "Buzo Design",
+      "precio": 70000,
+      "categoria": "buzos",
+      "imagen": "buzos/buzo-design.jpg",
+      "imagenSecundaria": "buzos/buzo-design-2.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Diseño gráfico único y moderno.",
+      "destacado": false
+    },
+    {
+      "id": 9,
+      "nombre": "Buzo Gris Desgastado",
+      "precio": 75000,
+      "categoria": "buzos",
+      "imagen": "buzos/buzo-gris-desgastado.jpg",
+      "imagenSecundaria": "buzos/buzo-gris-desgastado-2.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Efecto vintage desgastado.",
+      "destacado": false
+    },
+    {
+      "id": 10,
+      "nombre": "Buzo Gris Estampado",
+      "precio": 80000,
+      "categoria": "buzos",
+      "imagen": "buzos/buzo-gris-estampado.jpg",
+      "imagenSecundaria": "buzos/buzo-gris-estampado-2.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Estampado minimalista en la espalda.",
+      "destacado": false
+    },
+    {
+      "id": 11,
+      "nombre": "Buzo Negro Basic",
+      "precio": 90000,
+      "categoria": "buzos",
+      "imagen": "buzos/buzo-negro-basic.jpg",
+      "imagenSecundaria": "buzos/buzo-negro-basic-2.webp",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Buzo clásico de frisa de algodón.",
+      "destacado": false
+    },
+    {
+      "id": 12,
+      "nombre": "Buzo Negro Desgastado",
+      "precio": 100000,
+      "categoria": "buzos",
+      "imagen": "buzos/buzo-negro-desgastado.jpg",
+      "imagenSecundaria": "buzos/buzo-negro-desgastado-2.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Proceso de teñido artesanal para un estilo único.",
+      "destacado": true
+    },
+    {
+      "id": 13,
+      "nombre": "Cargo Color Crema",
+      "precio": 100000,
+      "categoria": "pantalones",
+      "imagen": "pantalones/cargo-color-crema.avif",
+      "imagenSecundaria": "pantalones/cargo-color-crema-2.avif",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Tela resistente con múltiples bolsillos.",
+      "destacado": false
+    },
+    {
+      "id": 14,
+      "nombre": "Cargo Color Marrón",
+      "precio": 105000,
+      "categoria": "pantalones",
+      "imagen": "pantalones/cargo-color-marron.jpg",
+      "imagenSecundaria": "pantalones/cargo-color-marron-2.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Cargo de corte recto y acabado mate.",
+      "destacado": false
+    },
+    {
+      "id": 15,
+      "nombre": "Cargo Color Negro con Puño",
+      "precio": 110000,
+      "categoria": "pantalones",
+      "imagen": "pantalones/cargo-color-negro-con-puno.jpg",
+      "imagenSecundaria": "pantalones/cargo-color-negro-con-puno-2.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Ajuste cómodo en el tobillo y costuras reforzadas.",
+      "destacado": true
+    },
+    {
+      "id": 16,
+      "nombre": "Cargo Color Verde Claro",
+      "precio": 115000,
+      "categoria": "pantalones",
+      "imagen": "pantalones/cargo-color-verde-clarito.jpg",
+      "imagenSecundaria": "pantalones/cargo-color-verde-clarito-2.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Estilo militar moderno en tono claro.",
+      "destacado": false
+    },
+    {
+      "id": 17,
+      "nombre": "Jean Azulado",
+      "precio": 120000,
+      "categoria": "pantalones",
+      "imagen": "pantalones/jean-azulado.webp",
+      "imagenSecundaria": "pantalones/jean-azulado-2.webp",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Denim de lavado oscuro y calce relajado.",
+      "destacado": false
+    },
+    {
+      "id": 18,
+      "nombre": "Jean Claro",
+      "precio": 122000,
+      "categoria": "pantalones",
+      "imagen": "pantalones/jean-clarito.jpeg",
+      "imagenSecundaria": "pantalones/jean-clarito-2.jpeg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Jean con lavado claro, ideal para el verano.",
+      "destacado": false
+    },
+    {
+      "id": 19,
+      "nombre": "Jean Clásico",
+      "precio": 125000,
+      "categoria": "pantalones",
+      "imagen": "pantalones/jean-clasico.jpg",
+      "imagenSecundaria": "pantalones/jean-clasico-2.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Corte recto, el denim de siempre.",
+      "destacado": false
+    },
+    {
+      "id": 20,
+      "nombre": "Jean Desgastado",
+      "precio": 127000,
+      "categoria": "pantalones",
+      "imagen": "pantalones/jean-desgastado.jpg",
+      "imagenSecundaria": "pantalones/jean-desgastado-2.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Efecto de uso natural y cómodo.",
+      "destacado": false
+    },
+    {
+      "id": 21,
+      "nombre": "Jean Oscuro",
+      "precio": 130000,
+      "categoria": "pantalones",
+      "imagen": "pantalones/jean-oscuro.jpg",
+      "imagenSecundaria": "pantalones/jean-oscuro-2.jpg",
+      "talles": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ],
+      "descripcion": "Color oscuro, denim rígido de larga duración.",
+      "destacado": false
+    },
+    {
+      "id": 22,
+      "nombre": "Adidas Campus Gris",
+      "precio": 165000,
+      "categoria": "zapatillas",
+      "imagen": "zapatillas/adidas-campus-gris.webp",
+      "imagenSecundaria": "zapatillas/adidas-campus-gris-2.webp",
+      "talles": [
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44"
+      ],
+      "descripcion": "Clásico renovado en gamuza gris.",
+      "destacado": false
+    },
+    {
+      "id": 23,
+      "nombre": "Adidas Samba Clásicas Blancas",
+      "precio": 170000,
+      "categoria": "zapatillas",
+      "imagen": "zapatillas/adidas-samba-clasicas-blancas.avif",
+      "imagenSecundaria": "zapatillas/adidas-samba-clasicas-blancas-2.avif",
+      "talles": [
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44"
+      ],
+      "descripcion": "Silueta icónica con detalles en cuero.",
+      "destacado": false
+    },
+    {
+      "id": 24,
+      "nombre": "Adidas Samba Clásicas Negras",
+      "precio": 180000,
+      "categoria": "zapatillas",
+      "imagen": "zapatillas/adidas-samba-clasicas-negras.avif",
+      "imagenSecundaria": "zapatillas/adidas-samba-clasicas-negras-2.avif",
+      "talles": [
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44"
+      ],
+      "descripcion": "El modelo retro más buscado, máxima calidad.",
+      "destacado": false
+    },
+    {
+      "id": 25,
+      "nombre": "Adidas Campus Verdes",
+      "precio": 195000,
+      "categoria": "zapatillas",
+      "imagen": "zapatillas/campus-verdes.avif",
+      "imagenSecundaria": "zapatillas/campus-verdes-2.avif",
+      "talles": [
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44"
+      ],
+      "descripcion": "Color vibrante y estilo urbano.",
+      "destacado": false
+    },
+    {
+      "id": 26,
+      "nombre": "Vans Knu Blanco y Negro",
+      "precio": 200000,
+      "categoria": "zapatillas",
+      "imagen": "zapatillas/vans-knu-blanco-negro.jpg",
+      "imagenSecundaria": "zapatillas/vans-knu-blanco-negro-2.jpg",
+      "talles": [
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44"
+      ],
+      "descripcion": "La zapatilla de skate de los 90, máxima comodidad.",
+      "destacado": true
+    },
+    {
+      "id": 27,
+      "nombre": "Vans Knu Negras",
+      "precio": 210000,
+      "categoria": "zapatillas",
+      "imagen": "zapatillas/vans-knu-negras.jpg",
+      "imagenSecundaria": "zapatillas/vans-knu-negras-2.jpg",
+      "talles": [
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44"
+      ],
+      "descripcion": "Suela ancha, la tendencia actual.",
+      "destacado": false
+    }
+  ]
+}

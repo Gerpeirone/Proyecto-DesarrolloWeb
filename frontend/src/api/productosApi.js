@@ -1,15 +1,15 @@
-import productosLocales from "@data/productos.json";
+import datos from "@data/productos.json";
 
 const URL_API = import.meta.env.VITE_API_URL;
 
 /**
- * Pide una lista de productos al servicio simulado.
- * @method pedirProductos
- * @param {string} filtro - Parámetros de búsqueda, por ejemplo "?categoria=remeras".
- * @return {Promise<Array<object>>} Productos recibidos.
+ * Pide datos al servicio simulado (json-server).
+ * @method pedirAlServicio
+ * @param {string} ruta - Ruta a consultar, por ejemplo "/productos?categoria=remeras".
+ * @return {Promise<object|Array<object>>} Datos recibidos.
  */
-const pedirProductos = async (filtro) => {
-  const respuesta = await fetch(`${URL_API}/productos${filtro}`);
+const pedirAlServicio = async (ruta) => {
+  const respuesta = await fetch(`${URL_API}${ruta}`);
   if (!respuesta.ok) {
     throw new Error("No se pudo consultar el servicio de productos.");
   }
@@ -25,25 +25,21 @@ const pedirProductos = async (filtro) => {
  */
 export const obtenerProductos = async (categoria) => {
   if (URL_API) {
-    return pedirProductos(categoria ? `?categoria=${categoria}` : "");
+    return pedirAlServicio(categoria ? `/productos?categoria=${categoria}` : "/productos");
   }
   return categoria
-    ? productosLocales.filter((producto) => producto.categoria === categoria)
-    : productosLocales;
+    ? datos.productos.filter((producto) => producto.categoria === categoria)
+    : datos.productos;
 };
 
 /**
  * Obtiene un producto del catálogo por su identificador.
  * @method obtenerProductoPorId
- * @param {number} id - Identificador del producto.
+ * @param {string} id - Identificador del producto, tomado de la dirección.
  * @return {Promise<object|null>} Producto encontrado, o null si no existe.
  */
 export const obtenerProductoPorId = async (id) => {
-  if (!Number.isInteger(id)) {
-    return null;
-  }
-  const productos = URL_API
-    ? await pedirProductos(`?id=${id}`)
-    : productosLocales.filter((producto) => producto.id === id);
-  return productos[0] || null;
+  const productos = await obtenerProductos();
+  const encontrados = productos.filter((producto) => Number(producto.id) === Number(id));
+  return encontrados.length > 0 ? encontrados[0] : null;
 };
