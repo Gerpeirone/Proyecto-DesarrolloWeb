@@ -1,26 +1,146 @@
-"use strict";
-
 const CLAVE_CARRITO = "crewlab_carrito";
 const CANTIDAD_MAXIMA = 10;
+const NUMEROS = "0123456789";
+const LETRAS = "abcdefghijklmnñopqrstuvwxyzáéíóúü ";
+
+const TIPOS_AVISO = {
+  error: { titulo: "Atención", icono: "!" },
+  exito: { titulo: "¡Listo!", icono: "✓" },
+  confirmar: { titulo: "¿Estás seguro?", icono: "?" },
+};
+
+let accionConfirmada = null;
+let destinoAviso = "";
 
 /**
- * Da formato de moneda argentina a un número.
+ * Da formato de moneda argentina a un número, sin decimales.
  * @method formatearPrecio
  * @param {number} valor - Importe a mostrar.
  * @return {string} Importe con el signo $ y separador de miles.
  */
 const formatearPrecio = (valor) => {
-  return "$" + valor.toLocaleString("es-AR");
+  const formato = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    maximumFractionDigits: 0,
+  });
+  return formato.format(valor);
 };
 
 /**
- * Borra de un campo todo lo que no sea un dígito, para que solo se puedan escribir números.
+ * Indica si todos los caracteres de un texto están dentro de los permitidos.
+ * @method soloContiene
+ * @param {string} texto - Texto a revisar.
+ * @param {string} permitidos - Caracteres aceptados, por ejemplo NUMEROS o LETRAS.
+ * @return {boolean} true si el texto no tiene ningún carácter fuera de los permitidos.
+ */
+const soloContiene = (texto, permitidos) => {
+  for (let i = 0; i < texto.length; i++) {
+    if (!permitidos.includes(texto[i].toLowerCase())) {
+      return false;
+    }
+  }
+  return true;
+};
+
+/**
+ * Borra de un campo los caracteres que no están permitidos.
+ * @method filtrarCampo
+ * @param {HTMLInputElement} campo - Campo en el que escribe el usuario.
+ * @param {string} permitidos - Caracteres aceptados, por ejemplo NUMEROS o LETRAS.
+ * @return {void}
+ */
+const filtrarCampo = (campo, permitidos) => {
+  let limpio = "";
+  for (let i = 0; i < campo.value.length; i++) {
+    if (permitidos.includes(campo.value[i].toLowerCase())) {
+      limpio += campo.value[i];
+    }
+  }
+  campo.value = limpio;
+};
+
+/**
+ * Deja en un campo solo los números que escribió el usuario.
  * @method dejarSoloNumeros
  * @param {HTMLInputElement} campo - Campo en el que escribe el usuario.
  * @return {void}
  */
 const dejarSoloNumeros = (campo) => {
-  campo.value = campo.value.replace(/\D/g, "");
+  filtrarCampo(campo, NUMEROS);
+};
+
+/**
+ * Deja en un campo solo las letras y espacios que escribió el usuario.
+ * @method dejarSoloLetras
+ * @param {HTMLInputElement} campo - Campo en el que escribe el usuario.
+ * @return {void}
+ */
+const dejarSoloLetras = (campo) => {
+  filtrarCampo(campo, LETRAS);
+};
+
+/**
+ * Muestra un mensaje al usuario en la ventana de aviso (dialog) de CrewLab.
+ * @method mostrarAviso
+ * @param {string} mensaje - Texto que se le muestra al usuario.
+ * @param {string} tipo - "error" para un problema, "exito" para una acción realizada o "confirmar" para una pregunta.
+ * @param {string} destino - Página a la que se va al aceptar el aviso; vacío para quedarse en la misma.
+ * @return {void}
+ */
+const mostrarAviso = (mensaje, tipo = "error", destino = "") => {
+  const aviso = document.getElementById("aviso");
+  if (tipo === "exito") {
+    aviso.classList.add("ventana-aviso-exito");
+  } else {
+    aviso.classList.remove("ventana-aviso-exito");
+  }
+  document.getElementById("aviso-icono").innerText = TIPOS_AVISO[tipo].icono;
+  document.getElementById("aviso-titulo").innerText = TIPOS_AVISO[tipo].titulo;
+  document.getElementById("aviso-texto").innerText = mensaje;
+  document.getElementById("aviso-aceptar").innerText = "Aceptar";
+  document.getElementById("aviso-cancelar").classList.add("oculto");
+  destinoAviso = destino;
+  accionConfirmada = null;
+  if (!aviso.open) {
+    aviso.showModal();
+  }
+};
+
+/**
+ * Pregunta al usuario si quiere realizar una acción que no se puede deshacer.
+ * La acción solo se ejecuta si elige el botón de confirmar.
+ * @method pedirConfirmacion
+ * @param {string} mensaje - Pregunta que se le muestra al usuario.
+ * @param {string} textoBoton - Texto del botón que confirma la acción.
+ * @param {Function} accion - Función que se ejecuta si el usuario confirma.
+ * @return {void}
+ */
+const pedirConfirmacion = (mensaje, textoBoton, accion) => {
+  mostrarAviso(mensaje, "confirmar");
+  document.getElementById("aviso-aceptar").innerText = textoBoton;
+  const cancelar = document.getElementById("aviso-cancelar");
+  cancelar.classList.remove("oculto");
+  cancelar.focus();
+  accionConfirmada = accion;
+};
+
+/**
+ * Cierra la ventana de aviso. Si el usuario confirmó, realiza la acción pendiente
+ * y, si el aviso tenía una página de destino, la abre.
+ * @method responderAviso
+ * @param {boolean} confirmado - true si eligió Aceptar (o el botón de confirmar), false si eligió Cancelar.
+ * @return {void}
+ */
+const responderAviso = (confirmado) => {
+  document.getElementById("aviso").close();
+  if (confirmado && accionConfirmada !== null) {
+    accionConfirmada();
+  }
+  accionConfirmada = null;
+  if (confirmado && destinoAviso !== "") {
+    window.location.href = destinoAviso;
+  }
 };
 
 /**
@@ -30,16 +150,7 @@ const dejarSoloNumeros = (campo) => {
  * @return {boolean} true si tiene nombre, precio y cantidad válidos.
  */
 const esItemValido = (item) => {
-  return (
-    item !== null &&
-    typeof item === "object" &&
-    typeof item.nombre === "string" &&
-    item.nombre !== "" &&
-    Number.isFinite(item.precio) &&
-    item.precio > 0 &&
-    Number.isInteger(item.cantidad) &&
-    item.cantidad > 0
-  );
+  return item !== null && item.nombre !== undefined && item.precio > 0 && item.cantidad > 0;
 };
 
 /**
@@ -48,12 +159,11 @@ const esItemValido = (item) => {
  * @return {Array<{nombre: string, precio: number, cantidad: number}>} Productos del carrito.
  */
 const leerCarrito = () => {
-  try {
-    const guardado = JSON.parse(localStorage.getItem(CLAVE_CARRITO) || "[]");
-    return Array.isArray(guardado) ? guardado.filter(esItemValido) : [];
-  } catch {
+  const guardado = JSON.parse(localStorage.getItem(CLAVE_CARRITO));
+  if (guardado === null) {
     return [];
   }
+  return guardado.filter(esItemValido);
 };
 
 /**
@@ -63,7 +173,11 @@ const leerCarrito = () => {
  * @return {number} Importe total de los productos.
  */
 const calcularSubtotal = (carrito) => {
-  return carrito.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
+  let suma = 0;
+  carrito.forEach((item) => {
+    suma += item.precio * item.cantidad;
+  });
+  return suma;
 };
 
 /**
@@ -73,11 +187,14 @@ const calcularSubtotal = (carrito) => {
  */
 const actualizarContador = () => {
   const contador = document.getElementById("carrito-contador");
-  if (!contador) {
+  if (contador === null) {
     return;
   }
-  const cantidad = leerCarrito().reduce((suma, item) => suma + item.cantidad, 0);
-  contador.textContent = cantidad > 0 ? String(cantidad) : "";
+  let cantidad = 0;
+  leerCarrito().forEach((item) => {
+    cantidad += item.cantidad;
+  });
+  contador.innerText = cantidad > 0 ? cantidad : "";
 };
 
 /**
@@ -98,35 +215,47 @@ const guardarCarrito = (carrito) => {
  */
 const dibujarCarrito = () => {
   const lista = document.getElementById("carrito-lista");
-  const total = document.getElementById("carrito-total");
-  if (!lista || !total) {
+  if (lista === null) {
     return;
   }
 
   const carrito = leerCarrito();
-  lista.innerHTML = "";
+  let contenido = "";
 
   if (carrito.length === 0) {
-    lista.innerHTML = '<li class="carrito-vacio">Tu carrito está vacío.</li>';
+    contenido = '<li class="carrito-vacio">Tu carrito está vacío.</li>';
   }
 
   carrito.forEach((item, indice) => {
-    const fila = document.createElement("li");
-    fila.className = "carrito-item";
-    fila.innerHTML = `
-      <span class="item-info"></span>
-      <span class="item-controles">
-        <button type="button" data-indice="${indice}" onclick="cambiarCantidad(this, -1)" aria-label="Restar una unidad">-</button>
-        <span class="item-cantidad">${item.cantidad}</span>
-        <button type="button" data-indice="${indice}" onclick="cambiarCantidad(this, 1)" aria-label="Sumar una unidad">+</button>
-        <button type="button" class="boton-eliminar" data-indice="${indice}" onclick="eliminarDelCarrito(this)" aria-label="Eliminar del carrito">✕</button>
-      </span>`;
-    fila.querySelector(".item-info").textContent =
-      `${item.nombre} - ${formatearPrecio(item.precio * item.cantidad)}`;
-    lista.appendChild(fila);
+    contenido += `<li class="carrito-item">
+        <span class="item-info">${item.nombre} - ${formatearPrecio(item.precio * item.cantidad)}</span>
+        <span class="item-controles">
+          <button type="button" value="${indice}" onclick="cambiarCantidad(this.value, -1)" aria-label="Restar una unidad">-</button>
+          <span class="item-cantidad">${item.cantidad}</span>
+          <button type="button" value="${indice}" onclick="cambiarCantidad(this.value, 1)" aria-label="Sumar una unidad">+</button>
+          <button type="button" class="boton-eliminar" value="${indice}" onclick="eliminarDelCarrito(this.value)" aria-label="Eliminar del carrito">✕</button>
+        </span>
+      </li>`;
   });
 
-  total.textContent = "Total: " + formatearPrecio(calcularSubtotal(carrito));
+  lista.innerHTML = contenido;
+  document.getElementById("carrito-total").innerText = "Total: " + formatearPrecio(calcularSubtotal(carrito));
+};
+
+/**
+ * Deja una cantidad dentro del rango permitido, entre 1 y el máximo por producto.
+ * @method ajustarCantidad
+ * @param {number} cantidad - Cantidad pedida.
+ * @return {number} Cantidad dentro del rango permitido.
+ */
+const ajustarCantidad = (cantidad) => {
+  if (cantidad < 1) {
+    return 1;
+  }
+  if (cantidad > CANTIDAD_MAXIMA) {
+    return CANTIDAD_MAXIMA;
+  }
+  return cantidad;
 };
 
 /**
@@ -137,11 +266,16 @@ const dibujarCarrito = () => {
  */
 const agregarAlCarrito = (item) => {
   const carrito = leerCarrito();
-  const existente = carrito.find((guardado) => guardado.nombre === item.nombre);
+  let encontrado = false;
 
-  if (existente) {
-    existente.cantidad = Math.min(CANTIDAD_MAXIMA, existente.cantidad + item.cantidad);
-  } else {
+  carrito.forEach((guardado) => {
+    if (guardado.nombre === item.nombre) {
+      guardado.cantidad = ajustarCantidad(guardado.cantidad + item.cantidad);
+      encontrado = true;
+    }
+  });
+
+  if (!encontrado) {
     carrito.push(item);
   }
 
@@ -152,33 +286,38 @@ const agregarAlCarrito = (item) => {
 /**
  * Suma o resta unidades de un producto del carrito, entre 1 y el máximo permitido.
  * @method cambiarCantidad
- * @param {HTMLElement} boton - Botón presionado; su atributo data-indice indica la posición del producto.
+ * @param {string} posicion - Posición del producto dentro del carrito (valor del botón presionado).
  * @param {number} variacion - Unidades a sumar (positivo) o restar (negativo).
  * @return {void}
  */
-const cambiarCantidad = (boton, variacion) => {
-  const indice = Number(boton.dataset.indice);
+const cambiarCantidad = (posicion, variacion) => {
   const carrito = leerCarrito();
-  if (!carrito[indice]) {
+  const item = carrito[Number(posicion)];
+  if (item === undefined) {
     return;
   }
-  const nuevaCantidad = carrito[indice].cantidad + variacion;
-  carrito[indice].cantidad = Math.min(CANTIDAD_MAXIMA, Math.max(1, nuevaCantidad));
+  item.cantidad = ajustarCantidad(item.cantidad + variacion);
   guardarCarrito(carrito);
   dibujarCarrito();
 };
 
 /**
- * Quita un producto del carrito.
+ * Pregunta si se quiere quitar un producto del carrito y, si el usuario confirma, lo quita.
  * @method eliminarDelCarrito
- * @param {HTMLElement} boton - Botón presionado; su atributo data-indice indica la posición del producto.
+ * @param {string} posicion - Posición del producto dentro del carrito (valor del botón presionado).
  * @return {void}
  */
-const eliminarDelCarrito = (boton) => {
-  const carrito = leerCarrito();
-  carrito.splice(Number(boton.dataset.indice), 1);
-  guardarCarrito(carrito);
-  dibujarCarrito();
+const eliminarDelCarrito = (posicion) => {
+  const item = leerCarrito()[Number(posicion)];
+  if (item === undefined) {
+    return;
+  }
+  pedirConfirmacion(`¿Querés quitar "${item.nombre}" del carrito?`, "Eliminar", () => {
+    const carrito = leerCarrito();
+    carrito.splice(Number(posicion), 1);
+    guardarCarrito(carrito);
+    dibujarCarrito();
+  });
 };
 
 /**
@@ -192,15 +331,26 @@ const vaciarCarrito = () => {
 };
 
 /**
+ * Pregunta si se quiere vaciar el carrito y, si el usuario confirma, lo vacía.
+ * Si el carrito ya está vacío no pregunta nada.
+ * @method confirmarVaciarCarrito
+ * @param {Function} alVaciar - Función que vacía el carrito y actualiza la pantalla.
+ * @return {void}
+ */
+const confirmarVaciarCarrito = (alVaciar = vaciarCarrito) => {
+  if (leerCarrito().length === 0) {
+    return;
+  }
+  pedirConfirmacion("Se van a quitar todos los productos del carrito.", "Vaciar carrito", alVaciar);
+};
+
+/**
  * Oculta la ventana del carrito.
  * @method cerrarCarrito
  * @return {void}
  */
 const cerrarCarrito = () => {
-  const ventana = document.getElementById("carrito-modal");
-  if (ventana) {
-    ventana.classList.add("oculto");
-  }
+  document.getElementById("carrito-modal").classList.add("oculto");
 };
 
 /**
@@ -209,12 +359,8 @@ const cerrarCarrito = () => {
  * @return {void}
  */
 const alternarCarrito = () => {
-  const ventana = document.getElementById("carrito-modal");
-  if (!ventana) {
-    return;
-  }
   dibujarCarrito();
-  ventana.classList.toggle("oculto");
+  document.getElementById("carrito-modal").classList.toggle("oculto");
 };
 
 /**
@@ -223,8 +369,7 @@ const alternarCarrito = () => {
  * @return {void}
  */
 const alternarMenu = () => {
-  const abierto = document.getElementById("menu").classList.toggle("activo");
-  document.getElementById("menu-boton").setAttribute("aria-expanded", String(abierto));
+  document.getElementById("menu").classList.toggle("activo");
 };
 
 /**
@@ -234,7 +379,7 @@ const alternarMenu = () => {
  */
 const irAlCheckout = () => {
   if (leerCarrito().length === 0) {
-    alert("Tu carrito está vacío. Agregá un producto antes de continuar.");
+    mostrarAviso("Tu carrito está vacío. Agregá un producto antes de continuar.");
     return;
   }
   window.location.href = "checkout.html";

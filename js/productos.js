@@ -1,5 +1,3 @@
-"use strict";
-
 const TALLES_ROPA = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
 const TALLES_CALZADO = ["38", "39", "40", "41", "42", "43", "44"];
 
@@ -52,34 +50,41 @@ const obtenerIdDeUrl = () => {
  * @return {object|null} Producto encontrado, o null si no existe.
  */
 const buscarProducto = (id) => {
-  return PRODUCTOS.find((producto) => producto.id === id) || null;
+  const encontrados = PRODUCTOS.filter((producto) => producto.id === id);
+  return encontrados.length > 0 ? encontrados[0] : null;
 };
 
 /**
- * Cambia la imagen principal por la miniatura elegida.
+ * Muestra en grande la miniatura elegida y la marca como activa.
  * @method cambiarImagen
- * @param {HTMLImageElement} elegida - Miniatura en la que hizo clic el usuario.
+ * @param {string} idElegida - Identificador de la miniatura en la que hizo clic el usuario.
  * @return {void}
  */
-const cambiarImagen = (elegida) => {
-  document.querySelectorAll("#miniaturas img").forEach((miniatura) => {
-    miniatura.classList.toggle("activa", miniatura === elegida);
+const cambiarImagen = (idElegida) => {
+  const galeria = [productoActual.imagen, productoActual.imagenSecundaria];
+  galeria.forEach((ruta, indice) => {
+    const miniatura = document.getElementById(`miniatura-${indice}`);
+    if (miniatura.id === idElegida) {
+      miniatura.classList.add("activa");
+      document.getElementById("imagen-principal").src = ruta;
+    } else {
+      miniatura.classList.remove("activa");
+    }
   });
-  document.getElementById("imagen-principal").src = elegida.src;
 };
 
 /**
- * Lee la cantidad ingresada y comprueba que sea un entero entre 1 y el máximo.
+ * Lee la cantidad ingresada y comprueba que sea un número entre 1 y el máximo.
  * @method leerCantidad
  * @return {number|null} Cantidad ingresada, o null si el valor no es válido.
  */
 const leerCantidad = () => {
   const texto = document.getElementById("cantidad").value.trim();
-  if (!/^\d+$/.test(texto)) {
+  const cantidad = Number(texto);
+  if (texto === "" || isNaN(cantidad) || cantidad < 1 || cantidad > CANTIDAD_MAXIMA) {
     return null;
   }
-  const cantidad = Number(texto);
-  return cantidad >= 1 && cantidad <= CANTIDAD_MAXIMA ? cantidad : null;
+  return cantidad;
 };
 
 /**
@@ -105,11 +110,11 @@ const limitarCantidad = (campo) => {
 const actualizarSubtotal = () => {
   const cantidad = leerCantidad();
   const subtotal = document.getElementById("producto-subtotal");
-  if (!productoActual || cantidad === null) {
-    subtotal.textContent = "Subtotal: -";
+  if (productoActual === null || cantidad === null) {
+    subtotal.innerText = "Subtotal: -";
     return;
   }
-  subtotal.textContent = "Subtotal: " + formatearPrecio(productoActual.precio * cantidad);
+  subtotal.innerText = "Subtotal: " + formatearPrecio(productoActual.precio * cantidad);
 };
 
 /**
@@ -121,30 +126,33 @@ const actualizarSubtotal = () => {
 const mostrarProducto = () => {
   productoActual = buscarProducto(obtenerIdDeUrl());
 
-  if (!productoActual) {
+  if (productoActual === null) {
     document.getElementById("producto-detalle").classList.add("oculto");
     document.getElementById("producto-no-encontrado").classList.remove("oculto");
     return;
   }
 
-  document.title = "CrewLab - " + productoActual.nombre;
-  document.getElementById("producto-nombre").textContent = productoActual.nombre;
-  document.getElementById("producto-precio").textContent = formatearPrecio(productoActual.precio);
-  document.getElementById("producto-descripcion").textContent = productoActual.descripcion;
+  document.getElementById("producto-nombre").innerText = productoActual.nombre;
+  document.getElementById("producto-precio").innerText = formatearPrecio(productoActual.precio);
+  document.getElementById("producto-descripcion").innerText = productoActual.descripcion;
 
   const imagenPrincipal = document.getElementById("imagen-principal");
   imagenPrincipal.src = productoActual.imagen;
   imagenPrincipal.alt = productoActual.nombre;
 
+  let miniaturas = "";
   const galeria = [productoActual.imagen, productoActual.imagenSecundaria];
-  document.getElementById("miniaturas").innerHTML = galeria
-    .map((ruta, indice) => `<img src="${ruta}" alt="${productoActual.nombre}, vista ${indice + 1}" onclick="cambiarImagen(this)">`)
-    .join("");
-  document.querySelector("#miniaturas img").classList.add("activa");
+  galeria.forEach((ruta, indice) => {
+    miniaturas += `<img src="${ruta}" id="miniatura-${indice}" alt="${productoActual.nombre}, vista ${indice + 1}" onclick="cambiarImagen(this.id)">`;
+  });
+  document.getElementById("miniaturas").innerHTML = miniaturas;
+  document.getElementById("miniatura-0").classList.add("activa");
 
-  document.getElementById("talle").innerHTML = productoActual.talles
-    .map((talle) => `<option value="${talle}">${talle}</option>`)
-    .join("");
+  let talles = "";
+  productoActual.talles.forEach((talle) => {
+    talles += `<option value="${talle}">${talle}</option>`;
+  });
+  document.getElementById("talle").innerHTML = talles;
 
   actualizarSubtotal();
 };
@@ -160,10 +168,9 @@ const agregarProductoActual = () => {
   const cantidad = leerCantidad();
 
   if (cantidad === null) {
-    alert(`Ingresá una cantidad válida: un número entero entre 1 y ${CANTIDAD_MAXIMA}.`);
+    mostrarAviso(`Ingresá una cantidad válida: un número entero entre 1 y ${CANTIDAD_MAXIMA}.`);
     campoCantidad.value = "";
     actualizarSubtotal();
-    campoCantidad.focus();
     return;
   }
 
@@ -173,7 +180,7 @@ const agregarProductoActual = () => {
     precio: productoActual.precio,
     cantidad: cantidad,
   });
-  alert("Producto agregado al carrito.");
+  mostrarAviso("Producto agregado al carrito.", "exito");
 };
 
 mostrarProducto();

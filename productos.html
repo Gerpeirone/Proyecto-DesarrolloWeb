@@ -18,7 +18,7 @@
         <button class="carrito" id="carrito-boton" type="button" onclick="alternarCarrito()" aria-label="Abrir carrito">
           🛒<span class="carrito-contador" id="carrito-contador"></span>
         </button>
-        <button class="menu-hamburguesa" id="menu-boton" type="button" onclick="alternarMenu()" aria-label="Abrir menú" aria-expanded="false">☰</button>
+        <button class="menu-hamburguesa" id="menu-boton" type="button" onclick="alternarMenu()" aria-label="Abrir menú">☰</button>
       </div>
       <nav class="menu-desplegable" id="menu" aria-label="Navegación principal">
         <ul>
@@ -77,11 +77,23 @@
     <ul id="carrito-lista"></ul>
     <p id="carrito-total">Total: $0</p>
     <div class="carrito-botones">
-      <button type="button" class="boton-secundario" onclick="vaciarCarrito()">Vaciar carrito</button>
+      <button type="button" class="boton-secundario" onclick="confirmarVaciarCarrito()">Vaciar carrito</button>
       <button type="button" class="boton-secundario" onclick="cerrarCarrito()">Cerrar</button>
       <button type="button" class="boton-confirmar" onclick="irAlCheckout()">Finalizar compra</button>
     </div>
   </div>
+
+  <dialog id="aviso" class="ventana-aviso" aria-labelledby="aviso-titulo" aria-describedby="aviso-texto">
+    <div class="ventana-aviso-contenido">
+      <span id="aviso-icono" class="ventana-aviso-icono" aria-hidden="true">!</span>
+      <h2 id="aviso-titulo">Atención</h2>
+      <p id="aviso-texto"></p>
+      <div class="ventana-aviso-botones">
+        <button type="button" id="aviso-cancelar" class="ventana-aviso-boton boton-secundario oculto" onclick="responderAviso(false)">Cancelar</button>
+        <button type="button" id="aviso-aceptar" class="ventana-aviso-boton" onclick="responderAviso(true)">Aceptar</button>
+      </div>
+    </div>
+  </dialog>
 
   <script src="js/script.js"></script>
   <script src="js/productos.js"></script>

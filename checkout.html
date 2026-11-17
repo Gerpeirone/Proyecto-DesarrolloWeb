@@ -15,7 +15,7 @@
     <header>
       <h1 class="logo"><a href="index.html">CrewLab</a></h1>
       <div class="acciones">
-        <button class="menu-hamburguesa" id="menu-boton" type="button" onclick="alternarMenu()" aria-label="Abrir menú" aria-expanded="false">☰</button>
+        <button class="menu-hamburguesa" id="menu-boton" type="button" onclick="alternarMenu()" aria-label="Abrir menú">☰</button>
       </div>
       <nav class="menu-desplegable" id="menu" aria-label="Navegación principal">
         <ul>
@@ -61,9 +61,9 @@
 
           <h3>Datos del comprador</h3>
           <label for="nombre">Nombre</label>
-          <input type="text" id="nombre" name="nombre" placeholder="Ej.: Juan" onblur="validarSoloLetras('nombre', 'El nombre')">
+          <input type="text" id="nombre" name="nombre" placeholder="Ej.: Juan" oninput="dejarSoloLetras(this)" onblur="validarSoloLetras('nombre', 'El nombre')">
           <label for="apellido">Apellido</label>
-          <input type="text" id="apellido" name="apellido" placeholder="Ej.: Pérez" onblur="validarSoloLetras('apellido', 'El apellido')">
+          <input type="text" id="apellido" name="apellido" placeholder="Ej.: Pérez" oninput="dejarSoloLetras(this)" onblur="validarSoloLetras('apellido', 'El apellido')">
           <label for="dni">DNI</label>
           <input type="text" id="dni" name="dni" placeholder="Solo números, 7 u 8 dígitos" inputmode="numeric" maxlength="8" oninput="dejarSoloNumeros(this)" onblur="validarDni()">
           <label for="genero">Género</label>
@@ -86,7 +86,7 @@
           <label for="codigo-postal">Código postal</label>
           <input type="text" id="codigo-postal" name="codigo-postal" placeholder="Ej.: 5000" inputmode="numeric" maxlength="4" oninput="dejarSoloNumeros(this)" onblur="validarCodigoPostal()">
           <label for="ciudad">Ciudad</label>
-          <input type="text" id="ciudad" name="ciudad" placeholder="Ej.: Córdoba" onblur="validarSoloLetras('ciudad', 'La ciudad')">
+          <input type="text" id="ciudad" name="ciudad" placeholder="Ej.: Córdoba" oninput="dejarSoloLetras(this)" onblur="validarSoloLetras('ciudad', 'La ciudad')">
           <label for="provincia">Provincia</label>
           <select id="provincia" name="provincia" onchange="actualizarTotales()">
             <option value="">Seleccioná una opción</option>
@@ -108,6 +108,18 @@
       <p>&copy; 2026 CrewLab - Todos los derechos reservados.</p>
     </footer>
   </div>
+
+  <dialog id="aviso" class="ventana-aviso" aria-labelledby="aviso-titulo" aria-describedby="aviso-texto">
+    <div class="ventana-aviso-contenido">
+      <span id="aviso-icono" class="ventana-aviso-icono" aria-hidden="true">!</span>
+      <h2 id="aviso-titulo">Atención</h2>
+      <p id="aviso-texto"></p>
+      <div class="ventana-aviso-botones">
+        <button type="button" id="aviso-cancelar" class="ventana-aviso-boton boton-secundario oculto" onclick="responderAviso(false)">Cancelar</button>
+        <button type="button" id="aviso-aceptar" class="ventana-aviso-boton" onclick="responderAviso(true)">Aceptar</button>
+      </div>
+    </div>
+  </dialog>
 
   <script src="js/script.js"></script>
   <script src="js/checkout.js"></script>

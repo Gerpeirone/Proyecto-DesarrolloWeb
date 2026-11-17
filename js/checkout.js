@@ -1,5 +1,3 @@
-"use strict";
-
 const COSTOS_ENVIO = { domicilio: 2500, express: 6000, local: 0 };
 const PROVINCIA_EXPRESS = "Córdoba";
 
@@ -9,7 +7,13 @@ const PROVINCIA_EXPRESS = "Córdoba";
  * @return {string} Valor del método seleccionado: domicilio, express o local.
  */
 const obtenerMetodoEnvio = () => {
-  return document.querySelector('input[name="envio"]:checked').value;
+  let elegido = "domicilio";
+  document.getElementsByName("envio").forEach((opcion) => {
+    if (opcion.checked) {
+      elegido = opcion.value;
+    }
+  });
+  return elegido;
 };
 
 /**
@@ -30,41 +34,41 @@ const calcularEnvio = (metodo, subtotal) => {
  */
 const actualizarTotales = () => {
   const carrito = leerCarrito();
-  const lista = document.getElementById("checkout-lista");
-  lista.innerHTML = "";
+  let contenido = "";
 
   if (carrito.length === 0) {
-    lista.innerHTML = '<li class="carrito-vacio">Tu carrito está vacío.</li>';
+    contenido = '<li class="carrito-vacio">Tu carrito está vacío.</li>';
   }
 
   carrito.forEach((item) => {
-    const fila = document.createElement("li");
-    const nombre = document.createElement("span");
-    const importe = document.createElement("strong");
-    nombre.textContent = `${item.nombre} x ${item.cantidad}`;
-    importe.textContent = formatearPrecio(item.precio * item.cantidad);
-    fila.append(nombre, importe);
-    lista.appendChild(fila);
+    contenido += `<li>
+        <span>${item.nombre} x ${item.cantidad}</span>
+        <strong>${formatearPrecio(item.precio * item.cantidad)}</strong>
+      </li>`;
   });
+  document.getElementById("checkout-lista").innerHTML = contenido;
 
   const subtotal = calcularSubtotal(carrito);
   const envio = calcularEnvio(obtenerMetodoEnvio(), subtotal);
   const total = subtotal + envio;
 
-  document.getElementById("checkout-subtotal").textContent = "Subtotal: " + formatearPrecio(subtotal);
-  document.getElementById("checkout-envio").textContent = "Envío: " + formatearPrecio(envio);
-  document.getElementById("checkout-total").textContent = "Total: " + formatearPrecio(total);
+  document.getElementById("checkout-subtotal").innerText = "Subtotal: " + formatearPrecio(subtotal);
+  document.getElementById("checkout-envio").innerText = "Envío: " + formatearPrecio(envio);
+  document.getElementById("checkout-total").innerText = "Total: " + formatearPrecio(total);
   return total;
 };
 
 /**
- * Vacía el carrito desde la página de compra y actualiza el resumen.
+ * Pregunta si se quiere vaciar el carrito desde la página de compra y,
+ * si el usuario confirma, lo vacía y actualiza el resumen.
  * @method vaciarCompra
  * @return {void}
  */
 const vaciarCompra = () => {
-  vaciarCarrito();
-  actualizarTotales();
+  confirmarVaciarCarrito(() => {
+    vaciarCarrito();
+    actualizarTotales();
+  });
 };
 
 /**
@@ -75,7 +79,7 @@ const vaciarCompra = () => {
  * @return {boolean} Siempre false, para indicar que la validación falló.
  */
 const informarError = (campo, mensaje) => {
-  alert(mensaje);
+  mostrarAviso(mensaje);
   campo.value = "";
   return false;
 };
@@ -101,25 +105,34 @@ const validarObligatorio = (id, mensaje) => {
  */
 const validarSoloLetras = (id, etiqueta) => {
   const campo = document.getElementById(id);
-  const valor = campo.value.trim();
-  if (valor === "" || /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$/.test(valor)) {
+  if (soloContiene(campo.value.trim(), LETRAS)) {
     return true;
   }
   return informarError(campo, `${etiqueta} solo puede contener letras.`);
 };
 
 /**
- * Comprueba que un campo, si tiene contenido, cumpla con un formato numérico.
- * @method validarFormato
+ * Comprueba que un campo, si tiene contenido, sea un número con una cantidad de dígitos permitida.
+ * @method validarNumero
  * @param {string} id - Identificador del campo.
- * @param {RegExp} formato - Expresión regular que debe cumplir el valor.
- * @param {string} mensaje - Texto a mostrar si el valor no cumple el formato.
+ * @param {number} minimo - Cantidad mínima de dígitos.
+ * @param {number} maximo - Cantidad máxima de dígitos.
+ * @param {boolean} sinCeroInicial - true si el número no puede empezar con 0.
+ * @param {string} mensaje - Texto a mostrar si el valor no es válido.
  * @return {boolean} true si el campo está vacío o es válido.
  */
-const validarFormato = (id, formato, mensaje) => {
+const validarNumero = (id, minimo, maximo, sinCeroInicial, mensaje) => {
   const campo = document.getElementById(id);
   const valor = campo.value.trim();
-  return valor === "" || formato.test(valor) ? true : informarError(campo, mensaje);
+  if (valor === "") {
+    return true;
+  }
+  const largoCorrecto = valor.length >= minimo && valor.length <= maximo;
+  const empiezaConCero = sinCeroInicial && valor[0] === "0";
+  if (soloContiene(valor, NUMEROS) && largoCorrecto && !empiezaConCero) {
+    return true;
+  }
+  return informarError(campo, mensaje);
 };
 
 /**
@@ -128,16 +141,16 @@ const validarFormato = (id, formato, mensaje) => {
  * @return {boolean} true si el campo está vacío o es válido.
  */
 const validarDni = () => {
-  return validarFormato("dni", /^[1-9]\d{6,7}$/, "Ingresá un DNI válido: solo números, 7 u 8 dígitos.");
+  return validarNumero("dni", 7, 8, true, "Ingresá un DNI válido: solo números, 7 u 8 dígitos.");
 };
 
 /**
- * Comprueba que el número de la dirección sea un entero mayor a cero.
+ * Comprueba que el número de la dirección sea un entero mayor a cero, de hasta 5 dígitos.
  * @method validarNumeroCalle
  * @return {boolean} true si el campo está vacío o es válido.
  */
 const validarNumeroCalle = () => {
-  return validarFormato("numero", /^[1-9]\d{0,4}$/, "Ingresá un número de calle válido: entero mayor a cero.");
+  return validarNumero("numero", 1, 5, true, "Ingresá un número de calle válido: entero mayor a cero.");
 };
 
 /**
@@ -146,7 +159,7 @@ const validarNumeroCalle = () => {
  * @return {boolean} true si el campo está vacío o es válido.
  */
 const validarCodigoPostal = () => {
-  return validarFormato("codigo-postal", /^[1-9]\d{3}$/, "Ingresá un código postal válido de 4 dígitos.");
+  return validarNumero("codigo-postal", 4, 4, true, "Ingresá un código postal válido de 4 dígitos.");
 };
 
 /**
@@ -159,7 +172,7 @@ const validarEnvioExpress = () => {
   if (obtenerMetodoEnvio() !== "express" || provincia === PROVINCIA_EXPRESS) {
     return true;
   }
-  alert(`El envío express está disponible solo para la provincia de ${PROVINCIA_EXPRESS}.`);
+  mostrarAviso(`El envío express está disponible solo para la provincia de ${PROVINCIA_EXPRESS}.`);
   document.getElementById("envio-domicilio").checked = true;
   actualizarTotales();
   return false;
@@ -182,7 +195,7 @@ const validarFormulario = () => {
     validarObligatorio("calle", "La calle es obligatoria.") &&
     validarObligatorio("numero", "El número de la dirección es obligatorio.") &&
     validarNumeroCalle() &&
-    validarFormato("piso", /^\d{1,2}$/, "El piso debe ser un número de hasta 2 dígitos.") &&
+    validarNumero("piso", 1, 2, false, "El piso debe ser un número de hasta 2 dígitos.") &&
     validarObligatorio("codigo-postal", "El código postal es obligatorio.") &&
     validarCodigoPostal() &&
     validarObligatorio("ciudad", "La ciudad es obligatoria.") &&
@@ -194,12 +207,13 @@ const validarFormulario = () => {
 
 /**
  * Procesa el envío del formulario: valida, informa el total y vacía el carrito.
+ * Al aceptar el aviso de compra realizada, vuelve a la página de inicio.
  * @method confirmarCompra
  * @return {boolean} Siempre false, para que la página no se recargue.
  */
 const confirmarCompra = () => {
   if (leerCarrito().length === 0) {
-    alert("Tu carrito está vacío. Agregá productos antes de confirmar la compra.");
+    mostrarAviso("Tu carrito está vacío. Agregá productos antes de confirmar la compra.");
     return false;
   }
 
@@ -208,10 +222,9 @@ const confirmarCompra = () => {
   }
 
   const total = actualizarTotales();
-  alert(`¡Gracias por tu compra! El total a pagar es ${formatearPrecio(total)}.`);
   vaciarCarrito();
-  document.getElementById("checkout-formulario").reset();
-  window.location.href = "index.html";
+  actualizarTotales();
+  mostrarAviso(`¡Gracias por tu compra! El total a pagar es ${formatearPrecio(total)}.`, "exito", "index.html");
   return false;
 };
 
