@@ -57,6 +57,7 @@ Proyecto académico de la materia **Taller de Desarrollo Web** de la Universidad
 | **Vite** | 8 | Creación del proyecto React, servidor de desarrollo y compilación |
 | **React Router DOM** | 7 | Enrutamiento entre páginas y rutas hijas con `Outlet` |
 | **Sass** | 1.108 | Estilos de la versión React en archivos `.scss` |
+| **json-server** | 1.0 (beta) | Servicio simulado (mock) que entrega los productos |
 | **Node.js** | 22 | Ejecución de los scripts y del servicio simulado |
 | **Google Fonts** | - | Tipografía Montserrat |
 | **Git y GitHub Pages** | - | Control de versiones y publicación |
@@ -71,20 +72,19 @@ Proyecto-DesarrolloWeb/
 ├── js/                  JavaScript de la versión HTML
 ├── imagenes/            Imágenes usadas por las dos versiones
 ├── Sketch/              Bocetos a mano (Desktop y Mobile)
-├── Wireframes/          Wireframes (Desktop y Mobile)
+├── Wireframe/           Wireframes (Desktop y Mobile)
 ├── app/                 Versión React compilada, publicada en GitHub Pages
 └── frontend/            Código fuente de la versión React
-    ├── mock/            Servicio simulado de productos
     └── src/
         ├── api/         Consultas al servicio de productos
         ├── components/  Componentes reutilizables y componente principal
-        ├── data/        Datos del catálogo y de la tienda
+        ├── data/        Datos del catálogo (también usados por el servicio simulado) y de la tienda
         ├── pages/       Páginas asociadas a cada ruta
         ├── styles/      Estilos en archivos .scss
-        └── utils/       Funciones de cálculo, validación y Hooks propios
+        └── utils/       Funciones de cálculo, formato y validación
 ```
 
-Los imports de la versión React usan los alias `@api`, `@components`, `@data`, `@pages`, `@styles`, `@utils` e `@imagenes`, definidos en `frontend/vite.config.js`.
+Los imports de la versión React usan los alias `@api`, `@components`, `@data`, `@pages`, `@styles` y `@utils`, definidos en `frontend/vite.config.js`. Las imágenes se toman de la carpeta `imagenes` de la raíz, configurada como carpeta pública de Vite.
 
 ## Pasos de ejecución
 
@@ -103,10 +103,10 @@ Los imports de la versión React usan los alias `@api`, `@components`, `@data`, 
 
 ### Versión React con el servicio simulado
 
-1. En una consola, dentro de `frontend`, iniciar el servicio: `npm run mock`
+1. En una consola, dentro de `frontend`, iniciar el servicio con json-server: `npm run mock`
 2. En otra consola, dentro de `frontend`, iniciar el sitio: `npm run dev:mock`
 
-En este modo los productos se piden a `http://localhost:3001/productos` en lugar de leerse de los datos locales.
+En este modo los productos se piden a `http://localhost:3001/productos` (json-server lee el archivo `src/data/productos.json`) en lugar de leerse de los datos locales.
 
 ## Scripts disponibles
 
@@ -115,7 +115,7 @@ Todos se ejecutan dentro de la carpeta `frontend`.
 | Script | Descripción |
 | --- | --- |
 | `npm run dev` | Inicia el sitio en modo desarrollo con los datos locales |
-| `npm run mock` | Inicia el servicio simulado de productos en el puerto 3001 |
+| `npm run mock` | Inicia el servicio simulado de productos (json-server) en el puerto 3001 |
 | `npm run dev:mock` | Inicia el sitio en modo desarrollo consultando al servicio simulado |
 | `npm run build` | Compila el sitio en la carpeta `app` para publicarlo |
 | `npm run preview` | Muestra el sitio ya compilado |
@@ -125,7 +125,7 @@ Todos se ejecutan dentro de la carpeta `frontend`.
 | Dependencia | Tipo |
 | --- | --- |
 | `react`, `react-dom`, `react-router-dom` | Ejecución |
-| `vite`, `@vitejs/plugin-react`, `sass` | Desarrollo |
+| `vite`, `@vitejs/plugin-react`, `sass`, `json-server` | Desarrollo |
 
 - Dependencias de ejecución (`npm audit --omit=dev`): **0 vulnerabilidades**.
 - Dependencias de desarrollo (`npm audit`): **6 avisos de severidad alta, todos por una misma falla** en `picomatch`, verificado el 17 de noviembre de 2026.
@@ -146,7 +146,7 @@ Cuando se publique la versión corregida, alcanza con ejecutar `npm update` dent
 ## Sketch y wireframes
 
 - **Sketch:** carpeta [`Sketch`](Sketch), con las versiones Desktop y Mobile.
-- **Wireframes:** carpeta [`Wireframes`](Wireframes), con las versiones Desktop y Mobile.
+- **Wireframes:** carpeta [`Wireframe`](Wireframe), con las versiones Desktop y Mobile.
 
 ## Pruebas realizadas
 
