@@ -50,6 +50,27 @@ const REGLAS = [
 ];
 
 /**
+ * Quita del texto todo lo que no sea un dígito, para que en un campo numérico solo se puedan escribir números.
+ * @method dejarSoloNumeros
+ * @param {string} texto - Valor escrito por el usuario.
+ * @return {string} El mismo texto, solo con sus dígitos.
+ */
+export const dejarSoloNumeros = (texto) => {
+  return texto.replace(/\D/g, "");
+};
+
+/**
+ * Prepara la cantidad que escribe el usuario: deja solo números y no permite superar el máximo.
+ * @method limitarCantidad
+ * @param {string} texto - Valor escrito por el usuario.
+ * @return {string} Cantidad lista para mostrar en el campo.
+ */
+export const limitarCantidad = (texto) => {
+  const digitos = dejarSoloNumeros(texto);
+  return Number(digitos) > CANTIDAD_MAXIMA ? String(CANTIDAD_MAXIMA) : digitos;
+};
+
+/**
  * Convierte el texto ingresado como cantidad en un número válido.
  * @method leerCantidad
  * @param {string} texto - Valor escrito por el usuario.

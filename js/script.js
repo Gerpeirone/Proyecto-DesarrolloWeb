@@ -14,6 +14,16 @@ const formatearPrecio = (valor) => {
 };
 
 /**
+ * Borra de un campo todo lo que no sea un dígito, para que solo se puedan escribir números.
+ * @method dejarSoloNumeros
+ * @param {HTMLInputElement} campo - Campo en el que escribe el usuario.
+ * @return {void}
+ */
+const dejarSoloNumeros = (campo) => {
+  campo.value = campo.value.replace(/\D/g, "");
+};
+
+/**
  * Indica si un elemento guardado en el carrito tiene datos correctos.
  * @method esItemValido
  * @param {object} item - Elemento leído desde el almacenamiento.

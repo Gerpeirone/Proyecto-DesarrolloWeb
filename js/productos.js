@@ -83,6 +83,21 @@ const leerCantidad = () => {
 };
 
 /**
+ * Mientras el usuario escribe la cantidad, deja solo números, no permite superar
+ * el máximo y actualiza el subtotal.
+ * @method limitarCantidad
+ * @param {HTMLInputElement} campo - Campo de cantidad.
+ * @return {void}
+ */
+const limitarCantidad = (campo) => {
+  dejarSoloNumeros(campo);
+  if (Number(campo.value) > CANTIDAD_MAXIMA) {
+    campo.value = String(CANTIDAD_MAXIMA);
+  }
+  actualizarSubtotal();
+};
+
+/**
  * Calcula y muestra el subtotal (precio por cantidad) del producto en pantalla.
  * @method actualizarSubtotal
  * @return {void}

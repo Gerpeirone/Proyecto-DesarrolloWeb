@@ -65,7 +65,7 @@
           <label for="apellido">Apellido</label>
           <input type="text" id="apellido" name="apellido" placeholder="Ej.: Pérez" onblur="validarSoloLetras('apellido', 'El apellido')">
           <label for="dni">DNI</label>
-          <input type="text" id="dni" name="dni" placeholder="Solo números, 7 u 8 dígitos" inputmode="numeric" onblur="validarDni()">
+          <input type="text" id="dni" name="dni" placeholder="Solo números, 7 u 8 dígitos" inputmode="numeric" maxlength="8" oninput="dejarSoloNumeros(this)" onblur="validarDni()">
           <label for="genero">Género</label>
           <select id="genero" name="genero">
             <option value="">Seleccioná una opción</option>
@@ -78,13 +78,13 @@
           <label for="calle">Calle</label>
           <input type="text" id="calle" name="calle" placeholder="Ej.: San Martín">
           <label for="numero">Número</label>
-          <input type="text" id="numero" name="numero" placeholder="Ej.: 1234" inputmode="numeric" onblur="validarNumeroCalle()">
+          <input type="text" id="numero" name="numero" placeholder="Ej.: 1234" inputmode="numeric" maxlength="5" oninput="dejarSoloNumeros(this)" onblur="validarNumeroCalle()">
           <label for="piso">Piso (opcional)</label>
-          <input type="text" id="piso" name="piso" placeholder="Ej.: 3">
+          <input type="text" id="piso" name="piso" placeholder="Ej.: 3" inputmode="numeric" maxlength="2" oninput="dejarSoloNumeros(this)">
           <label for="departamento">Departamento (opcional)</label>
           <input type="text" id="departamento" name="departamento" placeholder="Ej.: B">
           <label for="codigo-postal">Código postal</label>
-          <input type="text" id="codigo-postal" name="codigo-postal" placeholder="Ej.: 5000" inputmode="numeric" onblur="validarCodigoPostal()">
+          <input type="text" id="codigo-postal" name="codigo-postal" placeholder="Ej.: 5000" inputmode="numeric" maxlength="4" oninput="dejarSoloNumeros(this)" onblur="validarCodigoPostal()">
           <label for="ciudad">Ciudad</label>
           <input type="text" id="ciudad" name="ciudad" placeholder="Ej.: Córdoba" onblur="validarSoloLetras('ciudad', 'La ciudad')">
           <label for="provincia">Provincia</label>

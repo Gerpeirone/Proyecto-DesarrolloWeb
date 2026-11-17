@@ -5,7 +5,7 @@ import { GENEROS, METODOS_ENVIO, PROVINCIAS } from "@data/tienda";
 import { calcularEnvio, calcularSubtotal } from "@utils/carrito";
 import { formatearPrecio } from "@utils/formato";
 import { useTitulo } from "@utils/hooks";
-import { validarCampo, validarCompra } from "@utils/validaciones";
+import { dejarSoloNumeros, validarCampo, validarCompra } from "@utils/validaciones";
 
 const DATOS_INICIALES = {
   nombre: "",
@@ -25,17 +25,21 @@ const DATOS_INICIALES = {
 const CAMPOS_COMPRADOR = [
   { id: "nombre", etiqueta: "Nombre", ejemplo: "Ej.: Juan" },
   { id: "apellido", etiqueta: "Apellido", ejemplo: "Ej.: Pérez" },
-  { id: "dni", etiqueta: "DNI", ejemplo: "Solo números, 7 u 8 dígitos" },
+  { id: "dni", etiqueta: "DNI", ejemplo: "Solo números, 7 u 8 dígitos", largo: 8 },
 ];
 
 const CAMPOS_DIRECCION = [
   { id: "calle", etiqueta: "Calle", ejemplo: "Ej.: San Martín" },
-  { id: "numero", etiqueta: "Número", ejemplo: "Ej.: 1234" },
-  { id: "piso", etiqueta: "Piso (opcional)", ejemplo: "Ej.: 3" },
+  { id: "numero", etiqueta: "Número", ejemplo: "Ej.: 1234", largo: 5 },
+  { id: "piso", etiqueta: "Piso (opcional)", ejemplo: "Ej.: 3", largo: 2 },
   { id: "departamento", etiqueta: "Departamento (opcional)", ejemplo: "Ej.: B" },
-  { id: "codigoPostal", etiqueta: "Código postal", ejemplo: "Ej.: 5000" },
+  { id: "codigoPostal", etiqueta: "Código postal", ejemplo: "Ej.: 5000", largo: 4 },
   { id: "ciudad", etiqueta: "Ciudad", ejemplo: "Ej.: Córdoba" },
 ];
+
+const CAMPOS_NUMERICOS = [...CAMPOS_COMPRADOR, ...CAMPOS_DIRECCION]
+  .filter((campo) => campo.largo)
+  .map((campo) => campo.id);
 
 /**
  * Página para finalizar la compra: resumen, cálculo de envío y total,
@@ -63,7 +67,8 @@ const Checkout = () => {
    */
   const cambiarDato = (evento) => {
     const { name, value } = evento.target;
-    setDatos((actuales) => ({ ...actuales, [name]: value }));
+    const valor = CAMPOS_NUMERICOS.includes(name) ? dejarSoloNumeros(value) : value;
+    setDatos((actuales) => ({ ...actuales, [name]: valor }));
   };
 
   /**
@@ -131,7 +136,7 @@ const Checkout = () => {
   /**
    * Arma la etiqueta y el campo de texto de un dato del formulario.
    * @method dibujarCampo
-   * @param {{id: string, etiqueta: string, ejemplo: string}} campo - Configuración del campo.
+   * @param {{id: string, etiqueta: string, ejemplo: string, largo: (number|undefined)}} campo - Configuración del campo; largo indica que es numérico y su máximo de dígitos.
    * @return {JSX.Element} Etiqueta y campo de texto asociados.
    */
   const dibujarCampo = (campo) => {
@@ -142,6 +147,8 @@ const Checkout = () => {
           type="text"
           id={campo.id}
           name={campo.id}
+          inputMode={campo.largo ? "numeric" : "text"}
+          maxLength={campo.largo}
           placeholder={campo.ejemplo}
           value={datos[campo.id]}
           onChange={cambiarDato}

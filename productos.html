@@ -51,7 +51,7 @@
             </div>
             <div class="opcion">
               <label for="cantidad">Cantidad (1 a 10)</label>
-              <input type="text" id="cantidad" inputmode="numeric" value="1" oninput="actualizarSubtotal()">
+              <input type="text" id="cantidad" inputmode="numeric" maxlength="2" value="1" oninput="limitarCantidad(this)">
             </div>
           </div>
 

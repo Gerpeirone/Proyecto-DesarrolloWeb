@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CANTIDAD_MAXIMA } from "@data/tienda";
 import { formatearPrecio } from "@utils/formato";
 import { obtenerImagen } from "@utils/imagenes";
-import { leerCantidad } from "@utils/validaciones";
+import { leerCantidad, limitarCantidad } from "@utils/validaciones";
 
 /**
  * Ficha de un producto: galería, datos, elección de talle y cantidad,
@@ -42,13 +42,13 @@ const FichaProducto = ({ producto, alAgregar }) => {
   };
 
   /**
-   * Guarda la cantidad escrita para recalcular el subtotal.
+   * Guarda la cantidad escrita (solo números, sin superar el máximo) para recalcular el subtotal.
    * @method cambiarCantidad
    * @param {React.ChangeEvent<HTMLInputElement>} evento - Cambio en el campo de cantidad.
    * @return {void}
    */
   const cambiarCantidad = (evento) => {
-    setCantidad(evento.target.value);
+    setCantidad(limitarCantidad(evento.target.value));
   };
 
   /**
@@ -120,6 +120,7 @@ const FichaProducto = ({ producto, alAgregar }) => {
               type="text"
               id="cantidad"
               inputMode="numeric"
+              maxLength={2}
               value={cantidad}
               onChange={cambiarCantidad}
             />
