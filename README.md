@@ -122,12 +122,26 @@ Todos se ejecutan dentro de la carpeta `frontend`.
 
 ## Dependencias y vulnerabilidades
 
-El resultado de `npm audit` es **0 vulnerabilidades** (críticas, altas, moderadas y bajas), verificado el 15 de noviembre de 2026.
-
 | Dependencia | Tipo |
 | --- | --- |
 | `react`, `react-dom`, `react-router-dom` | Ejecución |
 | `vite`, `@vitejs/plugin-react`, `sass` | Desarrollo |
+
+- Dependencias de ejecución (`npm audit --omit=dev`): **0 vulnerabilidades**.
+- Dependencias de desarrollo (`npm audit`): **6 avisos de severidad alta, todos por una misma falla** en `picomatch`, verificado el 17 de noviembre de 2026.
+
+| Aviso | Paquete afectado | Llega a través de | Versión corregida |
+| --- | --- | --- | --- |
+| [GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf) (ReDoS con patrones extglob repetidos) | `picomatch` hasta 4.0.7 | `vite`, `tinyglobby`, `fdir` y `sass` (`@parcel/watcher`) | Todavía no publicada |
+
+**Por qué no se corrige todavía:**
+
+- `picomatch` no es una dependencia directa del proyecto: la usan internamente Vite y Sass para reconocer patrones de archivos.
+- No existe una versión de `picomatch` sin la falla. Las correcciones están propuestas en su repositorio pero aún no fueron publicadas.
+- `npm audit fix --force` instalaría `vite@6.2.7`, que tiene otras vulnerabilidades altas ya corregidas en Vite 8, por lo que no se aplica.
+- La falla solo afecta a las herramientas de desarrollo en la computadora de quien programa. El sitio publicado en `app/` no incluye `picomatch`.
+
+Cuando se publique la versión corregida, alcanza con ejecutar `npm update` dentro de `frontend`.
 
 ## Sketch y wireframes
 
